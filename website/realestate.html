@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Thornfield &amp; Row — Real Estate Agents &amp; Agencies</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,500&family=Manrope:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --forest:#1F3327;
+    --forest-2:#2B4636;
+    --gold:#C9A227;
+    --gold-light:#E3C568;
+    --stone:#EFEBE0;
+    --stone-dim:#E2DCC8;
+    --clay:#AD5A3B;
+    --ink:#20261F;
+    --slate:#5B6156;
+    --slate-light:#8B9184;
+    --rule:rgba(32,38,31,0.14);
+    --rule-light:rgba(239,235,224,0.16);
+    --display:'Newsreader', serif;
+    --body:'Manrope', sans-serif;
+    --mono:'Space Mono', monospace;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{font-family:var(--body);background:var(--stone);color:var(--ink);-webkit-font-smoothing:antialiased;overflow-x:hidden;}
+  a{color:inherit;text-decoration:none;}
+  .wrap{max-width:1200px;margin:0 auto;padding:0 32px;}
+  .eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--clay);}
+
+  /* ---------- NAV ---------- */
+  header{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(239,235,224,0.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--rule);}
+  .nav-inner{max-width:1200px;margin:0 auto;padding:18px 32px;display:flex;align-items:center;justify-content:space-between;}
+  .brand{display:flex;align-items:center;gap:12px;}
+  .brand-mark{width:36px;height:36px;flex-shrink:0;}
+  .brand-name{font-family:var(--display);font-size:20px;font-weight:600;letter-spacing:0.01em;}
+  nav ul{list-style:none;display:flex;gap:34px;}
+  nav a{font-size:14px;color:var(--ink);font-weight:500;position:relative;padding-bottom:3px;}
+  nav a::after{content:"";position:absolute;left:0;bottom:0;width:0;height:1px;background:var(--gold);transition:width .25s ease;}
+  nav a:hover::after{width:100%;}
+  .nav-cta{font-family:var(--mono);font-size:12px;letter-spacing:0.03em;background:var(--forest);color:var(--stone);padding:10px 20px;transition:background .2s ease;}
+  .nav-cta:hover{background:var(--ink);}
+
+  /* ---------- HERO ---------- */
+  .hero{background:var(--forest);color:var(--stone);padding:164px 0 100px;position:relative;overflow:hidden;}
+  .hero-grid{display:grid;grid-template-columns:1fr 460px;gap:56px;align-items:center;position:relative;z-index:2;}
+  .hero h1{font-family:var(--display);font-weight:500;font-size:clamp(38px,4.6vw,58px);line-height:1.1;margin:20px 0 24px;}
+  .hero h1 em{font-style:italic;color:var(--gold-light);}
+  .hero p.sub{font-size:16.5px;line-height:1.7;color:#C9D0C4;max-width:460px;margin-bottom:34px;}
+  .hero-ctas{display:flex;gap:14px;flex-wrap:wrap;}
+  .btn-primary{background:var(--gold);color:var(--ink);font-weight:700;font-size:14px;padding:14px 24px;display:inline-block;transition:background .2s ease, transform .2s ease;}
+  .btn-primary:hover{background:var(--gold-light);transform:translateY(-1px);}
+  .btn-outline{border:1px solid var(--rule-light);color:var(--stone);font-size:14px;font-weight:600;padding:13px 23px;display:inline-block;transition:border-color .2s ease,background .2s ease;}
+  .btn-outline:hover{border-color:var(--gold);background:rgba(201,162,39,0.08);}
+
+  /* Listing sheet card in hero */
+  .listing-card{background:var(--forest-2);border:1px solid var(--rule-light);}
+  .listing-photo{position:relative;height:220px;background:
+      linear-gradient(180deg, rgba(31,51,39,0) 0%, rgba(20,28,17,0.55) 100%),
+      linear-gradient(135deg, #3C5A44 0%, #23372A 100%);
+    display:flex;align-items:flex-end;padding:16px;}
+  .status-tag{font-family:var(--mono);font-size:10.5px;letter-spacing:0.06em;background:var(--gold);color:var(--ink);padding:5px 10px;position:absolute;top:16px;left:16px;}
+  .listing-body{padding:22px;}
+  .listing-body .laddr{font-family:var(--display);font-size:20px;font-weight:600;margin-bottom:2px;}
+  .listing-body .lsub{font-size:12.5px;color:#A8AF9E;margin-bottom:16px;}
+  .listing-stats{display:flex;justify-content:space-between;border-top:1px solid var(--rule-light);padding-top:14px;font-family:var(--mono);}
+  .listing-stats div{text-align:left;}
+  .listing-stats .lval{font-size:15px;color:var(--gold-light);}
+  .listing-stats .llabel{font-size:9.5px;color:#8A9182;letter-spacing:0.04em;margin-top:3px;}
+
+  /* ---------- STAT STRIP ---------- */
+  .stat-strip{background:var(--stone-dim);border-bottom:1px solid var(--rule);border-top:1px solid var(--rule);}
+  .stat-strip .wrap{display:grid;grid-template-columns:repeat(4,1fr);}
+  .stat-item{padding:30px 0;text-align:center;border-left:1px solid var(--rule);}
+  .stat-item:first-child{border-left:none;}
+  .stat-item .sval{font-family:var(--mono);font-size:26px;color:var(--forest);font-weight:700;}
+  .stat-item .slabel{font-size:12px;color:var(--slate);margin-top:6px;}
+
+  /* ---------- SECTION SHARED ---------- */
+  section{padding:104px 0;}
+  .section-head{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:end;margin-bottom:56px;}
+  .section-head h2{font-family:var(--display);font-weight:500;font-size:clamp(29px,3.4vw,40px);margin-top:10px;line-height:1.14;}
+  .section-head p{font-size:15px;line-height:1.7;color:var(--slate);}
+
+  /* ---------- LISTINGS GRID ---------- */
+  .listings{background:var(--stone);}
+  .listing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;}
+  .property-card{background:#fff;border:1px solid var(--rule);}
+  .property-elev{height:170px;background:var(--stone-dim);display:flex;align-items:center;justify-content:center;position:relative;border-bottom:1px solid var(--rule);}
+  .property-elev svg{width:82%;height:auto;}
+  .property-elev .status-tag{background:var(--forest);color:var(--stone);}
+  .property-elev .status-tag.sold{background:var(--clay);color:#fff;}
+  .property-body{padding:20px 22px 24px;}
+  .property-price{font-family:var(--mono);font-size:19px;font-weight:700;color:var(--forest);}
+  .property-addr{font-family:var(--display);font-size:17px;margin:6px 0 4px;}
+  .property-loc{font-size:12.5px;color:var(--slate-light);margin-bottom:14px;}
+  .property-meta{display:flex;gap:16px;font-family:var(--mono);font-size:11.5px;color:var(--slate);border-top:1px solid var(--rule);padding-top:12px;}
+
+  /* ---------- NEIGHBORHOODS (compass) ---------- */
+  .neighborhoods{background:var(--forest);color:var(--stone);}
+  .neighborhoods .section-head h2, .neighborhoods .eyebrow{color:var(--stone);}
+  .neighborhoods .eyebrow{color:var(--gold-light);}
+  .neighborhoods .section-head p{color:#C9D0C4;}
+  .compass-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--rule-light);border:1px solid var(--rule-light);}
+  .compass-card{background:var(--forest);padding:30px 26px;position:relative;}
+  .compass-dir{font-family:var(--mono);font-size:11px;color:var(--gold-light);letter-spacing:0.1em;margin-bottom:14px;}
+  .compass-card h4{font-family:var(--display);font-size:22px;font-weight:600;margin-bottom:14px;}
+  .compass-meta{border-top:1px solid var(--rule-light);padding-top:12px;font-family:var(--mono);font-size:11.5px;color:#A8AF9E;display:flex;flex-direction:column;gap:6px;}
+  .compass-meta span b{color:var(--gold-light);font-weight:400;}
+
+  /* ---------- PROCESS ---------- */
+  .process{background:var(--stone);}
+  .steps{display:grid;grid-template-columns:repeat(4,1fr);position:relative;}
+  .steps::before{content:"";position:absolute;top:22px;left:0;right:0;height:1px;background:var(--rule);}
+  .step{padding-right:22px;position:relative;}
+  .step-num{font-family:var(--mono);font-size:13px;color:var(--clay);background:var(--stone);display:inline-block;padding-right:14px;position:relative;z-index:2;}
+  .step-num::before{content:"";display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--gold);margin-right:10px;vertical-align:middle;}
+  .step h4{font-family:var(--display);font-size:20px;font-weight:600;margin:18px 0 8px;}
+  .step p{font-size:13.5px;line-height:1.6;color:var(--slate);}
+
+  /* ---------- AGENTS ---------- */
+  .agents{background:var(--stone-dim);}
+  .agent-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;}
+  .agent-card{background:var(--stone);border:1px solid var(--rule);padding:0;}
+  .agent-photo{height:150px;background:linear-gradient(135deg,#D8CFB3,#C7BC98);display:flex;align-items:center;justify-content:center;}
+  .agent-photo .initials{font-family:var(--display);font-size:30px;color:var(--forest);font-weight:600;}
+  .agent-info{padding:18px 20px 22px;}
+  .agent-info .aname{font-family:var(--display);font-size:17px;font-weight:600;}
+  .agent-info .arole{font-family:var(--mono);font-size:10.5px;color:var(--clay);letter-spacing:0.05em;margin:5px 0 12px;}
+  .agent-info .astat{font-size:12.5px;color:var(--slate);border-top:1px solid var(--rule);padding-top:10px;}
+
+  /* ---------- TESTIMONIALS (postcards) ---------- */
+  .quotes{background:var(--forest);color:var(--stone);}
+  .quotes .eyebrow{color:var(--gold-light);}
+  .quotes .section-head h2{color:var(--stone);}
+  .quotes .section-head p{color:#C9D0C4;}
+  .postcard-row{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
+  .postcard{background:var(--forest-2);border:1px solid var(--rule-light);padding:28px 26px;position:relative;}
+  .postcard::before{content:"";position:absolute;top:16px;right:16px;width:26px;height:26px;border:1px solid var(--gold);opacity:0.5;transform:rotate(45deg);}
+  .postcard p.qtext{font-family:var(--display);font-style:italic;font-size:16px;line-height:1.6;margin-bottom:22px;color:var(--stone);min-height:110px;}
+  .qcite{font-family:var(--mono);font-size:11px;color:#A8AF9E;border-top:1px solid var(--rule-light);padding-top:14px;}
+  .qcite b{display:block;color:var(--gold-light);font-family:var(--body);font-size:13.5px;font-weight:700;margin-bottom:2px;}
+
+  /* ---------- CTA ---------- */
+  .cta{background:var(--stone);padding:110px 0;text-align:center;}
+  .cta h2{font-family:var(--display);font-weight:500;font-size:clamp(30px,4.2vw,50px);max-width:740px;margin:0 auto 18px;line-height:1.12;color:var(--forest);}
+  .cta h2 em{font-style:italic;color:var(--clay);}
+  .cta p{color:var(--slate);font-size:16px;max-width:480px;margin:0 auto 34px;}
+
+  /* ---------- FOOTER ---------- */
+  footer{background:var(--ink);color:#9AA192;padding:48px 0 30px;}
+  .footer-grid{display:grid;grid-template-columns:1.3fr 1fr 1fr 1fr;gap:40px;margin-bottom:38px;}
+  .footer-grid h5{font-family:var(--mono);font-size:10.5px;letter-spacing:0.1em;text-transform:uppercase;color:var(--gold-light);margin-bottom:16px;}
+  .footer-grid ul{list-style:none;}
+  .footer-grid li{margin-bottom:10px;font-size:13.5px;}
+  .footer-grid li a:hover{color:var(--stone);}
+  .footer-brand p{font-size:13.5px;line-height:1.6;max-width:280px;margin-top:14px;}
+  .footer-bottom{display:flex;justify-content:space-between;padding-top:22px;border-top:1px solid rgba(239,235,224,0.14);font-family:var(--mono);font-size:11px;}
+
+  @media (max-width:960px){
+    nav ul{display:none;}
+    .hero-grid{grid-template-columns:1fr;}
+    .listing-card{max-width:420px;}
+    .section-head{grid-template-columns:1fr;}
+    .stat-strip .wrap{grid-template-columns:1fr 1fr;}
+    .stat-item{border-left:none;border-top:1px solid var(--rule);}
+    .stat-item:nth-child(odd){border-right:1px solid var(--rule);}
+    .listing-grid{grid-template-columns:1fr;}
+    .compass-grid{grid-template-columns:1fr 1fr;}
+    .steps{grid-template-columns:1fr;gap:32px;}
+    .steps::before{display:none;}
+    .agent-grid{grid-template-columns:1fr 1fr;}
+    .postcard-row{grid-template-columns:1fr;}
+    .footer-grid{grid-template-columns:1fr 1fr;}
+  }
+  @media (prefers-reduced-motion: reduce){*{animation-duration:0.001ms !important;transition-duration:0.001ms !important;}}
+  :focus-visible{outline:2px solid var(--gold);outline-offset:2px;}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="nav-inner">
+    <div class="brand">
+      <svg class="brand-mark" viewBox="0 0 36 36" fill="none">
+        <path d="M6 18 L18 7 L30 18" stroke="#1F3327" stroke-width="2"/>
+        <path d="M10 16 V29 H26 V16" stroke="#1F3327" stroke-width="2"/>
+        <rect x="15" y="20" width="6" height="9" stroke="#C9A227" stroke-width="1.6"/>
+      </svg>
+      <div class="brand-name">Thornfield &amp; Row</div>
+    </div>
+    <nav>
+      <ul>
+        <li><a href="#listings">Listings</a></li>
+        <li><a href="#neighborhoods">Neighborhoods</a></li>
+        <li><a href="#agents">Agents</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+    <a class="nav-cta" href="#contact">Schedule a Viewing</a>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <div class="eyebrow">Residential &amp; Boutique Real Estate</div>
+      <h1>Buy the house. <em>Keep the story</em> that comes with it.</h1>
+      <p class="sub">Thornfield &amp; Row represents buyers, sellers, and independent agencies across the region — with the local knowledge of a neighborhood office and the negotiating record of a firm that's closed 1,200+ deals.</p>
+      <div class="hero-ctas">
+        <a class="btn-primary" href="#listings">Browse Listings</a>
+        <a class="btn-outline" href="#contact">Talk to an Agent</a>
+      </div>
+    </div>
+
+    <div class="listing-card">
+      <div class="listing-photo">
+        <span class="status-tag">FOR SALE</span>
+      </div>
+      <div class="listing-body">
+        <div class="laddr">14 Aldergate Row</div>
+        <div class="lsub">Fernhollow District &middot; Listed 6 days ago</div>
+        <div class="listing-stats">
+          <div><div class="lval">$1.24M</div><div class="llabel">PRICE</div></div>
+          <div><div class="lval">4 / 3</div><div class="llabel">BED / BATH</div></div>
+          <div><div class="lval">2,610</div><div class="llabel">SQ FT</div></div>
+          <div><div class="lval">MLS-8842</div><div class="llabel">LISTING ID</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="stat-strip">
+  <div class="wrap">
+    <div class="stat-item"><div class="sval">1,200+</div><div class="slabel">homes closed</div></div>
+    <div class="stat-item"><div class="sval">18 days</div><div class="slabel">avg. days on market</div></div>
+    <div class="stat-item"><div class="sval">101.4%</div><div class="slabel">avg. list-to-sale ratio</div></div>
+    <div class="stat-item"><div class="sval">4.9 / 5</div><div class="slabel">client rating, 640 reviews</div></div>
+  </div>
+</div>
+
+<section class="listings" id="listings">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <div class="eyebrow">Current Inventory</div>
+        <h2>A few homes on the market this week.</h2>
+      </div>
+      <p>Every listing below is agency-represented, with full disclosure history and inspection reports available before you tour.</p>
+    </div>
+
+    <div class="listing-grid">
+      <div class="property-card">
+        <div class="property-elev">
+          <span class="status-tag">FOR SALE</span>
+          <svg viewBox="0 0 200 130" fill="none">
+            <path d="M20 70 L100 25 L180 70" stroke="#1F3327" stroke-width="2"/>
+            <rect x="35" y="70" width="130" height="45" stroke="#1F3327" stroke-width="2"/>
+            <rect x="90" y="88" width="20" height="27" stroke="#AD5A3B" stroke-width="1.6"/>
+            <rect x="50" y="82" width="16" height="16" stroke="#5B6156" stroke-width="1.2"/>
+            <rect x="134" y="82" width="16" height="16" stroke="#5B6156" stroke-width="1.2"/>
+          </svg>
+        </div>
+        <div class="property-body">
+          <div class="property-price">$895,000</div>
+          <div class="property-addr">22 Marrow Lane</div>
+          <div class="property-loc">Craftsman &middot; Fernhollow District</div>
+          <div class="property-meta"><span>3 bd</span><span>2 ba</span><span>1,840 sqft</span></div>
+        </div>
+      </div>
+
+      <div class="property-card">
+        <div class="property-elev">
+          <span class="status-tag">FOR SALE</span>
+          <svg viewBox="0 0 200 130" fill="none">
+            <rect x="30" y="35" width="140" height="80" stroke="#1F3327" stroke-width="2"/>
+            <rect x="30" y="35" width="140" height="8" fill="#C9A227" opacity="0.5"/>
+            <rect x="46" y="70" width="24" height="24" stroke="#5B6156" stroke-width="1.2"/>
+            <rect x="88" y="70" width="24" height="24" stroke="#5B6156" stroke-width="1.2"/>
+            <rect x="130" y="60" width="20" height="55" stroke="#AD5A3B" stroke-width="1.6"/>
+          </svg>
+        </div>
+        <div class="property-body">
+          <div class="property-price">$1,410,000</div>
+          <div class="property-addr">8 Kestrel Terrace</div>
+          <div class="property-loc">Modern &middot; Harrow Heights</div>
+          <div class="property-meta"><span>4 bd</span><span>3 ba</span><span>3,100 sqft</span></div>
+        </div>
+      </div>
+
+      <div class="property-card">
+        <div class="property-elev">
+          <span class="status-tag sold">SOLD</span>
+          <svg viewBox="0 0 200 130" fill="none">
+            <path d="M30 65 L100 30 L170 65 L170 115 L30 115 Z" stroke="#1F3327" stroke-width="2"/>
+            <path d="M65 65 L100 45 L135 65" stroke="#1F3327" stroke-width="1.6"/>
+            <rect x="88" y="88" width="24" height="27" stroke="#AD5A3B" stroke-width="1.6"/>
+            <rect x="45" y="82" width="18" height="18" stroke="#5B6156" stroke-width="1.2"/>
+            <rect x="137" y="82" width="18" height="18" stroke="#5B6156" stroke-width="1.2"/>
+          </svg>
+        </div>
+        <div class="property-body">
+          <div class="property-price">$725,000</div>
+          <div class="property-addr">3 Willowmere Close</div>
+          <div class="property-loc">Farmhouse &middot; Oldbrook</div>
+          <div class="property-meta"><span>3 bd</span><span>2 ba</span><span>1,960 sqft</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="neighborhoods" id="neighborhoods">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <div class="eyebrow">Where We Work</div>
+        <h2>Four districts, mapped by our own agents.</h2>
+      </div>
+      <p>We only list where we can walk the block ourselves — every district below is covered by an agent who lives within it.</p>
+    </div>
+
+    <div class="compass-grid">
+      <div class="compass-card">
+        <div class="compass-dir">N &middot; FERNHOLLOW</div>
+        <h4>Fernhollow District</h4>
+        <div class="compass-meta">
+          <span>Median price <b>$780K</b></span>
+          <span>Walk score <b>82</b></span>
+          <span>Listings live <b>11</b></span>
+        </div>
+      </div>
+      <div class="compass-card">
+        <div class="compass-dir">E &middot; HARROW HEIGHTS</div>
+        <h4>Harrow Heights</h4>
+        <div class="compass-meta">
+          <span>Median price <b>$1.3M</b></span>
+          <span>Walk score <b>64</b></span>
+          <span>Listings live <b>6</b></span>
+        </div>
+      </div>
+      <div class="compass-card">
+        <div class="compass-dir">S &middot; OLDBROOK</div>
+        <h4>Oldbrook</h4>
+        <div class="compass-meta">
+          <span>Median price <b>$610K</b></span>
+          <span>Walk score <b>71</b></span>
+          <span>Listings live <b>14</b></span>
+        </div>
+      </div>
+      <div class="compass-card">
+        <div class="compass-dir">W &middot; MILLPOND</div>
+        <h4>Millpond</h4>
+        <div class="compass-meta">
+          <span>Median price <b>$895K</b></span>
+          <span>Walk score <b>77</b></span>
+          <span>Listings live <b>9</b></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="process">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <div class="eyebrow">How It Works</div>
+        <h2>From first search to closing table.</h2>
+      </div>
+      <p>The same four stages whether you're buying your first home or your fourth — in this order, no shortcuts.</p>
+    </div>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">01</div>
+        <h4>Search</h4>
+        <p>We build a shortlist against your budget, must-haves, and commute — not just what's trending on the portal.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">02</div>
+        <h4>Tour</h4>
+        <p>Private showings, scheduled around you, with an agent who can speak to the district and not just the listing sheet.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">03</div>
+        <h4>Offer</h4>
+        <p>Comparable sales, inspection contingencies, and a negotiating position, all before you sign anything.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">04</div>
+        <h4>Close</h4>
+        <p>We coordinate the lender, the title company, and the walkthrough so closing day has no surprises.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="agents" id="agents">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <div class="eyebrow">The Team</div>
+        <h2>Agents who live where they list.</h2>
+      </div>
+      <p>Every agent at Thornfield &amp; Row covers a district they know personally, not a territory assigned by algorithm.</p>
+    </div>
+
+    <div class="agent-grid">
+      <div class="agent-card">
+        <div class="agent-photo"><span class="initials">MR</span></div>
+        <div class="agent-info">
+          <div class="aname">Mara Renfrew</div>
+          <div class="arole">FERNHOLLOW &middot; BUYER AGENT</div>
+          <div class="astat">61 closings &middot; 4.95 rating</div>
+        </div>
+      </div>
+      <div class="agent-card">
+        <div class="agent-photo"><span class="initials">DO</span></div>
+        <div class="agent-info">
+          <div class="aname">Desmond Okafor</div>
+          <div class="arole">HARROW HEIGHTS &middot; LISTING AGENT</div>
+          <div class="astat">44 closings &middot; 4.87 rating</div>
+        </div>
+      </div>
+      <div class="agent-card">
+        <div class="agent-photo"><span class="initials">SV</span></div>
+        <div class="agent-info">
+          <div class="aname">Sana Vellani</div>
+          <div class="arole">OLDBROOK &middot; BUYER AGENT</div>
+          <div class="astat">73 closings &middot; 4.98 rating</div>
+        </div>
+      </div>
+      <div class="agent-card">
+        <div class="agent-photo"><span class="initials">TB</span></div>
+        <div class="agent-info">
+          <div class="aname">Theo Birch</div>
+          <div class="arole">MILLPOND &middot; LISTING AGENT</div>
+          <div class="astat">52 closings &middot; 4.91 rating</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="quotes">
+  <div class="wrap">
+    <div class="section-head" style="margin-bottom:44px;">
+      <div>
+        <div class="eyebrow">From Recent Closings</div>
+        <h2>Notes from buyers and sellers.</h2>
+      </div>
+      <p></p>
+    </div>
+    <div class="postcard-row">
+      <div class="postcard">
+        <p class="qtext">Mara found us the one house that wasn't even listed yet, and negotiated it under asking in a seller's market.</p>
+        <div class="qcite"><b>Priya &amp; Owen T.</b>Buyers, Fernhollow District</div>
+      </div>
+      <div class="postcard">
+        <p class="qtext">Desmond had our listing staged, photographed, and under contract in nine days. We didn't expect that timeline.</p>
+        <div class="qcite"><b>The Alvarez Family</b>Sellers, Harrow Heights</div>
+      </div>
+      <div class="postcard">
+        <p class="qtext">First-time buyer, zero clue what I was doing. Sana walked me through every contingency before I signed a thing.</p>
+        <div class="qcite"><b>Jordan M.</b>Buyer, Oldbrook</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="cta" id="contact">
+  <div class="wrap">
+    <div class="eyebrow">Get Started</div>
+    <h2>Ready to see a house in person? <em>Let's go look.</em></h2>
+    <p>Tell us what you're after and we'll have an agent reach out within one business day — no obligation, no pressure.</p>
+    <a class="btn-primary" href="mailto:hello@thornfieldrow.com">Schedule a Viewing →</a>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="brand">
+          <svg class="brand-mark" viewBox="0 0 36 36" fill="none">
+            <path d="M6 18 L18 7 L30 18" stroke="#EFEBE0" stroke-width="2"/>
+            <path d="M10 16 V29 H26 V16" stroke="#EFEBE0" stroke-width="2"/>
+            <rect x="15" y="20" width="6" height="9" stroke="#C9A227" stroke-width="1.6"/>
+          </svg>
+          <div class="brand-name" style="color:#EFEBE0;">Thornfield &amp; Row</div>
+        </div>
+        <p>Residential real estate agents and boutique agencies, covering four districts by neighborhood specialists.</p>
+      </div>
+      <div>
+        <h5>Explore</h5>
+        <ul>
+          <li><a href="#listings">Current Listings</a></li>
+          <li><a href="#neighborhoods">Neighborhoods</a></li>
+          <li><a href="#agents">Our Agents</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>Firm</h5>
+        <ul>
+          <li><a href="#contact">Sell With Us</a></li>
+          <li><a href="#contact">Careers</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>Contact</h5>
+        <ul>
+          <li><a href="mailto:hello@thornfieldrow.com">hello@thornfieldrow.com</a></li>
+          <li><a href="tel:+15035550132">+1 (503) 555-0132</a></li>
+          <li>410 Elmgate Ave, Portland</li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Thornfield &amp; Row Realty</span>
+      <span>Search · Tour · Offer · Close</span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

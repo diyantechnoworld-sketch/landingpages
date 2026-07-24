@@ -1,0 +1,935 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kraftline — Custom Boxes, Momo Packaging & Cartons Online</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#12234F;
+    --navy-2:#1B3B7A;
+    --bg:#F4F6FB;
+    --panel:#FFFFFF;
+    --accent:#FF5A36;
+    --accent-dark:#E2431F;
+    --yellow:#FFC839;
+    --green:#1E9E6B;
+    --text:#181C24;
+    --text-soft:#666E7C;
+    --line:#E5E8F0;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{ background:var(--bg); color:var(--text); font-family:'Inter',sans-serif; line-height:1.55; }
+  img{max-width:100%; display:block;}
+  a{color:inherit; text-decoration:none;}
+  button{font-family:inherit; cursor:pointer; border:none;}
+  h1,h2,h3,.heading{ font-family:'Poppins',sans-serif; font-weight:700; letter-spacing:-0.01em; }
+  .wrap{ max-width:1280px; margin:0 auto; padding:0 32px; }
+  @media (max-width:700px){ .wrap{ padding:0 18px; } }
+
+  .stars{ color:var(--yellow); font-size:0.85rem; letter-spacing:1px; }
+
+  .btn{ display:inline-flex; align-items:center; justify-content:center; gap:8px; padding:14px 26px; border-radius:8px; font-weight:700; font-size:0.9rem; transition:all .18s ease; }
+  .btn-accent{ background:var(--accent); color:#fff; box-shadow:0 4px 14px rgba(255,90,54,0.35); }
+  .btn-accent:hover{ background:var(--accent-dark); transform:translateY(-1px); }
+  .btn-navy{ background:var(--navy); color:#fff; }
+  .btn-navy:hover{ background:var(--navy-2); }
+  .btn-outline{ border:2px solid var(--navy); color:var(--navy); }
+  .btn-outline:hover{ background:var(--navy); color:#fff; }
+  .btn-white{ background:#fff; color:var(--navy); }
+  .btn-white:hover{ background:#EDF0F8; }
+  .btn-sm{ padding:9px 16px; font-size:0.78rem; border-radius:6px; }
+  .btn-block{ width:100%; }
+
+  /* ---------- Promo bar ---------- */
+  .promo{
+    background:var(--navy);
+    color:#fff;
+    text-align:center;
+    font-size:0.82rem;
+    font-weight:600;
+    padding:9px 16px;
+  }
+  .promo span{ color:var(--yellow); }
+
+  /* ---------- Header ---------- */
+  header{ background:#fff; border-bottom:1px solid var(--line); position:sticky; top:0; z-index:100; }
+  .navbar{ display:flex; align-items:center; gap:28px; padding:16px 32px; }
+  .logo{ font-family:'Poppins'; font-weight:800; font-size:1.4rem; color:var(--navy); flex-shrink:0; }
+  .logo span{ color:var(--accent); }
+  .searchbar{
+    flex:1;
+    display:flex; align-items:center;
+    background:var(--bg);
+    border:1px solid var(--line);
+    border-radius:8px;
+    padding:10px 16px;
+    gap:10px;
+    max-width:460px;
+  }
+  .searchbar input{ border:0; background:none; outline:none; font-size:0.88rem; width:100%; font-family:inherit; }
+  .searchbar svg{ width:16px; height:16px; color:var(--text-soft); flex-shrink:0; }
+  .navlinks{ display:flex; gap:26px; font-size:0.87rem; font-weight:600; color:var(--text); }
+  .navlinks a:hover{ color:var(--accent); }
+  .navicons{ display:flex; align-items:center; gap:18px; }
+  .navicons svg{ width:20px; height:20px; }
+  .cart-badge{ position:relative; }
+  .cart-badge .n{ position:absolute; top:-7px; right:-8px; background:var(--accent); color:#fff; font-size:0.6rem; font-weight:700; width:16px; height:16px; border-radius:50%; display:flex; align-items:center; justify-content:center; }
+  @media (max-width:1080px){ .navlinks, .searchbar{ display:none; } }
+
+  .catbar{ background:#fff; border-bottom:1px solid var(--line); overflow-x:auto; }
+  .catbar .wrap{ display:flex; gap:30px; padding:12px 32px; font-size:0.82rem; font-weight:600; color:var(--text-soft); white-space:nowrap; }
+  .catbar a:hover{ color:var(--navy); }
+
+  /* ---------- Hero ---------- */
+  .hero{ background:linear-gradient(135deg, var(--navy) 0%, var(--navy-2) 100%); padding:56px 0 0; overflow:hidden; }
+  .hero .wrap{ display:grid; grid-template-columns:1fr 1fr; gap:40px; align-items:center; }
+  .hero-copy{ padding-bottom:56px; color:#fff; }
+  .hero-badge{ display:inline-flex; align-items:center; gap:8px; background:rgba(255,255,255,0.12); border:1px solid rgba(255,255,255,0.25); padding:7px 14px; border-radius:20px; font-size:0.76rem; font-weight:600; margin-bottom:20px; }
+  .hero-badge .dot{ width:6px; height:6px; border-radius:50%; background:var(--green); }
+  .hero h1{ font-size:clamp(2.2rem,4vw,3.1rem); line-height:1.12; margin-bottom:16px; }
+  .hero h1 span{ color:var(--yellow); }
+  .hero p{ font-size:1.02rem; color:#C9D2E8; max-width:44ch; margin-bottom:26px; }
+  .hero-ctas{ display:flex; gap:12px; flex-wrap:wrap; margin-bottom:30px; }
+  .hero-trust{ display:flex; gap:22px; flex-wrap:wrap; font-size:0.78rem; color:#C9D2E8; font-weight:600; }
+  .hero-trust div{ display:flex; align-items:center; gap:6px; }
+  .hero-trust svg{ width:15px; height:15px; color:var(--green); }
+
+  .hero-art{ position:relative; padding-bottom:20px; }
+  .hero-art-card{
+    background:#fff; border-radius:16px; padding:32px;
+    display:flex; align-items:center; justify-content:center;
+    position:relative;
+    box-shadow:0 30px 60px rgba(0,0,0,0.25);
+  }
+  .hero-art-card svg{ width:100%; max-width:280px; }
+  .price-float{
+    position:absolute; top:-16px; right:-14px;
+    background:var(--accent); color:#fff;
+    border-radius:10px; padding:12px 16px;
+    text-align:center;
+    box-shadow:0 10px 24px rgba(255,90,54,0.4);
+    transform:rotate(6deg);
+  }
+  .price-float .l{ font-size:0.62rem; text-transform:uppercase; font-weight:700; opacity:0.9; }
+  .price-float .p{ font-family:'Poppins'; font-size:1.3rem; font-weight:800; }
+  .rating-float{
+    position:absolute; bottom:-14px; left:-10px;
+    background:#fff; border-radius:10px; padding:10px 14px;
+    box-shadow:0 10px 24px rgba(0,0,0,0.15);
+    display:flex; align-items:center; gap:8px;
+  }
+  .rating-float .stars{ font-size:0.8rem; }
+  .rating-float .num{ font-weight:700; font-size:0.82rem; }
+  @media (max-width:900px){ .hero .wrap{ grid-template-columns:1fr; } .hero-copy{ padding-bottom:20px; text-align:center; } .hero-ctas,.hero-trust{ justify-content:center; } .hero-art{ max-width:360px; margin:0 auto; } }
+
+  /* ---------- Section shared ---------- */
+  section{ padding:72px 0; }
+  .section-head{ text-align:center; max-width:640px; margin:0 auto 44px; }
+  .section-head .kicker{ color:var(--accent); font-weight:700; font-size:0.8rem; text-transform:uppercase; letter-spacing:0.06em; margin-bottom:10px; display:block; }
+  .section-head h2{ font-size:clamp(1.7rem,3vw,2.3rem); margin-bottom:12px; color:var(--navy); }
+  .section-head p{ color:var(--text-soft); }
+
+  /* ---------- Categories ---------- */
+  .cat-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:18px; }
+  @media (max-width:900px){ .cat-grid{ grid-template-columns:repeat(2,1fr); } }
+  .cat-card{
+    background:#fff; border:1px solid var(--line); border-radius:12px;
+    padding:26px 20px; text-align:center;
+    transition:all 0.2s ease; cursor:pointer;
+  }
+  .cat-card:hover{ transform:translateY(-4px); box-shadow:0 14px 30px rgba(18,35,79,0.1); border-color:transparent; }
+  .cat-card .ic{ width:64px; height:64px; margin:0 auto 14px; display:flex; align-items:center; justify-content:center; background:var(--bg); border-radius:50%; }
+  .cat-card .ic svg{ width:34px; }
+  .cat-card h3{ font-size:0.98rem; margin-bottom:4px; color:var(--navy); }
+  .cat-card p{ font-size:0.78rem; color:var(--text-soft); }
+
+  /* ---------- Deal strip ---------- */
+  .deal{
+    background:linear-gradient(90deg, var(--accent), #FF8452);
+    border-radius:16px;
+    padding:34px 40px;
+    display:flex; align-items:center; justify-content:space-between; gap:20px; flex-wrap:wrap;
+    color:#fff;
+  }
+  .deal h3{ font-size:1.5rem; margin-bottom:6px; }
+  .deal p{ opacity:0.92; font-size:0.92rem; }
+
+  /* ---------- Products ---------- */
+  .bg-white{ background:#fff; }
+  .prod-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:22px; }
+  @media (max-width:980px){ .prod-grid{ grid-template-columns:repeat(2,1fr); } }
+  @media (max-width:560px){ .prod-grid{ grid-template-columns:1fr; } }
+  .pcard{
+    background:var(--bg); border:1px solid var(--line); border-radius:14px; overflow:hidden;
+    transition:transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .pcard:hover{ transform:translateY(-5px); box-shadow:0 16px 34px rgba(18,35,79,0.12); }
+  .pcard-img{ position:relative; background:#fff; padding:26px; display:flex; align-items:center; justify-content:center; }
+  .pcard-img svg{ width:100%; max-width:150px; }
+  .ribbon{
+    position:absolute; top:12px; left:12px;
+    font-size:0.62rem; font-weight:800; text-transform:uppercase;
+    padding:5px 10px; border-radius:5px; color:#fff;
+    letter-spacing:0.03em;
+  }
+  .ribbon.bestseller{ background:var(--accent); }
+  .ribbon.new{ background:var(--green); }
+  .ribbon.eco{ background:var(--navy); }
+  .pcard-body{ padding:18px 20px 22px; }
+  .pcard h3{ font-size:0.98rem; margin-bottom:6px; color:var(--navy); }
+  .pcard .stars-row{ display:flex; align-items:center; gap:6px; margin-bottom:10px; }
+  .pcard .stars-row .cnt{ font-size:0.72rem; color:var(--text-soft); }
+  .pcard .price-row{ display:flex; align-items:baseline; gap:8px; margin-bottom:14px; }
+  .pcard .from{ font-size:0.7rem; color:var(--text-soft); text-transform:uppercase; font-weight:600; }
+  .pcard .price{ font-family:'Poppins'; font-weight:800; font-size:1.2rem; color:var(--navy); }
+  .pcard .strike{ font-size:0.8rem; color:var(--text-soft); text-decoration:line-through; }
+
+  /* ---------- How it works ---------- */
+  .how-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:24px; }
+  @media (max-width:900px){ .how-grid{ grid-template-columns:repeat(2,1fr); } }
+  .hstep{ text-align:center; }
+  .hstep .circle{
+    width:70px; height:70px; border-radius:50%;
+    background:#fff; border:2px solid var(--line);
+    display:flex; align-items:center; justify-content:center;
+    margin:0 auto 16px;
+    font-family:'Poppins'; font-weight:800; font-size:1.3rem; color:var(--accent);
+    position:relative;
+  }
+  .hstep h3{ font-size:1rem; margin-bottom:8px; color:var(--navy); }
+  .hstep p{ font-size:0.85rem; color:var(--text-soft); }
+
+  /* ---------- Why us icons ---------- */
+  .why-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:20px; }
+  @media (max-width:900px){ .why-grid{ grid-template-columns:repeat(2,1fr); } }
+  .why-card{ text-align:center; padding:8px; }
+  .why-card .ic{ width:56px; height:56px; margin:0 auto 14px; background:var(--bg); border-radius:14px; display:flex; align-items:center; justify-content:center; }
+  .why-card .ic svg{ width:28px; color:var(--navy); }
+  .why-card h3{ font-size:0.95rem; margin-bottom:6px; color:var(--navy); }
+  .why-card p{ font-size:0.82rem; color:var(--text-soft); }
+
+  /* ---------- Reviews ---------- */
+  .rev-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:22px; }
+  @media (max-width:900px){ .rev-grid{ grid-template-columns:1fr; } }
+  .rcard{ background:#fff; border:1px solid var(--line); border-radius:14px; padding:26px; }
+  .rcard .stars{ margin-bottom:12px; display:block; }
+  .rcard p{ font-size:0.9rem; color:var(--text); margin-bottom:20px; }
+  .rcard .who{ display:flex; align-items:center; gap:12px; }
+  .avatar{ width:38px; height:38px; border-radius:50%; display:flex; align-items:center; justify-content:center; color:#fff; font-weight:700; font-family:'Poppins'; font-size:0.85rem; flex-shrink:0; }
+  .rcard .name{ font-weight:700; font-size:0.88rem; }
+  .rcard .biz{ font-size:0.75rem; color:var(--text-soft); }
+  .verified{ display:inline-flex; align-items:center; gap:4px; font-size:0.68rem; color:var(--green); font-weight:700; margin-top:2px; }
+
+  /* ---------- CTA ---------- */
+  .cta{ background:var(--navy); border-radius:20px; padding:64px 44px; text-align:center; color:#fff; position:relative; overflow:hidden; }
+  .cta h2{ font-size:clamp(1.8rem,3.6vw,2.6rem); margin-bottom:14px; }
+  .cta p{ color:#C9D2E8; max-width:50ch; margin:0 auto 30px; }
+  .cta-ctas{ display:flex; gap:14px; justify-content:center; flex-wrap:wrap; }
+
+  /* ---------- Footer ---------- */
+  footer{ background:#0D1A38; color:#9AA6C4; padding:60px 0 26px; }
+  .foot-grid{ display:grid; grid-template-columns:1.4fr 1fr 1fr 1fr 1.1fr; gap:32px; margin-bottom:40px; }
+  @media (max-width:900px){ .foot-grid{ grid-template-columns:1fr 1fr; } }
+  footer h4{ color:#fff; font-size:0.85rem; margin-bottom:16px; font-weight:700; }
+  footer ul{ list-style:none; }
+  footer li{ margin-bottom:10px; font-size:0.85rem; }
+  footer li a:hover{ color:#fff; }
+  .foot-logo{ font-family:'Poppins'; font-weight:800; font-size:1.3rem; color:#fff; margin-bottom:12px; }
+  .foot-logo span{ color:var(--accent); }
+  .payments{ display:flex; gap:8px; margin-top:14px; flex-wrap:wrap; }
+  .payments span{ background:rgba(255,255,255,0.08); font-size:0.68rem; padding:5px 9px; border-radius:5px; font-weight:600; }
+  .foot-bottom{ border-top:1px solid rgba(255,255,255,0.1); padding-top:22px; display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px; font-size:0.78rem; }
+
+  .float-wa{
+    position:fixed; bottom:26px; right:26px; z-index:200;
+    width:58px; height:58px; border-radius:50%;
+    background:var(--green); color:#fff;
+    display:flex; align-items:center; justify-content:center;
+    box-shadow:0 10px 26px rgba(30,158,107,0.45);
+    transition:transform 0.2s ease;
+  }
+  .float-wa:hover{ transform:scale(1.08); }
+  .float-wa svg{ width:26px; height:26px; }
+
+  /* ---------- Customize modal ---------- */
+  .modal-overlay{
+    position:fixed; inset:0; z-index:300;
+    background:rgba(13,22,45,0.55);
+    display:none;
+    align-items:center; justify-content:center;
+    padding:20px;
+    opacity:0;
+    transition:opacity 0.2s ease;
+  }
+  .modal-overlay.open{ display:flex; opacity:1; }
+  .modal{
+    background:#fff;
+    border-radius:16px;
+    max-width:480px;
+    width:100%;
+    max-height:90vh;
+    overflow-y:auto;
+    padding:0;
+    transform:translateY(14px) scale(0.97);
+    transition:transform 0.22s ease;
+    box-shadow:0 30px 70px rgba(0,0,0,0.35);
+  }
+  .modal-overlay.open .modal{ transform:translateY(0) scale(1); }
+  .modal-head{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:22px 24px;
+    border-bottom:1px solid var(--line);
+  }
+  .modal-head-info{ display:flex; align-items:center; gap:12px; }
+  .modal-thumb{
+    width:44px; height:44px; border-radius:8px;
+    background:var(--bg);
+    display:flex; align-items:center; justify-content:center;
+    flex-shrink:0;
+  }
+  .modal-thumb svg{ width:26px; }
+  .modal-head h3{ font-size:1rem; color:var(--navy); }
+  .modal-head .sub{ font-size:0.76rem; color:var(--text-soft); margin-top:2px; }
+  .modal-close{
+    width:32px; height:32px; border-radius:50%;
+    background:var(--bg);
+    display:flex; align-items:center; justify-content:center;
+    font-size:1.1rem; color:var(--text-soft);
+    flex-shrink:0;
+  }
+  .modal-close:hover{ background:var(--line); color:var(--text); }
+  .modal-body{ padding:22px 24px; }
+  .field-label{
+    display:block; font-size:0.8rem; font-weight:700; color:var(--navy);
+    margin-bottom:8px; margin-top:18px;
+  }
+  .field-label:first-child{ margin-top:0; }
+  .field-hint{ font-size:0.72rem; color:var(--text-soft); font-weight:500; margin-left:6px; }
+  .size-grid{ display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px; }
+  .size-field{ position:relative; }
+  .size-field input{
+    width:100%; padding:12px 34px 12px 12px;
+    border:1.5px solid var(--line); border-radius:8px;
+    font-family:inherit; font-size:0.92rem; font-weight:600; color:var(--navy);
+    outline:none; transition:border-color 0.15s ease;
+  }
+  .size-field input:focus{ border-color:var(--accent); }
+  .size-field .unit{
+    position:absolute; right:10px; top:50%; transform:translateY(-50%);
+    font-size:0.68rem; color:var(--text-soft); font-weight:700; text-transform:uppercase;
+  }
+  .size-field .axis{
+    position:absolute; left:12px; top:-8px; background:#fff; padding:0 4px;
+    font-size:0.62rem; color:var(--text-soft); font-weight:700; text-transform:uppercase;
+  }
+  .unit-toggle{ display:flex; gap:8px; margin-top:10px; }
+  .unit-btn{
+    padding:6px 14px; border-radius:6px; border:1.5px solid var(--line);
+    font-size:0.75rem; font-weight:700; color:var(--text-soft);
+    background:#fff;
+  }
+  .unit-btn.active{ border-color:var(--navy); color:var(--navy); background:var(--bg); }
+  select, .modal textarea{
+    width:100%; padding:12px; border:1.5px solid var(--line); border-radius:8px;
+    font-family:inherit; font-size:0.9rem; color:var(--navy); outline:none;
+    transition:border-color 0.15s ease; font-weight:600;
+  }
+  select:focus, .modal textarea:focus{ border-color:var(--accent); }
+  .modal textarea{ font-weight:400; resize:vertical; min-height:64px; }
+  .qty-row{ display:flex; align-items:center; gap:10px; }
+  .qty-btn{
+    width:38px; height:38px; border-radius:8px; border:1.5px solid var(--line);
+    font-size:1.1rem; font-weight:700; color:var(--navy); background:#fff; flex-shrink:0;
+  }
+  .qty-btn:hover{ background:var(--bg); }
+  .qty-row input{
+    flex:1; text-align:center; padding:11px; border:1.5px solid var(--line);
+    border-radius:8px; font-family:inherit; font-weight:700; font-size:0.95rem; color:var(--navy); outline:none;
+  }
+  .modal-price{
+    background:var(--bg); border-radius:10px; padding:14px 16px;
+    display:flex; align-items:center; justify-content:space-between;
+    margin-top:20px;
+  }
+  .modal-price .l{ font-size:0.78rem; color:var(--text-soft); font-weight:600; }
+  .modal-price .p{ font-family:'Poppins'; font-weight:800; font-size:1.3rem; color:var(--navy); }
+  .modal-price .p span{ font-size:0.7rem; color:var(--text-soft); font-weight:600; }
+  .modal-foot{ padding:18px 24px 24px; }
+  .modal-note{ font-size:0.72rem; color:var(--text-soft); text-align:center; margin-top:12px; }
+</style>
+</head>
+<body>
+
+<div class="promo">🎉 Bulk Order Offer — Flat <span>15% OFF</span> on orders above 1000 pcs. Use code <span>PACK15</span> at checkout.</div>
+
+<header>
+  <div class="navbar wrap">
+    <div class="logo">Kraftline<span>.</span></div>
+    <div class="searchbar">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+      <input type="text" placeholder="Search momo boxes, cartons, mailers...">
+    </div>
+    <div class="navlinks">
+      <a href="#categories">Categories</a>
+      <a href="#products">Bestsellers</a>
+      <a href="#how">How It Works</a>
+      <a href="#reviews">Reviews</a>
+    </div>
+    <div class="navicons">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      <div class="cart-badge">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.7 13.4a2 2 0 0 0 2 1.6h9.7a2 2 0 0 0 2-1.6L23 6H6"/></svg>
+        <span class="n">2</span>
+      </div>
+    </div>
+    <a href="#contact" class="btn btn-accent btn-sm">Get Quote</a>
+  </div>
+  <div class="catbar">
+    <div class="wrap">
+      <a href="javascript:void(0)">Momo &amp; Steam Boxes</a>
+      <a href="javascript:void(0)">Corrugated Cartons</a>
+      <a href="javascript:void(0)">Custom Printed Retail</a>
+      <a href="javascript:void(0)">Mailer Boxes</a>
+      <a href="javascript:void(0)">Pizza Boxes</a>
+      <a href="javascript:void(0)">Bakery Boxes</a>
+      <a href="javascript:void(0)">Kraft Pouches</a>
+      <a href="javascript:void(0)">Custom Labels</a>
+      <a href="javascript:void(0)">Bulk Orders</a>
+    </div>
+  </div>
+</header>
+
+<!-- ============ HERO ============ -->
+<section class="hero">
+  <div class="wrap">
+    <div class="hero-copy">
+      <div class="hero-badge"><span class="dot"></span> 4,800+ boxes shipped every month</div>
+      <h1>Custom boxes, <span>printed &amp; delivered</span> in days — not weeks.</h1>
+      <p>Design your momo box, carton or retail packaging online, approve a real sample, and get it manufactured — all from one platform.</p>
+      <div class="hero-ctas">
+        <a href="#products" class="btn btn-accent">Start Designing →</a>
+        <a href="#contact" class="btn btn-outline" style="border-color:#fff; color:#fff;">Talk to an Expert</a>
+      </div>
+      <div class="hero-trust">
+        <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Free design support</div>
+        <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Low minimum orders</div>
+        <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Pan-India delivery</div>
+      </div>
+    </div>
+    <div class="hero-art">
+      <div class="hero-art-card">
+        <svg viewBox="0 0 220 200">
+          <polygon points="110,10 195,55 110,100 25,55" fill="#F0D6B8" stroke="#12234F" stroke-width="2"/>
+          <polygon points="25,55 110,100 110,190 25,145" fill="#DCAE72" stroke="#12234F" stroke-width="2"/>
+          <polygon points="195,55 110,100 110,190 195,145" fill="#B87F3F" stroke="#12234F" stroke-width="2"/>
+          <circle cx="82" cy="46" r="4.5" fill="#12234F" opacity="0.5"/>
+          <circle cx="110" cy="60" r="4.5" fill="#12234F" opacity="0.5"/>
+          <circle cx="138" cy="46" r="4.5" fill="#12234F" opacity="0.5"/>
+          <rect x="128" y="115" width="46" height="26" rx="3" fill="#FF5A36"/>
+          <text x="151" y="132" text-anchor="middle" fill="#fff" font-family="Poppins" font-weight="700" font-size="11">LOGO</text>
+        </svg>
+        <div class="price-float">
+          <div class="l">Starting</div>
+          <div class="p">₹4.50</div>
+          <div class="l">/pc</div>
+        </div>
+        <div class="rating-float">
+          <span class="stars">★★★★★</span>
+          <span class="num">4.9</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CATEGORIES ============ -->
+<section id="categories" class="bg-white">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="kicker">Shop by Category</span>
+      <h2>Everything you need to pack &amp; ship</h2>
+      <p>Browse our most-ordered packaging categories, or ask us to design something entirely custom.</p>
+    </div>
+    <div class="cat-grid">
+      <div class="cat-card">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#FF5A36" stroke-width="2"><rect x="4" y="8" width="16" height="12" rx="1"/><path d="M8 8V6a4 4 0 0 1 8 0v2"/></svg></div>
+        <h3>Momo &amp; Steam Boxes</h3>
+        <p>From ₹3.20/pc</p>
+      </div>
+      <div class="cat-card">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#FF5A36" stroke-width="2"><path d="M21 8 12 3 3 8l9 5 9-5Z"/><path d="M3 8v8l9 5 9-5V8"/><path d="M12 13v8"/></svg></div>
+        <h3>Corrugated Cartons</h3>
+        <p>From ₹6.80/pc</p>
+      </div>
+      <div class="cat-card">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#FF5A36" stroke-width="2"><rect x="3" y="7" width="18" height="13" rx="1"/><path d="M3 11h18"/><path d="M8 7V4h8v3"/></svg></div>
+        <h3>Custom Printed Retail</h3>
+        <p>From ₹8.40/pc</p>
+      </div>
+      <div class="cat-card">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#FF5A36" stroke-width="2"><rect x="3" y="9" width="18" height="10" rx="1"/><path d="M12 9V5l4-2"/></svg></div>
+        <h3>Mailer Boxes</h3>
+        <p>From ₹5.10/pc</p>
+      </div>
+      <div class="cat-card">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#FF5A36" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 3v18M3 12h18"/></svg></div>
+        <h3>Pizza Boxes</h3>
+        <p>From ₹6.20/pc</p>
+      </div>
+      <div class="cat-card">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#FF5A36" stroke-width="2"><path d="M4 21V9l8-6 8 6v12"/><path d="M9 21v-8h6v8"/></svg></div>
+        <h3>Bakery Boxes</h3>
+        <p>From ₹4.60/pc</p>
+      </div>
+      <div class="cat-card">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#FF5A36" stroke-width="2"><path d="M20 12a8 8 0 1 1-8-8"/><path d="M20 4 12 12"/></svg></div>
+        <h3>Kraft Pouches</h3>
+        <p>From ₹2.90/pc</p>
+      </div>
+      <div class="cat-card">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#FF5A36" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/></svg></div>
+        <h3>Custom Labels</h3>
+        <p>From ₹0.80/pc</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ DEAL STRIP ============ -->
+<section style="padding-top:0; padding-bottom:56px;">
+  <div class="wrap">
+    <div class="deal">
+      <div>
+        <h3>Ordering 1,000+ boxes?</h3>
+        <p>Get bulk pricing, a dedicated account manager, and a free physical sample kit.</p>
+      </div>
+      <a href="#contact" class="btn btn-white">Request Bulk Pricing →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ BESTSELLERS ============ -->
+<section id="products" class="bg-white">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="kicker">Bestsellers</span>
+      <h2>Most-ordered this month</h2>
+      <p>Real pricing, real ratings — customize any of these or start from a blank template.</p>
+    </div>
+    <div class="prod-grid">
+
+      <div class="pcard">
+        <div class="pcard-img">
+          <span class="ribbon bestseller">Bestseller</span>
+          <svg viewBox="0 0 150 130"><polygon points="75,5 130,35 75,65 20,35" fill="#F0D6B8" stroke="#12234F" stroke-width="1.6"/><polygon points="20,35 75,65 75,125 20,95" fill="#DCAE72" stroke="#12234F" stroke-width="1.6"/><polygon points="130,35 75,65 75,125 130,95" fill="#B87F3F" stroke="#12234F" stroke-width="1.6"/><circle cx="55" cy="28" r="3" fill="#12234F" opacity="0.5"/><circle cx="75" cy="38" r="3" fill="#12234F" opacity="0.5"/><circle cx="95" cy="28" r="3" fill="#12234F" opacity="0.5"/></svg>
+        </div>
+        <div class="pcard-body">
+          <h3>Steam Momo Box (6×6)</h3>
+          <div class="stars-row"><span class="stars">★★★★★</span><span class="cnt">(320)</span></div>
+          <div class="price-row"><span class="from">From</span><span class="price">₹3.20</span><span class="strike">₹3.80</span></div>
+          <button class="btn btn-navy btn-sm btn-block" onclick="openCustomize('Steam Momo Box', 3.20, '15 × 15 × 6', true)">Customize</button>
+        </div>
+      </div>
+
+      <div class="pcard">
+        <div class="pcard-img">
+          <span class="ribbon new">New</span>
+          <svg viewBox="0 0 150 130"><polygon points="75,5 130,35 75,65 20,35" fill="#E8DDC4" stroke="#12234F" stroke-width="1.6"/><polygon points="20,35 75,65 75,125 20,95" fill="#C9BFAC" stroke="#12234F" stroke-width="1.6"/><polygon points="130,35 75,65 75,125 130,95" fill="#8B8371" stroke="#12234F" stroke-width="1.6"/><path d="M28 46 L67 46 M28 55 L67 55" stroke="#12234F" stroke-width="1.2" opacity="0.5"/></svg>
+        </div>
+        <div class="pcard-body">
+          <h3>5-Ply Shipping Carton</h3>
+          <div class="stars-row"><span class="stars">★★★★★</span><span class="cnt">(214)</span></div>
+          <div class="price-row"><span class="from">From</span><span class="price">₹6.80</span></div>
+          <button class="btn btn-navy btn-sm btn-block" onclick="openCustomize('5-Ply Shipping Carton', 6.80, '30 × 20 × 20', false)">Customize</button>
+        </div>
+      </div>
+
+      <div class="pcard">
+        <div class="pcard-img">
+          <span class="ribbon eco">Eco Kraft</span>
+          <svg viewBox="0 0 150 130"><polygon points="75,5 130,35 75,65 20,35" fill="#F5C9B4" stroke="#12234F" stroke-width="1.6"/><polygon points="20,35 75,65 75,125 20,95" fill="#E29A7F" stroke="#12234F" stroke-width="1.6"/><polygon points="130,35 75,65 75,125 130,95" fill="#B96A4F" stroke="#12234F" stroke-width="1.6"/><rect x="60" y="80" width="30" height="20" rx="2" fill="#FF5A36"/></svg>
+        </div>
+        <div class="pcard-body">
+          <h3>Bakery Retail Box</h3>
+          <div class="stars-row"><span class="stars">★★★★★</span><span class="cnt">(158)</span></div>
+          <div class="price-row"><span class="from">From</span><span class="price">₹4.60</span></div>
+          <button class="btn btn-navy btn-sm btn-block" onclick="openCustomize('Bakery Retail Box', 4.60, '20 × 20 × 10', false)">Customize</button>
+        </div>
+      </div>
+
+      <div class="pcard">
+        <div class="pcard-img">
+          <span class="ribbon bestseller">Bestseller</span>
+          <svg viewBox="0 0 150 130"><polygon points="75,5 130,35 75,65 20,35" fill="#C7DCCB" stroke="#12234F" stroke-width="1.6"/><polygon points="20,35 75,65 75,125 20,95" fill="#8FB79A" stroke="#12234F" stroke-width="1.6"/><polygon points="130,35 75,65 75,125 130,95" fill="#3E6B4F" stroke="#12234F" stroke-width="1.6"/><path d="M75 65 L75 15 M55 40 L75 15 L95 40" stroke="#12234F" stroke-width="1.6" fill="none" opacity="0.55"/></svg>
+        </div>
+        <div class="pcard-body">
+          <h3>E-com Mailer Box</h3>
+          <div class="stars-row"><span class="stars">★★★★★</span><span class="cnt">(276)</span></div>
+          <div class="price-row"><span class="from">From</span><span class="price">₹5.10</span></div>
+          <button class="btn btn-navy btn-sm btn-block" onclick="openCustomize('E-com Mailer Box', 5.10, '25 × 18 × 8', false)">Customize</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============ HOW IT WORKS ============ -->
+<section id="how">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="kicker">How It Works</span>
+      <h2>From idea to delivery in 4 steps</h2>
+    </div>
+    <div class="how-grid">
+      <div class="hstep">
+        <div class="circle">1</div>
+        <h3>Choose a Box</h3>
+        <p>Pick a category and size, or tell us your custom dimensions.</p>
+      </div>
+      <div class="hstep">
+        <div class="circle">2</div>
+        <h3>Upload Your Design</h3>
+        <p>Send your logo and artwork, or get free design help from our team.</p>
+      </div>
+      <div class="hstep">
+        <div class="circle">3</div>
+        <h3>Approve a Sample</h3>
+        <p>We print and ship a real physical sample before your bulk order runs.</p>
+      </div>
+      <div class="hstep">
+        <div class="circle">4</div>
+        <h3>Get It Delivered</h3>
+        <p>Your order is packed, invoiced and shipped anywhere in India.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ WHY US ============ -->
+<section class="bg-white">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="kicker">Why Kraftline</span>
+      <h2>Built for businesses that order often</h2>
+    </div>
+    <div class="why-grid">
+      <div class="why-card">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2 2 7l10 5 10-5-10-5Z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg></div>
+        <h3>In-House Manufacturing</h3>
+        <p>Design, print &amp; die-cut all under one roof</p>
+      </div>
+      <div class="why-card">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a10 10 0 1 0 10 10"/><path d="M12 6v6l4 2"/></svg></div>
+        <h3>48-Hour Samples</h3>
+        <p>Approve a real sample before bulk production</p>
+      </div>
+      <div class="why-card">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="6" width="15" height="12" rx="2"/><path d="M16 10h4l3 3v5h-7"/><circle cx="6" cy="19" r="2"/><circle cx="18" cy="19" r="2"/></svg></div>
+        <h3>Pan-India Delivery</h3>
+        <p>Reliable courier &amp; freight tie-ups nationwide</p>
+      </div>
+      <div class="why-card">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg></div>
+        <h3>GST Billing</h3>
+        <p>Proper invoicing for every order, big or small</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ REVIEWS ============ -->
+<section id="reviews">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="kicker">Customer Reviews</span>
+      <h2>Rated 4.9/5 by 1,200+ businesses</h2>
+    </div>
+    <div class="rev-grid">
+      <div class="rcard">
+        <span class="stars">★★★★★</span>
+        <p>"Our momo boxes used to sweat and go soggy in transit. The vented lid design fixed it in one sample round."</p>
+        <div class="who">
+          <div class="avatar" style="background:#FF5A36;">RT</div>
+          <div>
+            <div class="name">Rohan Thapa</div>
+            <div class="biz">Momo Junction</div>
+            <div class="verified">✓ Verified Buyer</div>
+          </div>
+        </div>
+      </div>
+      <div class="rcard">
+        <span class="stars">★★★★★</span>
+        <p>"Low MOQ meant we could test three carton sizes before picking one for our full SKU range. Saved us real money."</p>
+        <div class="who">
+          <div class="avatar" style="background:#1E9E6B;">PD</div>
+          <div>
+            <div class="name">Priya Deshmukh</div>
+            <div class="biz">D2C Skincare Brand</div>
+            <div class="verified">✓ Verified Buyer</div>
+          </div>
+        </div>
+      </div>
+      <div class="rcard">
+        <span class="stars">★★★★★</span>
+        <p>"Everything from design to delivery happened under one roof — no chasing three different vendors anymore."</p>
+        <div class="who">
+          <div class="avatar" style="background:#1B3B7A;">KM</div>
+          <div>
+            <div class="name">Karan Mehta</div>
+            <div class="biz">Wholesale Bakery Supplies</div>
+            <div class="verified">✓ Verified Buyer</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CTA ============ -->
+<section id="contact" class="bg-white">
+  <div class="wrap">
+    <div class="cta">
+      <h2>Ready to get your boxes made?</h2>
+      <p>Upload your design or tell us your idea — we'll come back with pricing and a sample timeline the same day.</p>
+      <div class="cta-ctas">
+        <a href="https://wa.me/919999999999" class="btn btn-accent">Chat on WhatsApp</a>
+        <a href="mailto:orders@kraftlineprint.in" class="btn btn-outline" style="border-color:#fff; color:#fff;">Email Us</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <div class="foot-logo">Kraftline<span>.</span></div>
+        <p style="font-size:0.85rem; max-width:30ch;">Custom momo boxes, cartons and printed packaging — designed and manufactured in one facility.</p>
+        <div class="payments">
+          <span>UPI</span><span>Cards</span><span>Net Banking</span><span>COD</span>
+        </div>
+      </div>
+      <div>
+        <h4>Products</h4>
+        <ul>
+          <li><a href="javascript:void(0)">Momo Boxes</a></li>
+          <li><a href="javascript:void(0)">Cartons</a></li>
+          <li><a href="javascript:void(0)">Retail Boxes</a></li>
+          <li><a href="javascript:void(0)">Mailers</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Company</h4>
+        <ul>
+          <li><a href="#how">How It Works</a></li>
+          <li><a href="#reviews">Reviews</a></li>
+          <li><a href="javascript:void(0)">Bulk Orders</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Support</h4>
+        <ul>
+          <li><a href="javascript:void(0)">Track Order</a></li>
+          <li><a href="javascript:void(0)">Sample Kit</a></li>
+          <li><a href="javascript:void(0)">FAQs</a></li>
+          <li><a href="javascript:void(0)">Shipping Info</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Reach Us</h4>
+        <ul>
+          <li>+91 99999 99999</li>
+          <li>orders@kraftlineprint.in</li>
+          <li>Plot 14, GIDC Industrial Estate, Vadodara, Gujarat</li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 Kraftline. All rights reserved.</span>
+      <span>GSTIN 24XXXXXXXXXXXX</span>
+    </div>
+  </div>
+</footer>
+
+<a href="https://wa.me/919999999999" class="float-wa" aria-label="WhatsApp">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+</a>
+
+<!-- ============ CUSTOMIZE MODAL ============ -->
+<div class="modal-overlay" id="customizeOverlay" onclick="if(event.target===this) closeCustomize()">
+  <div class="modal">
+    <div class="modal-head">
+      <div class="modal-head-info">
+        <div class="modal-thumb">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#12234F" stroke-width="2"><rect x="3" y="7" width="18" height="13" rx="1"/><path d="M3 11h18"/><path d="M8 7V4h8v3"/></svg>
+        </div>
+        <div>
+          <h3 id="modalProductName">Product Name</h3>
+          <div class="sub" id="modalProductBase">Default size: — </div>
+        </div>
+      </div>
+      <button class="modal-close" onclick="closeCustomize()">✕</button>
+    </div>
+
+    <div class="modal-body">
+      <form id="customizeForm" onsubmit="return submitCustomize(event)">
+
+        <label class="field-label">Box Dimensions <span class="field-hint">(inner size)</span></label>
+        <div class="size-grid">
+          <div class="size-field">
+            <span class="axis">Length</span>
+            <input type="number" id="dimL" min="1" step="0.1" required>
+            <span class="unit" id="unitL">cm</span>
+          </div>
+          <div class="size-field">
+            <span class="axis">Width</span>
+            <input type="number" id="dimW" min="1" step="0.1" required>
+            <span class="unit" id="unitW">cm</span>
+          </div>
+          <div class="size-field">
+            <span class="axis">Height</span>
+            <input type="number" id="dimH" min="1" step="0.1" required>
+            <span class="unit" id="unitH">cm</span>
+          </div>
+        </div>
+        <div class="unit-toggle">
+          <button type="button" class="unit-btn active" id="unitCmBtn" onclick="setUnit('cm')">cm</button>
+          <button type="button" class="unit-btn" id="unitInBtn" onclick="setUnit('in')">inches</button>
+        </div>
+
+        <label class="field-label" id="ventLabel" style="display:none;">Steam Vent Holes</label>
+        <select id="ventHoles" style="display:none;">
+          <option value="Yes, standard 3-hole vent">Yes — standard 3-hole vent</option>
+          <option value="No vent holes">No vent holes</option>
+          <option value="Custom vent pattern">Custom vent pattern (describe in notes)</option>
+        </select>
+
+        <label class="field-label">Board / Material</label>
+        <select id="material">
+          <option>Kraft Brown — food grade</option>
+          <option>White Duplex Board</option>
+          <option>3-Ply Corrugated</option>
+          <option>5-Ply Corrugated (heavy duty)</option>
+        </select>
+
+        <label class="field-label">Quantity</label>
+        <div class="qty-row">
+          <button type="button" class="qty-btn" onclick="stepQty(-50)">−</button>
+          <input type="number" id="qty" value="500" min="50" step="50">
+          <button type="button" class="qty-btn" onclick="stepQty(50)">+</button>
+        </div>
+
+        <label class="field-label">Notes <span class="field-hint">(optional)</span></label>
+        <textarea id="notes" placeholder="Logo placement, colour, finish, or anything else we should know..."></textarea>
+
+        <div class="modal-price">
+          <div>
+            <div class="l">Estimated price</div>
+          </div>
+          <div class="p" id="modalEstPrice">—<span> for entered qty</span></div>
+        </div>
+
+        <div class="modal-foot" style="padding:0; margin-top:22px;">
+          <button type="submit" class="btn btn-accent btn-block">Send Customization to WhatsApp →</button>
+          <p class="modal-note">We'll confirm final pricing and share a sample timeline within a few hours.</p>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+  let currentProduct = { name:'', price:0, unit:'cm' };
+
+  function openCustomize(name, price, defaultSize, hasVent){
+    currentProduct.name = name;
+    currentProduct.price = price;
+    currentProduct.unit = 'cm';
+
+    document.getElementById('modalProductName').textContent = name;
+    document.getElementById('modalProductBase').textContent = 'Standard size: ' + defaultSize + ' cm — enter your own below';
+
+    const parts = defaultSize.split('×').map(s => parseFloat(s.trim()));
+    document.getElementById('dimL').value = parts[0] || '';
+    document.getElementById('dimW').value = parts[1] || '';
+    document.getElementById('dimH').value = parts[2] || '';
+
+    const ventLabel = document.getElementById('ventLabel');
+    const ventSelect = document.getElementById('ventHoles');
+    ventLabel.style.display = hasVent ? 'block' : 'none';
+    ventSelect.style.display = hasVent ? 'block' : 'none';
+
+    setUnit('cm');
+    document.getElementById('qty').value = 500;
+    document.getElementById('notes').value = '';
+    updateEstimate();
+
+    document.getElementById('customizeOverlay').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeCustomize(){
+    document.getElementById('customizeOverlay').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  function setUnit(u){
+    currentProduct.unit = u;
+    document.getElementById('unitCmBtn').classList.toggle('active', u === 'cm');
+    document.getElementById('unitInBtn').classList.toggle('active', u === 'in');
+    ['unitL','unitW','unitH'].forEach(id => document.getElementById(id).textContent = u);
+  }
+
+  function stepQty(delta){
+    const q = document.getElementById('qty');
+    q.value = Math.max(50, (parseInt(q.value) || 0) + delta);
+    updateEstimate();
+  }
+
+  function updateEstimate(){
+    const qty = parseInt(document.getElementById('qty').value) || 0;
+    const total = (qty * currentProduct.price).toFixed(0);
+    document.getElementById('modalEstPrice').innerHTML = '₹' + total + '<span> for ' + qty + ' pcs</span>';
+  }
+
+  document.getElementById('qty').addEventListener('input', updateEstimate);
+
+  function submitCustomize(e){
+    e.preventDefault();
+    const l = document.getElementById('dimL').value;
+    const w = document.getElementById('dimW').value;
+    const h = document.getElementById('dimH').value;
+    const unit = currentProduct.unit;
+    const material = document.getElementById('material').value;
+    const vent = document.getElementById('ventHoles').style.display !== 'none' ? document.getElementById('ventHoles').value : null;
+    const qty = document.getElementById('qty').value;
+    const notes = document.getElementById('notes').value;
+
+    let msg = `Hi Kraftline, I'd like to order:\n`;
+    msg += `Product: ${currentProduct.name}\n`;
+    msg += `Size: ${l} x ${w} x ${h} ${unit}\n`;
+    msg += `Material: ${material}\n`;
+    if(vent) msg += `Vent Holes: ${vent}\n`;
+    msg += `Quantity: ${qty} pcs\n`;
+    if(notes) msg += `Notes: ${notes}\n`;
+
+    const waUrl = 'https://wa.me/919999999999?text=' + encodeURIComponent(msg);
+    window.open(waUrl, '_blank');
+    closeCustomize();
+    return false;
+  }
+
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'Escape') closeCustomize();
+  });
+</script>
+
+</body>
+</html>

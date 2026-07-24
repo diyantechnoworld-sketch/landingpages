@@ -1,0 +1,939 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ashworth &amp; Vale — Business, Financial &amp; Marketing Consulting</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#12203E;
+    --ink-2:#1B2E56;
+    --paper:#F6F3EC;
+    --paper-dim:#EAE5D9;
+    --brass:#AD8A52;
+    --brass-light:#D8BE8B;
+    --slate:#5B5F6B;
+    --slate-light:#8A8E99;
+    --green:#2E5F45;
+    --rule:rgba(18,32,62,0.14);
+    --rule-light:rgba(246,243,236,0.18);
+    --display: 'Fraunces', serif;
+    --body: 'Inter', sans-serif;
+    --mono: 'IBM Plex Mono', monospace;
+  }
+
+  *{margin:0;padding:0;box-sizing:border-box;}
+
+  html{scroll-behavior:smooth;}
+
+  body{
+    font-family:var(--body);
+    background:var(--paper);
+    color:var(--ink);
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+
+  a{color:inherit;text-decoration:none;}
+
+  .wrap{
+    max-width:1180px;
+    margin:0 auto;
+    padding:0 32px;
+  }
+
+  .eyebrow{
+    font-family:var(--mono);
+    font-size:11.5px;
+    letter-spacing:0.16em;
+    text-transform:uppercase;
+    color:var(--brass);
+  }
+
+  /* ---------- NAV ---------- */
+  header{
+    position:fixed;
+    top:0; left:0; right:0;
+    z-index:100;
+    background:rgba(246,243,236,0.92);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--rule);
+  }
+  .nav-inner{
+    max-width:1180px;
+    margin:0 auto;
+    padding:18px 32px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+  }
+  .brand{
+    display:flex;
+    align-items:center;
+    gap:12px;
+  }
+  .brand-mark{
+    width:34px;height:34px;
+    border:1.5px solid var(--ink);
+    transform:rotate(45deg);
+    display:flex;align-items:center;justify-content:center;
+    flex-shrink:0;
+  }
+  .brand-mark span{
+    transform:rotate(-45deg);
+    font-family:var(--display);
+    font-weight:600;
+    font-size:13px;
+    letter-spacing:0.02em;
+  }
+  .brand-name{
+    font-family:var(--display);
+    font-size:19px;
+    font-weight:600;
+    letter-spacing:0.01em;
+  }
+  nav ul{
+    list-style:none;
+    display:flex;
+    gap:36px;
+  }
+  nav a{
+    font-size:14px;
+    color:var(--ink);
+    font-weight:500;
+    position:relative;
+    padding-bottom:3px;
+  }
+  nav a::after{
+    content:"";
+    position:absolute;
+    left:0;bottom:0;
+    width:0;height:1px;
+    background:var(--brass);
+    transition:width .25s ease;
+  }
+  nav a:hover::after{width:100%;}
+  .nav-cta{
+    font-family:var(--mono);
+    font-size:12.5px;
+    letter-spacing:0.03em;
+    border:1px solid var(--ink);
+    padding:9px 18px;
+    transition:background .2s ease, color .2s ease;
+  }
+  .nav-cta:hover{background:var(--ink);color:var(--paper);}
+  .nav-links-mobile{display:none;}
+
+  /* ---------- HERO ---------- */
+  .hero{
+    background:var(--ink);
+    color:var(--paper);
+    padding:168px 0 96px;
+    position:relative;
+    overflow:hidden;
+  }
+  .hero::before{
+    content:"";
+    position:absolute;
+    top:-40%; right:-15%;
+    width:640px;height:640px;
+    border:1px solid var(--rule-light);
+    border-radius:50%;
+  }
+  .hero::after{
+    content:"";
+    position:absolute;
+    top:-25%; right:0%;
+    width:460px;height:460px;
+    border:1px solid var(--rule-light);
+    border-radius:50%;
+  }
+  .hero-grid{
+    display:grid;
+    grid-template-columns:1.15fr 0.85fr;
+    gap:64px;
+    align-items:end;
+    position:relative;
+    z-index:2;
+  }
+  .hero h1{
+    font-family:var(--display);
+    font-weight:600;
+    font-size:clamp(40px, 5vw, 64px);
+    line-height:1.06;
+    letter-spacing:-0.01em;
+    margin:22px 0 26px;
+  }
+  .hero h1 em{
+    font-style:italic;
+    font-weight:500;
+    color:var(--brass-light);
+  }
+  .hero p.sub{
+    font-size:17px;
+    line-height:1.65;
+    color:#C9CEDD;
+    max-width:480px;
+    margin-bottom:36px;
+  }
+  .hero-ctas{display:flex;gap:16px;align-items:center;}
+  .btn-primary{
+    background:var(--brass);
+    color:var(--ink);
+    font-weight:600;
+    font-size:14.5px;
+    padding:14px 26px;
+    display:inline-block;
+    transition:background .2s ease, transform .2s ease;
+  }
+  .btn-primary:hover{background:var(--brass-light);transform:translateY(-1px);}
+  .btn-ghost{
+    font-family:var(--mono);
+    font-size:13px;
+    color:var(--paper);
+    border-bottom:1px solid var(--slate-light);
+    padding-bottom:2px;
+  }
+
+  /* KPI ticker panel */
+  .ticker-panel{
+    background:var(--ink-2);
+    border:1px solid var(--rule-light);
+    padding:26px 26px 8px;
+  }
+  .ticker-head{
+    display:flex;
+    justify-content:space-between;
+    align-items:baseline;
+    border-bottom:1px solid var(--rule-light);
+    padding-bottom:14px;
+    margin-bottom:6px;
+  }
+  .ticker-head .eyebrow{color:var(--brass-light);}
+  .ticker-head .live{
+    font-family:var(--mono);
+    font-size:11px;
+    color:#8FD6A8;
+    display:flex;
+    align-items:center;
+    gap:6px;
+  }
+  .live-dot{
+    width:6px;height:6px;
+    border-radius:50%;
+    background:#8FD6A8;
+    animation:pulse 1.8s infinite;
+  }
+  @keyframes pulse{
+    0%,100%{opacity:1;} 50%{opacity:.35;}
+  }
+  .ticker-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:14px 0;
+    border-bottom:1px solid var(--rule-light);
+    font-family:var(--mono);
+  }
+  .ticker-row:last-child{border-bottom:none;}
+  .ticker-label{font-size:12.5px;color:#B7BCCB;}
+  .ticker-value{
+    font-size:15px;
+    font-weight:500;
+    color:var(--paper);
+  }
+  .ticker-delta{font-size:12px;margin-left:8px;}
+  .up{color:#8FD6A8;}
+  .down{color:#E39A8C;}
+
+  /* ---------- SECTION SHARED ---------- */
+  section{padding:108px 0;}
+  .section-head{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:40px;
+    align-items:end;
+    margin-bottom:64px;
+  }
+  .section-head h2{
+    font-family:var(--display);
+    font-weight:600;
+    font-size:clamp(30px,3.6vw,42px);
+    letter-spacing:-0.01em;
+    margin-top:12px;
+    line-height:1.12;
+  }
+  .section-head p{
+    font-size:15.5px;
+    line-height:1.7;
+    color:var(--slate);
+  }
+
+  /* ---------- PRACTICE LEDGER ---------- */
+  .practice{background:var(--paper);}
+  .ledger{
+    display:grid;
+    grid-template-columns:260px 1fr;
+    border:1px solid var(--rule);
+  }
+  .ledger-tabs{border-right:1px solid var(--rule);}
+  .ledger-tab{
+    width:100%;
+    text-align:left;
+    background:transparent;
+    border:none;
+    border-bottom:1px solid var(--rule);
+    padding:26px 24px;
+    cursor:pointer;
+    font-family:var(--body);
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+    transition:background .2s ease;
+  }
+  .ledger-tab:last-child{border-bottom:none;}
+  .ledger-tab .tnum{
+    font-family:var(--mono);
+    font-size:11px;
+    color:var(--slate-light);
+    letter-spacing:0.08em;
+  }
+  .ledger-tab .tname{
+    font-family:var(--display);
+    font-size:20px;
+    font-weight:600;
+    color:var(--ink);
+  }
+  .ledger-tab.active{background:var(--ink);}
+  .ledger-tab.active .tnum{color:var(--brass-light);}
+  .ledger-tab.active .tname{color:var(--paper);}
+  .ledger-tab:not(.active):hover{background:var(--paper-dim);}
+
+  .ledger-panel{padding:48px;position:relative;min-height:420px;}
+  .ledger-panel .panel-content{
+    display:grid;
+    grid-template-columns:1.2fr 1fr;
+    gap:48px;
+  }
+  .panel-content h3{
+    font-family:var(--display);
+    font-weight:600;
+    font-size:26px;
+    margin-bottom:14px;
+  }
+  .panel-content > div:first-child p{
+    font-size:15px;
+    line-height:1.7;
+    color:var(--slate);
+    margin-bottom:22px;
+  }
+  .panel-list{list-style:none;}
+  .panel-list li{
+    font-size:14px;
+    padding:11px 0;
+    border-top:1px solid var(--rule);
+    display:flex;
+    justify-content:space-between;
+    color:var(--ink);
+  }
+  .panel-list li:last-child{border-bottom:1px solid var(--rule);}
+  .panel-list li span.code{
+    font-family:var(--mono);
+    font-size:11px;
+    color:var(--brass);
+    align-self:center;
+  }
+  .panel-visual{
+    background:var(--paper-dim);
+    border:1px solid var(--rule);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+  }
+  .panel-visual svg{width:100%;height:auto;}
+
+  /* ---------- APPROACH (sequence — numbering justified) ---------- */
+  .approach{background:var(--ink);color:var(--paper);}
+  .approach .section-head h2, .approach .eyebrow{color:var(--paper);}
+  .approach .eyebrow{color:var(--brass-light);}
+  .approach .section-head p{color:#C9CEDD;}
+  .steps{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    position:relative;
+  }
+  .steps::before{
+    content:"";
+    position:absolute;
+    top:22px;left:0;right:0;
+    height:1px;
+    background:var(--rule-light);
+  }
+  .step{padding-right:24px;position:relative;}
+  .step-num{
+    font-family:var(--mono);
+    font-size:13px;
+    color:var(--brass-light);
+    background:var(--ink);
+    display:inline-block;
+    padding-right:14px;
+    position:relative;
+    z-index:2;
+  }
+  .step-num::before{
+    content:"";
+    display:inline-block;
+    width:7px;height:7px;
+    border-radius:50%;
+    background:var(--brass);
+    margin-right:10px;
+    vertical-align:middle;
+  }
+  .step h4{
+    font-family:var(--display);
+    font-size:21px;
+    font-weight:600;
+    margin:20px 0 10px;
+  }
+  .step p{
+    font-size:14px;
+    line-height:1.65;
+    color:#B7BCCB;
+  }
+
+  /* ---------- RESULTS LEDGER ---------- */
+  .results{background:var(--paper);}
+  .result-rows{border-top:1px solid var(--rule);}
+  .result-row{
+    display:grid;
+    grid-template-columns:1.4fr 2fr 1fr;
+    gap:24px;
+    align-items:center;
+    padding:26px 4px;
+    border-bottom:1px solid var(--rule);
+  }
+  .result-row .rclient{
+    font-family:var(--display);
+    font-size:18px;
+    font-weight:600;
+  }
+  .result-row .rclient span{
+    display:block;
+    font-family:var(--mono);
+    font-size:11px;
+    color:var(--brass);
+    font-weight:400;
+    margin-top:4px;
+    letter-spacing:0.04em;
+  }
+  .result-row .rdesc{
+    font-size:14px;
+    color:var(--slate);
+    line-height:1.6;
+  }
+  .result-row .rmetric{
+    font-family:var(--mono);
+    font-size:26px;
+    font-weight:500;
+    color:var(--green);
+    text-align:right;
+  }
+  .result-row .rmetric small{
+    display:block;
+    font-size:11px;
+    color:var(--slate-light);
+    font-weight:400;
+    text-align:right;
+    margin-top:2px;
+  }
+
+  /* ---------- TESTIMONIALS ---------- */
+  .quotes{background:var(--paper-dim);}
+  .quote-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:1px;
+    background:var(--rule);
+    border:1px solid var(--rule);
+  }
+  .quote-card{
+    background:var(--paper-dim);
+    padding:36px 30px;
+  }
+  .quote-mark{
+    font-family:var(--display);
+    font-size:40px;
+    color:var(--brass);
+    line-height:1;
+    margin-bottom:10px;
+  }
+  .quote-card p.qtext{
+    font-size:14.5px;
+    line-height:1.7;
+    color:var(--ink);
+    margin-bottom:22px;
+    min-height:130px;
+  }
+  .qcite{
+    font-family:var(--mono);
+    font-size:11.5px;
+    color:var(--slate);
+    border-top:1px solid var(--rule);
+    padding-top:14px;
+  }
+  .qcite b{display:block;color:var(--ink);font-family:var(--body);font-size:13.5px;font-weight:600;margin-bottom:2px;}
+
+  /* ---------- CTA ---------- */
+  .cta{
+    background:var(--ink);
+    color:var(--paper);
+    padding:110px 0;
+    text-align:center;
+    position:relative;
+    overflow:hidden;
+  }
+  .cta h2{
+    font-family:var(--display);
+    font-weight:600;
+    font-size:clamp(32px,4.4vw,52px);
+    max-width:760px;
+    margin:0 auto 20px;
+    line-height:1.1;
+  }
+  .cta h2 em{font-style:italic;color:var(--brass-light);font-weight:500;}
+  .cta p{
+    color:#C9CEDD;
+    font-size:16px;
+    max-width:500px;
+    margin:0 auto 36px;
+  }
+
+  /* ---------- FOOTER ---------- */
+  footer{
+    background:var(--ink);
+    color:#9BA1B2;
+    border-top:1px solid var(--rule-light);
+    padding:48px 0 32px;
+  }
+  .footer-grid{
+    display:grid;
+    grid-template-columns:1.3fr 1fr 1fr 1fr;
+    gap:40px;
+    margin-bottom:40px;
+  }
+  .footer-grid h5{
+    font-family:var(--mono);
+    font-size:11px;
+    letter-spacing:0.1em;
+    text-transform:uppercase;
+    color:var(--brass-light);
+    margin-bottom:16px;
+  }
+  .footer-grid ul{list-style:none;}
+  .footer-grid li{margin-bottom:10px;font-size:13.5px;}
+  .footer-grid li a:hover{color:var(--paper);}
+  .footer-brand p{font-size:13.5px;line-height:1.6;max-width:280px;margin-top:14px;color:#9BA1B2;}
+  .footer-bottom{
+    display:flex;
+    justify-content:space-between;
+    padding-top:24px;
+    border-top:1px solid var(--rule-light);
+    font-family:var(--mono);
+    font-size:11.5px;
+  }
+
+  /* ---------- RESPONSIVE ---------- */
+  @media (max-width:900px){
+    nav ul{display:none;}
+    .hero-grid{grid-template-columns:1fr;}
+    .hero::before,.hero::after{display:none;}
+    .section-head{grid-template-columns:1fr;}
+    .ledger{grid-template-columns:1fr;}
+    .ledger-tabs{display:flex;border-right:none;border-bottom:1px solid var(--rule);overflow-x:auto;}
+    .ledger-tab{border-bottom:none;border-right:1px solid var(--rule);min-width:150px;}
+    .panel-content{grid-template-columns:1fr;}
+    .steps{grid-template-columns:1fr;gap:36px;}
+    .steps::before{display:none;}
+    .result-row{grid-template-columns:1fr;gap:10px;}
+    .result-row .rmetric{text-align:left;}
+    .result-row .rmetric small{text-align:left;}
+    .quote-grid{grid-template-columns:1fr;}
+    .footer-grid{grid-template-columns:1fr 1fr;}
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.001ms !important; transition-duration:0.001ms !important;}
+  }
+
+  :focus-visible{
+    outline:2px solid var(--brass);
+    outline-offset:2px;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="nav-inner">
+    <div class="brand">
+      <div class="brand-mark"><span>AV</span></div>
+      <div class="brand-name">Ashworth &amp; Vale</div>
+    </div>
+    <nav>
+      <ul>
+        <li><a href="#practice">Practice Areas</a></li>
+        <li><a href="#approach">Approach</a></li>
+        <li><a href="#results">Results</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+    <a class="nav-cta" href="#contact">Book a Consultation</a>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <div class="eyebrow">Business · Financial · Marketing Consulting</div>
+      <h1>Clarity, <em>priced</em><br>into every decision.</h1>
+      <p class="sub">We advise mid-market and growth-stage companies on the calls that move the balance sheet — operating strategy, capital structure, and the market position that funds both. Twenty-two years, three disciplines, one desk.</p>
+      <div class="hero-ctas">
+        <a class="btn-primary" href="#contact">Book a Consultation</a>
+        <a class="btn-ghost" href="#results">View client results →</a>
+      </div>
+    </div>
+
+    <div class="ticker-panel">
+      <div class="ticker-head">
+        <div class="eyebrow">Engagement Index</div>
+        <div class="live"><span class="live-dot"></span>LIVE PORTFOLIO AVG.</div>
+      </div>
+      <div class="ticker-row">
+        <span class="ticker-label">EBITDA lift, 12mo post-engagement</span>
+        <span class="ticker-value">+18.4% <span class="ticker-delta up">▲ 2.1</span></span>
+      </div>
+      <div class="ticker-row">
+        <span class="ticker-label">Time-to-market, new product lines</span>
+        <span class="ticker-value">−32.0% <span class="ticker-delta up">▲ 4.0</span></span>
+      </div>
+      <div class="ticker-row">
+        <span class="ticker-label">CAC payback period</span>
+        <span class="ticker-value">6.1 mo <span class="ticker-delta up">▲ 0.8</span></span>
+      </div>
+      <div class="ticker-row">
+        <span class="ticker-label">Client retention, engagement year 2+</span>
+        <span class="ticker-value">94% <span class="ticker-delta down">▼ 1.0</span></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="practice" id="practice">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <div class="eyebrow">What We Do</div>
+        <h2>Three practices, one accountable team.</h2>
+      </div>
+      <p>Most firms hand you off between departments. We don't have any — a single senior team carries an engagement from the operating model, through the capital plan, to the go-to-market that pays for it.</p>
+    </div>
+
+    <div class="ledger">
+      <div class="ledger-tabs">
+        <button class="ledger-tab active" data-tab="business">
+          <span class="tnum">PRACTICE / 01</span>
+          <span class="tname">Business</span>
+        </button>
+        <button class="ledger-tab" data-tab="financial">
+          <span class="tnum">PRACTICE / 02</span>
+          <span class="tname">Financial</span>
+        </button>
+        <button class="ledger-tab" data-tab="marketing">
+          <span class="tnum">PRACTICE / 03</span>
+          <span class="tname">Marketing</span>
+        </button>
+      </div>
+
+      <div class="ledger-panel">
+
+        <div class="panel-content" data-panel="business">
+          <div>
+            <h3>Business &amp; Operating Strategy</h3>
+            <p>We rebuild the operating model around where the company actually makes money — cutting the functions that don't earn their overhead and doubling down on the ones that do.</p>
+            <ul class="panel-list">
+              <li><span>Operating model &amp; org design</span><span class="code">OPS</span></li>
+              <li><span>Portfolio &amp; SKU rationalization</span><span class="code">PFL</span></li>
+              <li><span>M&amp;A diligence &amp; integration planning</span><span class="code">M&amp;A</span></li>
+              <li><span>Cost structure &amp; margin recovery</span><span class="code">CST</span></li>
+            </ul>
+          </div>
+          <div class="panel-visual">
+            <svg viewBox="0 0 260 220" fill="none">
+              <rect x="100" y="10" width="60" height="34" stroke="#12203E" stroke-width="1.2"/>
+              <text x="130" y="31" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="#12203E">CEO</text>
+              <line x1="130" y1="44" x2="130" y2="66" stroke="#12203E" stroke-width="1"/>
+              <line x1="40" y1="66" x2="220" y2="66" stroke="#12203E" stroke-width="1"/>
+              <line x1="40" y1="66" x2="40" y2="86" stroke="#12203E" stroke-width="1"/>
+              <line x1="130" y1="66" x2="130" y2="86" stroke="#12203E" stroke-width="1"/>
+              <line x1="220" y1="66" x2="220" y2="86" stroke="#12203E" stroke-width="1"/>
+              <rect x="10" y="86" width="60" height="30" stroke="#AD8A52" stroke-width="1.2"/>
+              <text x="40" y="105" text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="#AD8A52">OPS</text>
+              <rect x="100" y="86" width="60" height="30" stroke="#12203E" stroke-width="1.2" stroke-dasharray="2 2"/>
+              <text x="130" y="105" text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="#12203E">FIN</text>
+              <rect x="190" y="86" width="60" height="30" stroke="#12203E" stroke-width="1.2" stroke-dasharray="2 2"/>
+              <text x="220" y="105" text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="#12203E">MKT</text>
+              <line x1="40" y1="116" x2="40" y2="136" stroke="#AD8A52" stroke-width="1"/>
+              <rect x="10" y="136" width="60" height="28" fill="#AD8A52" opacity="0.15" stroke="#AD8A52" stroke-width="1"/>
+              <text x="40" y="154" text-anchor="middle" font-family="IBM Plex Mono" font-size="7.5" fill="#12203E">retained</text>
+              <line x1="220" y1="116" x2="220" y2="136" stroke="#12203E" stroke-width="1" stroke-dasharray="2 2"/>
+              <rect x="190" y="136" width="60" height="28" fill="none" stroke="#12203E" stroke-width="1" stroke-dasharray="2 2"/>
+              <text x="220" y="154" text-anchor="middle" font-family="IBM Plex Mono" font-size="7.5" fill="#5B5F6B">divested</text>
+            </svg>
+          </div>
+        </div>
+
+        <div class="panel-content" data-panel="financial" style="display:none;">
+          <div>
+            <h3>Financial Strategy &amp; Capital</h3>
+            <p>We size the capital plan to the operating plan, not the other way around — modeling covenant headroom, raise timing, and unit economics before a term sheet ever reaches the table.</p>
+            <ul class="panel-list">
+              <li><span>Capital structure &amp; debt advisory</span><span class="code">CAP</span></li>
+              <li><span>FP&amp;A build-out &amp; unit economics</span><span class="code">FPA</span></li>
+              <li><span>Fundraise &amp; investor materials</span><span class="code">RSE</span></li>
+              <li><span>Cash flow forecasting &amp; runway planning</span><span class="code">CSH</span></li>
+            </ul>
+          </div>
+          <div class="panel-visual">
+            <svg viewBox="0 0 260 220" fill="none">
+              <line x1="20" y1="190" x2="240" y2="190" stroke="#12203E" stroke-width="1"/>
+              <line x1="20" y1="190" x2="20" y2="20" stroke="#12203E" stroke-width="1"/>
+              <polyline points="20,150 55,155 90,120 125,130 160,90 195,70 230,40" fill="none" stroke="#2E5F45" stroke-width="1.6"/>
+              <circle cx="230" cy="40" r="3" fill="#2E5F45"/>
+              <line x1="55" y1="30" x2="55" y2="190" stroke="#AD8A52" stroke-width="0.8" stroke-dasharray="2 3"/>
+              <text x="55" y="22" text-anchor="middle" font-family="IBM Plex Mono" font-size="7.5" fill="#AD8A52">Series A</text>
+              <line x1="160" y1="30" x2="160" y2="190" stroke="#AD8A52" stroke-width="0.8" stroke-dasharray="2 3"/>
+              <text x="160" y="22" text-anchor="middle" font-family="IBM Plex Mono" font-size="7.5" fill="#AD8A52">Series B</text>
+              <text x="230" y="30" text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="#2E5F45">+18.4%</text>
+            </svg>
+          </div>
+        </div>
+
+        <div class="panel-content" data-panel="marketing" style="display:none;">
+          <div>
+            <h3>Marketing &amp; Go-to-Market</h3>
+            <p>We treat marketing as a revenue function, not a creative one — building the positioning, channel mix, and demand math that make the capital plan and the operating plan both come true.</p>
+            <ul class="panel-list">
+              <li><span>Positioning &amp; category strategy</span><span class="code">POS</span></li>
+              <li><span>Channel mix &amp; demand generation</span><span class="code">DMD</span></li>
+              <li><span>Pricing &amp; packaging strategy</span><span class="code">PRC</span></li>
+              <li><span>Brand architecture for M&amp;A rollups</span><span class="code">BRD</span></li>
+            </ul>
+          </div>
+          <div class="panel-visual">
+            <svg viewBox="0 0 260 220" fill="none">
+              <polygon points="30,30 230,30 175,90 175,190 85,190 85,90" fill="none" stroke="#12203E" stroke-width="1.2"/>
+              <line x1="30" y1="30" x2="230" y2="30" stroke="#12203E" stroke-width="1"/>
+              <text x="130" y="24" text-anchor="middle" font-family="IBM Plex Mono" font-size="7.5" fill="#5B5F6B">reach: 100%</text>
+              <line x1="85" y1="90" x2="175" y2="90" stroke="#AD8A52" stroke-width="1"/>
+              <text x="130" y="84" text-anchor="middle" font-family="IBM Plex Mono" font-size="7.5" fill="#AD8A52">qualified: 38%</text>
+              <line x1="85" y1="190" x2="175" y2="190" stroke="#2E5F45" stroke-width="1"/>
+              <text x="130" y="205" text-anchor="middle" font-family="IBM Plex Mono" font-size="7.5" fill="#2E5F45">closed: 11%</text>
+            </svg>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="approach" id="approach">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <div class="eyebrow">How We Work</div>
+        <h2>A four-stage engagement, start to close.</h2>
+      </div>
+      <p>Every engagement runs the same sequence, in this order — we don't design a solution before we've diagnosed the numbers, and we don't leave before the team can run it without us.</p>
+    </div>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">01</div>
+        <h4>Diagnose</h4>
+        <p>Two to three weeks inside the financials, the org, and the market to find where value is actually leaking.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">02</div>
+        <h4>Design</h4>
+        <p>A costed plan across operations, capital, and go-to-market — with the trade-offs named, not buried.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">03</div>
+        <h4>Deliver</h4>
+        <p>Embedded alongside your team through execution, with weekly numbers reviewed against plan.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">04</div>
+        <h4>Sustain</h4>
+        <p>Handoff to your team with the models, dashboards, and playbooks — built to run without us.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="results" id="results">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <div class="eyebrow">Client Results</div>
+        <h2>Selected engagements, by the numbers.</h2>
+      </div>
+      <p>A sample of recent work across the three practices. Figures reflect performance in the twelve months following engagement close.</p>
+    </div>
+
+    <div class="result-rows">
+      <div class="result-row">
+        <div class="rclient">Harrow Fixtures Co.<span>Industrial manufacturing</span></div>
+        <div class="rdesc">Rationalized a 340-SKU catalog and renegotiated supplier terms across three plants.</div>
+        <div class="rmetric">+6.2 pts<small>gross margin</small></div>
+      </div>
+      <div class="result-row">
+        <div class="rclient">Verity Health Group<span>Multi-site healthcare</span></div>
+        <div class="rdesc">Restructured debt ahead of a five-site expansion, resetting covenant headroom.</div>
+        <div class="rmetric">$14.2M<small>capital raised</small></div>
+      </div>
+      <div class="result-row">
+        <div class="rclient">Nolan &amp; Birch Foods</div>
+        <div class="rdesc">Repositioned a legacy CPG brand and rebuilt the channel mix ahead of a private-label push.</div>
+        <div class="rmetric">−41%<small>CAC, 9 months</small></div>
+      </div>
+      <div class="result-row">
+        <div class="rclient">Castleton Logistics</div>
+        <div class="rdesc">Diligence and 100-day integration plan for a three-company regional rollup.</div>
+        <div class="rmetric">17 wks<small>close to integration</small></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="quotes">
+  <div class="wrap">
+    <div class="section-head" style="margin-bottom:44px;">
+      <div>
+        <div class="eyebrow">On the Record</div>
+        <h2>What clients say once the invoice is paid.</h2>
+      </div>
+      <p></p>
+    </div>
+  </div>
+  <div class="quote-grid">
+    <div class="quote-card">
+      <div class="quote-mark">&ldquo;</div>
+      <p class="qtext">They didn't hand us a deck. They rebuilt the P&amp;L with us in the room, line by line, until we understood exactly where the margin had gone.</p>
+      <div class="qcite"><b>Founder &amp; CEO</b>Harrow Fixtures Co.</div>
+    </div>
+    <div class="quote-card">
+      <div class="quote-mark">&ldquo;</div>
+      <p class="qtext">The financial team spoke fluent bank covenant and fluent boardroom, at the same time. That combination is rare and it saved the raise.</p>
+      <div class="qcite"><b>CFO</b>Verity Health Group</div>
+    </div>
+    <div class="quote-card">
+      <div class="quote-mark">&ldquo;</div>
+      <p class="qtext">Marketing had always been the department we cut first. Ashworth &amp; Vale made the case, with numbers, for why that was the mistake.</p>
+      <div class="qcite"><b>VP Growth</b>Nolan &amp; Birch Foods</div>
+    </div>
+  </div>
+</section>
+
+<section class="cta" id="contact">
+  <div class="wrap">
+    <div class="eyebrow">Start an Engagement</div>
+    <h2>Bring us the numbers. <em>We'll bring the plan.</em></h2>
+    <p>A first conversation is 30 minutes, no deck required. Tell us what's not adding up and we'll tell you honestly whether we're the right desk for it.</p>
+    <a class="btn-primary" href="mailto:engagements@ashworthvale.com">Book a Consultation →</a>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="brand">
+          <div class="brand-mark" style="border-color:#9BA1B2;"><span style="color:#F6F3EC;">AV</span></div>
+          <div class="brand-name" style="color:#F6F3EC;">Ashworth &amp; Vale</div>
+        </div>
+        <p>Business, financial, and marketing consulting for growth-stage and mid-market companies.</p>
+      </div>
+      <div>
+        <h5>Practices</h5>
+        <ul>
+          <li><a href="#practice">Business Strategy</a></li>
+          <li><a href="#practice">Financial Advisory</a></li>
+          <li><a href="#practice">Marketing &amp; GTM</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>Firm</h5>
+        <ul>
+          <li><a href="#approach">Our Approach</a></li>
+          <li><a href="#results">Client Results</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>Contact</h5>
+        <ul>
+          <li><a href="mailto:engagements@ashworthvale.com">engagements@ashworthvale.com</a></li>
+          <li><a href="tel:+12125550148">+1 (212) 555-0148</a></li>
+          <li>140 Fulton Street, New York</li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Ashworth &amp; Vale Advisory LLC</span>
+      <span>Diagnose · Design · Deliver · Sustain</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Ledger tab switching
+  const tabs = document.querySelectorAll('.ledger-tab');
+  const panels = document.querySelectorAll('[data-panel]');
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      tabs.forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      const target = tab.getAttribute('data-tab');
+      panels.forEach(p => {
+        p.style.display = (p.getAttribute('data-panel') === target) ? 'grid' : 'none';
+      });
+    });
+  });
+
+  // Subtle ticker value drift for the "live" feel
+  const tickerValues = document.querySelectorAll('.ticker-value');
+  const baseValues = [18.4, -32.0, 6.1, 94];
+  setInterval(() => {
+    tickerValues.forEach((el, i) => {
+      const jitter = (Math.random() - 0.5) * 0.3;
+      const val = (baseValues[i] + jitter).toFixed(1);
+      const deltaEl = el.querySelector('.ticker-delta');
+      const deltaText = deltaEl ? deltaEl.outerHTML : '';
+      let display;
+      if (i === 0) display = (val > 0 ? '+' : '') + val + '%';
+      else if (i === 1) display = val + '%';
+      else if (i === 2) display = val + ' mo';
+      else display = Math.round(val) + '%';
+      el.innerHTML = display + ' ' + deltaText;
+    });
+  }, 3200);
+</script>
+
+</body>
+</html>

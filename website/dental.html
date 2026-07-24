@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dr. Mehta Dental Studio — Family & Cosmetic Dentistry</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,500;0,600;1,500;1,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#FAF8F3;
+    --panel:#FFFFFF;
+    --sage:#2E5646;
+    --sage-dark:#1E3D31;
+    --sage-light:#E1E9E3;
+    --gold:#B8935A;
+    --coral:#D96A48;
+    --coral-dark:#B8543A;
+    --ink:#1C201B;
+    --ink-soft:#5A6259;
+    --ink-faint:#8B928A;
+    --line:#E4E0D3;
+    --max:1200px;
+    --shadow-sm:0 4px 16px rgba(28,32,27,0.06);
+    --shadow-md:0 18px 40px rgba(28,32,27,0.1);
+    --shadow-lg:0 30px 70px rgba(28,32,27,0.16);
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{ background:var(--bg); color:var(--ink); font-family:'Inter',sans-serif; line-height:1.6; -webkit-font-smoothing:antialiased; }
+  img{max-width:100%; display:block;}
+  a{color:inherit; text-decoration:none;}
+  button{font-family:inherit; cursor:pointer; border:none; background:none;}
+  ::selection{ background:var(--sage); color:#fff; }
+
+  h1,h2,h3,.serif{ font-family:'Fraunces', serif; font-weight:600; letter-spacing:-0.01em; line-height:1.08; }
+  .serif-italic{ font-style:italic; font-weight:500; }
+
+  .eyebrow{
+    font-size:0.76rem; font-weight:700; letter-spacing:0.12em; text-transform:uppercase;
+    color:var(--coral); display:flex; align-items:center; gap:9px;
+  }
+  .eyebrow::before{ content:""; width:20px; height:1.5px; background:var(--coral); }
+
+  .wrap{ max-width:var(--max); margin:0 auto; padding:0 40px; }
+  @media (max-width:700px){ .wrap{ padding:0 22px; } }
+
+  .btn{ display:inline-flex; align-items:center; gap:9px; padding:14px 26px; border-radius:30px; font-weight:600; font-size:0.9rem; transition:all 0.2s ease; }
+  .btn-coral{ background:var(--coral); color:#fff; }
+  .btn-coral:hover{ background:var(--coral-dark); transform:translateY(-1px); }
+  .btn-sage{ background:var(--sage); color:#fff; }
+  .btn-sage:hover{ background:var(--sage-dark); }
+  .btn-line{ border:1.5px solid var(--ink); color:var(--ink); }
+  .btn-line:hover{ border-color:var(--sage); color:var(--sage); }
+  .btn-line-light{ border:1.5px solid rgba(255,255,255,0.5); color:#fff; }
+  .btn-line-light:hover{ border-color:#fff; background:rgba(255,255,255,0.08); }
+  .btn svg{ width:15px; height:15px; }
+
+  /* ---------- Smile-arc divider (signature motif) ---------- */
+  .arc-divider{ width:100%; display:block; line-height:0; }
+  .arc-divider svg{ width:100%; height:60px; display:block; }
+
+  /* ---------- Certification strip ---------- */
+  .cert-strip{ background:var(--panel); border-bottom:1px solid var(--line); padding:26px 0; }
+  .cert-strip .wrap{ display:flex; align-items:center; justify-content:center; gap:44px; flex-wrap:wrap; }
+  .cert-item{ display:flex; align-items:center; gap:10px; color:var(--ink-soft); }
+  .cert-item svg{ width:26px; height:26px; color:var(--gold); flex-shrink:0; }
+  .cert-item span{ font-size:0.82rem; font-weight:600; }
+
+  /* ---------- Header ---------- */
+  header{ position:sticky; top:0; z-index:100; background:rgba(251,247,241,0.92); backdrop-filter:blur(10px); border-bottom:1px solid var(--line); }
+  nav.wrap{ display:flex; align-items:center; justify-content:space-between; padding:18px 40px; }
+  .logo{ display:flex; align-items:center; gap:10px; font-family:'Fraunces', serif; font-weight:600; font-size:1.3rem; }
+  .logo svg{ width:30px; height:30px; color:var(--sage); flex-shrink:0; }
+  .navlinks{ display:flex; gap:32px; font-size:0.9rem; font-weight:500; color:var(--ink-soft); }
+  .navlinks a:hover{ color:var(--sage); }
+  .nav-right{ display:flex; align-items:center; gap:20px; }
+  .nav-phone{ display:flex; align-items:center; gap:8px; font-weight:600; font-size:0.88rem; }
+  .nav-phone svg{ width:16px; height:16px; color:var(--coral); }
+  @media (max-width:940px){ .navlinks, .nav-phone{ display:none; } }
+
+  /* ---------- Hero ---------- */
+  .hero{ padding:70px 0 0; position:relative; overflow:hidden; }
+  .hero .wrap{ display:grid; grid-template-columns:1.05fr 0.95fr; gap:50px; align-items:center; padding-bottom:64px; }
+  .hero-copy .eyebrow{ margin-bottom:16px; }
+  .live-badge{
+    display:inline-flex; align-items:center; gap:8px;
+    font-size:0.78rem; font-weight:600; color:var(--sage-dark);
+    background:var(--sage-light); padding:7px 14px 7px 10px; border-radius:20px;
+    margin-bottom:20px;
+  }
+  .live-dot{ width:7px; height:7px; border-radius:50%; background:#2E9E5B; position:relative; }
+  .live-dot::after{
+    content:""; position:absolute; inset:-4px; border-radius:50%; border:1.5px solid #2E9E5B;
+    animation:pulse 2s ease-out infinite;
+  }
+  @keyframes pulse{ 0%{ transform:scale(0.6); opacity:1; } 100%{ transform:scale(1.8); opacity:0; } }
+  @media (prefers-reduced-motion: reduce){ .live-dot::after{ animation:none; } }
+  .hero h1{ font-size:clamp(2.4rem,4.4vw,3.6rem); margin-bottom:22px; }
+  .hero p.lede{ font-size:1.06rem; color:var(--ink-soft); max-width:42ch; margin-bottom:32px; }
+  .hero-ctas{ display:flex; gap:14px; flex-wrap:wrap; margin-bottom:36px; }
+  .hero-trust{ display:flex; gap:0; border-top:1px solid var(--line); padding-top:22px; }
+  .hero-trust div{ padding-right:26px; margin-right:26px; border-right:1px solid var(--line); }
+  .hero-trust div:last-child{ border-right:none; margin-right:0; padding-right:0; }
+  .hero-trust .n{ font-family:'Fraunces'; font-size:1.4rem; font-weight:600; display:block; }
+  .hero-trust .l{ font-size:0.72rem; color:var(--ink-faint); text-transform:uppercase; letter-spacing:0.04em; margin-top:2px; }
+
+  .hero-art{ position:relative; display:flex; align-items:center; justify-content:center; }
+  .hero-art .blob{ position:absolute; inset:0; }
+  .hero-art svg.smile{ width:100%; max-width:400px; position:relative; z-index:2; }
+  @media (max-width:900px){ .hero .wrap{ grid-template-columns:1fr; } .hero-art{ order:-1; max-width:320px; margin:0 auto; } .hero-trust{ flex-wrap:wrap; row-gap:14px; } }
+
+  /* ---------- Stat strip ---------- */
+  .statstrip{ background:var(--sage); color:#fff; padding:26px 0; }
+  .statstrip .wrap{ display:flex; justify-content:space-between; flex-wrap:wrap; gap:20px; text-align:center; }
+  .statstrip .item{ flex:1; min-width:140px; }
+  .statstrip .n{ font-family:'Fraunces'; font-size:1.6rem; font-weight:600; }
+  .statstrip .l{ font-size:0.75rem; text-transform:uppercase; letter-spacing:0.06em; opacity:0.85; margin-top:4px; }
+
+  /* ---------- Section shared ---------- */
+  section{ padding:88px 0; }
+  .section-head{ max-width:600px; margin:0 auto 50px; text-align:center; }
+  .section-head.left{ margin:0 0 50px; text-align:left; }
+  .section-head h2{ font-size:clamp(1.9rem,3.2vw,2.5rem); margin-top:14px; }
+  .section-head p{ color:var(--ink-soft); margin-top:14px; }
+
+  /* ---------- Services ---------- */
+  .service-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:20px; }
+  @media (max-width:980px){ .service-grid{ grid-template-columns:repeat(2,1fr); } }
+  @media (max-width:560px){ .service-grid{ grid-template-columns:1fr; } }
+  .scard{ background:var(--panel); border:1px solid var(--line); border-radius:16px; padding:30px 26px; transition:all 0.2s ease; box-shadow:var(--shadow-sm); }
+  .scard:hover{ transform:translateY(-5px); box-shadow:var(--shadow-md); border-color:transparent; }
+  .scard .ic{ width:52px; height:52px; border-radius:14px; background:var(--sage-light); display:flex; align-items:center; justify-content:center; margin-bottom:18px; }
+  .scard .ic svg{ width:26px; color:var(--sage-dark); }
+  .scard h3{ font-family:'Inter'; font-weight:700; font-size:1.02rem; margin-bottom:8px; }
+  .scard p{ font-size:0.87rem; color:var(--ink-soft); margin-bottom:14px; }
+  .scard .from{ font-size:0.76rem; font-weight:700; color:var(--coral); }
+
+  /* ---------- Safety & Hygiene ---------- */
+  .safety{ background:var(--sage-dark); color:#fff; }
+  .safety-layout{ display:grid; grid-template-columns:0.8fr 1.2fr; gap:56px; align-items:center; }
+  @media (max-width:860px){ .safety-layout{ grid-template-columns:1fr; } }
+  .safety-copy .eyebrow{ color:#B9CBBF; }
+  .safety-copy .eyebrow::before{ background:#B9CBBF; }
+  .safety-copy h2{ font-size:clamp(1.8rem,3vw,2.3rem); margin:16px 0 14px; color:#fff; }
+  .safety-copy p{ color:#CFDBD3; max-width:38ch; }
+  .safety-grid{ display:grid; grid-template-columns:1fr 1fr; gap:28px; }
+  @media (max-width:560px){ .safety-grid{ grid-template-columns:1fr; } }
+  .safety-item{ display:flex; gap:14px; align-items:flex-start; }
+  .safety-item svg{ width:26px; height:26px; color:var(--gold); flex-shrink:0; margin-top:2px; }
+  .safety-item h3{ font-family:'Inter'; font-weight:700; font-size:0.96rem; margin-bottom:6px; color:#fff; }
+  .safety-item p{ font-size:0.84rem; color:#B9C4BC; }
+
+  /* ---------- Doctor ---------- */
+  .doctor{ background:var(--panel); }
+  .doctor-layout{ display:grid; grid-template-columns:0.8fr 1.2fr; gap:56px; align-items:center; }
+  @media (max-width:860px){ .doctor-layout{ grid-template-columns:1fr; } }
+  .doctor-photo{ position:relative; }
+  .doctor-photo .frame{
+    aspect-ratio:4/5; border-radius:20px; background:var(--sage-light);
+    display:flex; align-items:center; justify-content:center; overflow:hidden;
+    border:1px solid var(--line);
+    box-shadow:var(--shadow-md);
+  }
+  .doctor-photo .frame svg{ width:62%; }
+  .doctor-badge{
+    position:absolute; bottom:-16px; right:-16px;
+    background:#fff; border:1px solid var(--line); border-radius:14px;
+    padding:14px 18px; box-shadow:var(--shadow-md);
+    display:flex; align-items:center; gap:10px;
+  }
+  .doctor-badge .n{ font-family:'Fraunces'; font-weight:600; font-size:1.15rem; }
+  .doctor-badge .l{ font-size:0.68rem; color:var(--ink-faint); text-transform:uppercase; }
+  .doctor-copy .eyebrow{ margin-bottom:18px; }
+  .doctor-copy h2{ font-size:clamp(1.8rem,3vw,2.3rem); margin-bottom:16px; }
+  .doctor-copy p.bio{ color:var(--ink-soft); margin-bottom:22px; max-width:52ch; }
+  .cred-list{ display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:28px; }
+  .cred-item{ display:flex; gap:10px; align-items:flex-start; font-size:0.87rem; }
+  .cred-item svg{ width:17px; height:17px; color:var(--sage); flex-shrink:0; margin-top:2px; }
+
+  /* ---------- Process ---------- */
+  .process-row{ display:grid; grid-template-columns:repeat(4,1fr); gap:0; position:relative; }
+  @media (max-width:900px){ .process-row{ grid-template-columns:1fr 1fr; row-gap:36px; } }
+  @media (max-width:560px){ .process-row{ grid-template-columns:1fr; } }
+  .pstep{ padding:0 20px 0 0; position:relative; }
+  .pstep .arc-num{ position:relative; margin-bottom:18px; }
+  .pstep .arc-num svg{ width:46px; height:46px; }
+  .pstep .arc-num span{ position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-family:'Fraunces'; font-weight:600; font-size:1.05rem; color:var(--sage-dark); }
+  .pstep h3{ font-family:'Inter'; font-weight:700; font-size:1rem; margin-bottom:8px; }
+  .pstep p{ font-size:0.87rem; color:var(--ink-soft); }
+
+  /* ---------- Why us ---------- */
+  .why-strip{ background:var(--sage-light); }
+  .why-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:26px; }
+  @media (max-width:900px){ .why-grid{ grid-template-columns:repeat(2,1fr); } }
+  .why-card{ display:flex; gap:14px; align-items:flex-start; }
+  .why-card svg{ width:22px; height:22px; color:var(--sage-dark); flex-shrink:0; margin-top:3px; }
+  .why-card h3{ font-family:'Inter'; font-weight:700; font-size:0.95rem; margin-bottom:6px; }
+  .why-card p{ font-size:0.84rem; color:var(--ink-soft); }
+
+  /* ---------- Testimonials ---------- */
+  .t-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:22px; }
+  @media (max-width:900px){ .t-grid{ grid-template-columns:1fr; } }
+  .tcard{ background:var(--panel); border:1px solid var(--line); border-radius:16px; padding:28px; box-shadow:var(--shadow-sm); }
+  .name{ display:inline-flex; align-items:center; gap:6px; }
+  .verified-tick{ width:14px; height:14px; color:#2E9E5B; }
+  .tcard .stars{ color:var(--coral); font-size:0.85rem; letter-spacing:2px; margin-bottom:14px; display:block; }
+  .tcard p{ font-size:0.92rem; color:var(--ink-soft); margin-bottom:20px; }
+  .tcard .who{ display:flex; align-items:center; gap:12px; }
+  .avatar{ width:38px; height:38px; border-radius:50%; background:var(--sage); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:700; font-family:'Fraunces'; font-size:0.85rem; flex-shrink:0; }
+  .tcard .name{ font-weight:700; font-size:0.88rem; }
+  .tcard .meta{ font-size:0.76rem; color:var(--ink-faint); }
+
+  /* ---------- FAQ ---------- */
+  .faq{ background:var(--panel); }
+  .faq-list{ max-width:760px; margin:0 auto; }
+  .faq-item{ border-bottom:1px solid var(--line); }
+  .faq-q{ width:100%; display:flex; justify-content:space-between; align-items:center; gap:20px; padding:22px 4px; text-align:left; font-weight:600; font-size:0.98rem; }
+  .faq-q .plus{ width:22px; height:22px; border-radius:50%; border:1.5px solid var(--ink); display:flex; align-items:center; justify-content:center; flex-shrink:0; font-size:0.9rem; transition:transform 0.2s ease; }
+  .faq-item.open .faq-q .plus{ transform:rotate(45deg); background:var(--coral); border-color:var(--coral); color:#fff; }
+  .faq-a{ max-height:0; overflow:hidden; transition:max-height 0.3s ease; }
+  .faq-item.open .faq-a{ max-height:200px; }
+  .faq-a p{ padding:0 4px 22px; font-size:0.9rem; color:var(--ink-soft); max-width:60ch; }
+
+  /* ---------- Insurance strip ---------- */
+  .insure-strip{ background:var(--panel); padding:30px 0; border-bottom:1px solid var(--line); }
+  .insure-strip .wrap{ display:flex; align-items:center; justify-content:center; gap:26px; flex-wrap:wrap; }
+  .insure-label{ font-size:0.76rem; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; color:var(--ink-faint); }
+  .insure-logos{ display:flex; gap:18px; flex-wrap:wrap; }
+  .insure-logos span{ font-family:'Fraunces'; font-weight:600; font-size:0.92rem; color:var(--ink-soft); padding:8px 16px; border:1px solid var(--line); border-radius:8px; }
+
+  /* ---------- Mobile sticky bar ---------- */
+  .mobile-bar{ display:none; }
+  @media (max-width:720px){
+    .mobile-bar{
+      display:flex; position:fixed; bottom:0; left:0; right:0; z-index:250;
+      background:#fff; border-top:1px solid var(--line);
+      box-shadow:0 -8px 24px rgba(28,32,27,0.08);
+      padding:10px 14px; gap:10px;
+    }
+    .mobile-bar a, .mobile-bar button{
+      flex:1; display:flex; align-items:center; justify-content:center; gap:7px;
+      padding:12px; border-radius:10px; font-weight:700; font-size:0.85rem;
+    }
+    .mobile-bar svg{ width:16px; height:16px; }
+    .float-book{ display:none; }
+    body{ padding-bottom:70px; }
+  }
+
+  /* ---------- CTA ---------- */
+  .cta{ background:var(--sage-dark); color:#fff; text-align:center; padding:96px 0; }
+  .cta .eyebrow{ color:#B9CBBF; justify-content:center; }
+  .cta .eyebrow::before{ background:#B9CBBF; }
+  .cta h2{ font-size:clamp(2rem,4vw,3rem); margin:18px 0 18px; color:#fff; }
+  .cta p{ color:#CFDBD3; max-width:48ch; margin:0 auto 34px; }
+  .cta-ctas{ display:flex; gap:14px; justify-content:center; flex-wrap:wrap; }
+  .cta .btn-coral{ background:#fff; color:var(--sage-dark); }
+  .cta .btn-coral:hover{ background:#F0ECE0; }
+
+  /* ---------- Footer ---------- */
+  footer{ background:#1C221D; color:#B4BAAF; padding:60px 0 26px; }
+  .foot-grid{ display:grid; grid-template-columns:1.5fr 1fr 1fr 1.3fr; gap:36px; margin-bottom:44px; }
+  @media (max-width:820px){ .foot-grid{ grid-template-columns:1fr 1fr; } }
+  footer h4{ color:#fff; font-size:0.82rem; margin-bottom:16px; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; }
+  footer ul{ list-style:none; }
+  footer li{ margin-bottom:11px; font-size:0.87rem; }
+  footer li a:hover{ color:#fff; }
+  .foot-logo{ font-family:'Fraunces'; font-weight:600; font-size:1.3rem; color:#fff; margin-bottom:12px; }
+  .foot-hours div{ display:flex; justify-content:space-between; font-size:0.85rem; margin-bottom:9px; }
+  .foot-hours span:last-child{ color:#fff; font-weight:600; }
+  .foot-bottom{ border-top:1px solid rgba(255,255,255,0.1); padding-top:22px; display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px; font-size:0.78rem; }
+
+  .float-book{
+    position:fixed; bottom:26px; right:26px; z-index:200;
+    display:flex; align-items:center; gap:10px;
+    background:var(--coral); color:#fff; padding:14px 22px 14px 18px;
+    border-radius:30px; font-weight:700; font-size:0.85rem;
+    box-shadow:0 10px 26px rgba(226,115,79,0.4);
+    transition:transform 0.2s ease, background 0.2s ease;
+  }
+  .float-book:hover{ transform:translateY(-2px); background:var(--coral-dark); }
+  .float-book svg{ width:17px; height:17px; }
+
+  /* ---------- Booking modal ---------- */
+  .modal-overlay{ position:fixed; inset:0; z-index:300; background:rgba(28,34,29,0.55); display:none; align-items:center; justify-content:center; padding:20px; opacity:0; transition:opacity 0.2s ease; }
+  .modal-overlay.open{ display:flex; opacity:1; }
+  .modal{ background:#fff; border-radius:20px; max-width:460px; width:100%; max-height:90vh; overflow-y:auto; transform:translateY(14px) scale(0.97); transition:transform 0.22s ease; box-shadow:0 30px 70px rgba(0,0,0,0.3); }
+  .modal-overlay.open .modal{ transform:translateY(0) scale(1); }
+  .modal-head{ display:flex; align-items:center; justify-content:space-between; padding:24px 26px; border-bottom:1px solid var(--line); }
+  .modal-head h3{ font-size:1.1rem; }
+  .modal-head .sub{ font-size:0.78rem; color:var(--ink-soft); margin-top:3px; font-family:'Inter'; font-weight:400; }
+  .modal-close{ width:32px; height:32px; border-radius:50%; background:var(--bg); display:flex; align-items:center; justify-content:center; font-size:1.1rem; color:var(--ink-soft); flex-shrink:0; }
+  .modal-close:hover{ background:var(--line); }
+  .modal-body{ padding:24px 26px; }
+  .field-label{ display:block; font-size:0.8rem; font-weight:700; margin-bottom:8px; margin-top:18px; }
+  .field-label:first-child{ margin-top:0; }
+  input[type=text], input[type=tel], input[type=date], select, textarea{
+    width:100%; padding:12px 14px; border:1.5px solid var(--line); border-radius:10px;
+    font-family:inherit; font-size:0.92rem; color:var(--ink); outline:none; transition:border-color 0.15s ease;
+  }
+  input:focus, select:focus, textarea:focus{ border-color:var(--coral); }
+  textarea{ resize:vertical; min-height:64px; }
+  .time-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:8px; }
+  .time-btn{ padding:10px; border:1.5px solid var(--line); border-radius:8px; font-size:0.8rem; font-weight:600; color:var(--ink-soft); background:#fff; }
+  .time-btn.active{ border-color:var(--coral); color:var(--coral); background:#FDEEE8; }
+  .modal-foot{ padding:6px 0 0; margin-top:24px; }
+  .modal-note{ font-size:0.72rem; color:var(--ink-faint); text-align:center; margin-top:12px; }
+</style>
+</head>
+<body>
+
+<header>
+  <nav class="wrap">
+    <div class="logo">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8 2 5 4.5 5 8.5c0 3 1.2 4.8 1.9 7.8.5 2.1.8 5.7 2.6 5.7 1.9 0 1.7-4.3 2.5-4.3s.6 4.3 2.5 4.3c1.8 0 2.1-3.6 2.6-5.7C18 13.3 19 11.5 19 8.5 19 4.5 16 2 12 2Z"/></svg>
+      Dr. Mehta Dental Studio
+    </div>
+    <div class="navlinks">
+      <a href="#services">Services</a>
+      <a href="#doctor">About</a>
+      <a href="#reviews">Reviews</a>
+      <a href="#faq">FAQ</a>
+    </div>
+    <div class="nav-right">
+      <div class="nav-phone">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.362 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.338 1.85.573 2.81.7A2 2 0 0 1 22 16.92Z"/></svg>
+        +91 98765 43210
+      </div>
+      <button class="btn btn-coral" onclick="openBooking()">Book Appointment</button>
+    </div>
+  </nav>
+</header>
+
+<!-- ============ HERO ============ -->
+<section class="hero">
+  <div class="wrap">
+    <div class="hero-copy">
+      <span class="eyebrow">Family &amp; Cosmetic Dentistry</span>
+      <div class="live-badge"><span class="live-dot"></span> Currently accepting new patients</div>
+      <h1>Care that puts your <span class="serif-italic">smile</span> first.</h1>
+      <p class="lede">Gentle, modern dentistry for the whole family — from routine check-ups to complete smile makeovers, in a clinic built around your comfort.</p>
+      <div class="hero-ctas">
+        <button class="btn btn-coral" onclick="openBooking()">Book an Appointment</button>
+        <a href="tel:+919876543210" class="btn btn-line">Call the Clinic</a>
+      </div>
+      <div class="hero-trust">
+        <div><span class="n">15+</span><span class="l">Years Experience</span></div>
+        <div><span class="n">10,000+</span><span class="l">Smiles Treated</span></div>
+        <div><span class="n">4.9★</span><span class="l">Google Rating</span></div>
+      </div>
+    </div>
+
+    <div class="hero-art">
+      <svg class="smile" viewBox="0 0 400 340" fill="none">
+        <defs>
+          <radialGradient id="heroGlow" cx="50%" cy="42%" r="60%">
+            <stop offset="0%" stop-color="#EDF2EE"/>
+            <stop offset="100%" stop-color="var(--sage-light)"/>
+          </radialGradient>
+        </defs>
+        <circle cx="200" cy="150" r="150" fill="url(#heroGlow)"/>
+        <circle cx="200" cy="150" r="150" fill="none" stroke="var(--gold)" stroke-width="1" opacity="0.35"/>
+        <!-- smile arc -->
+        <path d="M90 140 Q200 260 310 140" stroke="var(--ink)" stroke-width="4" stroke-linecap="round" fill="none"/>
+        <!-- teeth along arc -->
+        <g fill="#fff" stroke="var(--ink)" stroke-width="2.5">
+          <rect x="100" y="128" width="26" height="34" rx="8" transform="rotate(18 113 145)"/>
+          <rect x="132" y="150" width="26" height="38" rx="8" transform="rotate(9 145 169)"/>
+          <rect x="166" y="164" width="28" height="40" rx="8"/>
+          <rect x="206" y="164" width="28" height="40" rx="8"/>
+          <rect x="242" y="150" width="26" height="38" rx="8" transform="rotate(-9 255 169)"/>
+          <rect x="274" y="128" width="26" height="34" rx="8" transform="rotate(-18 287 145)"/>
+        </g>
+        <!-- sparkle -->
+        <path d="M300 70 l6 16 16 6 -16 6 -6 16 -6-16-16-6 16-6Z" fill="var(--coral)"/>
+        <circle cx="95" cy="90" r="4" fill="var(--coral)" opacity="0.7"/>
+      </svg>
+    </div>
+  </div>
+
+  <div class="arc-divider">
+    <svg viewBox="0 0 1200 60" preserveAspectRatio="none"><path d="M0 20 Q300 60 600 20 T1200 20 V60 H0 Z" fill="var(--sage)"/></svg>
+  </div>
+</section>
+
+<div class="cert-strip">
+  <div class="wrap">
+    <div class="cert-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m9 12 2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg>
+      <span>NABH-Accredited Process</span>
+    </div>
+    <div class="cert-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2 4 6v6c0 5 3.4 8.7 8 10 4.6-1.3 8-5 8-10V6l-8-4Z"/></svg>
+      <span>ISO 9001:2015 Certified</span>
+    </div>
+    <div class="cert-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg>
+      <span>Member, Indian Dental Assoc.</span>
+    </div>
+    <div class="cert-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M8 4v5"/></svg>
+      <span>Certified Invisalign Provider</span>
+    </div>
+  </div>
+</div>
+
+<!-- ============ STAT STRIP ============ -->
+<div class="statstrip">
+  <div class="wrap">
+    <div class="item"><div class="n">Painless</div><div class="l">Laser &amp; Sedation Options</div></div>
+    <div class="item"><div class="n">Same-Day</div><div class="l">Emergency Appointments</div></div>
+    <div class="item"><div class="n">0% EMI</div><div class="l">On Treatments Above ₹20,000</div></div>
+    <div class="item"><div class="n">Digital</div><div class="l">X-Rays &amp; 3D Scanning</div></div>
+  </div>
+</div>
+
+<!-- ============ SERVICES ============ -->
+<section id="services">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow" style="justify-content:center;">What We Treat</span>
+      <h2>Dentistry for every stage of your smile</h2>
+      <p>From a child's first check-up to a full cosmetic transformation — one clinic, one team, your full history in hand.</p>
+    </div>
+
+    <div class="service-grid">
+      <div class="scard">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2c-4 0-7 2.5-7 6.5 0 3 1.2 4.8 1.9 7.8.5 2.1.8 5.7 2.6 5.7 1.9 0 1.7-4.3 2.5-4.3s.6 4.3 2.5 4.3c1.8 0 2.1-3.6 2.6-5.7C19.8 13.3 19 11.5 19 8.5 19 4.5 16 2 12 2Z"/></svg></div>
+        <h3>General Check-Up &amp; Cleaning</h3>
+        <p>Routine exams, scaling and preventive care to catch problems early.</p>
+        <div class="from">From ₹500</div>
+      </div>
+      <div class="scard">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 7 12 3 4 7v10l8 4 8-4V7Z"/><path d="M4 7l8 4 8-4M12 11v10"/></svg></div>
+        <h3>Root Canal Treatment</h3>
+        <p>Single-visit, microscope-assisted root canals with minimal discomfort.</p>
+        <div class="from">From ₹3,500</div>
+      </div>
+      <div class="scard">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="10" width="16" height="7" rx="3.5"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg></div>
+        <h3>Braces &amp; Clear Aligners</h3>
+        <p>Traditional braces or invisible aligners for teens and adults alike.</p>
+        <div class="from">From ₹25,000</div>
+      </div>
+      <div class="scard">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v8M8 6l4 4 4-4"/><path d="M6 14h12l-1.5 6a2 2 0 0 1-2 1.6H9.5a2 2 0 0 1-2-1.6L6 14Z"/></svg></div>
+        <h3>Dental Implants</h3>
+        <p>Permanent, natural-looking tooth replacement with a lifetime warranty.</p>
+        <div class="from">From ₹18,000</div>
+      </div>
+      <div class="scard">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m12 3 1.8 5.6H20l-4.6 3.4 1.8 5.6L12 14.2 6.8 17.6l1.8-5.6L4 8.6h6.2L12 3Z"/></svg></div>
+        <h3>Teeth Whitening</h3>
+        <p>In-office laser whitening for visibly brighter teeth in one sitting.</p>
+        <div class="from">From ₹4,500</div>
+      </div>
+      <div class="scard">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 0 0-16 0"/></svg></div>
+        <h3>Pediatric Dentistry</h3>
+        <p>Gentle, friendly care designed to make children's visits stress-free.</p>
+        <div class="from">From ₹400</div>
+      </div>
+      <div class="scard">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-4.7-9.5-9A5.5 5.5 0 0 1 12 6a5.5 5.5 0 0 1 9.5 6c-2.5 4.3-9.5 9-9.5 9Z"/></svg></div>
+        <h3>Smile Makeover</h3>
+        <p>Veneers, bonding and whitening combined into one custom treatment plan.</p>
+        <div class="from">Consultation-based</div>
+      </div>
+      <div class="scard">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></div>
+        <h3>Dental Emergencies</h3>
+        <p>Same-day appointments for pain, breakage or trauma — walk-ins welcome.</p>
+        <div class="from">Priority booking</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SAFETY & HYGIENE ============ -->
+<section class="safety">
+  <div class="wrap">
+    <div class="safety-layout">
+      <div class="safety-copy">
+        <span class="eyebrow">Clinical Standards</span>
+        <h2>Your safety comes before anything else.</h2>
+        <p>Every instrument, every surface, every visit — held to the same protocol, whether you're in for a clean or a crown.</p>
+      </div>
+      <div class="safety-grid">
+        <div class="safety-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2 4 6v6c0 5 3.4 8.7 8 10 4.6-1.3 8-5 8-10V6l-8-4Z"/><path d="m9 12 2 2 4-4"/></svg>
+          <div><h3>Autoclave Sterilization</h3><p>Every instrument is steam-sterilized between patients, with cycle logs kept for full traceability.</p></div>
+        </div>
+        <div class="safety-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="M4 10h16M10 4v16"/></svg>
+          <div><h3>Single-Use Disposables</h3><p>Needles, suction tips and bibs are single-use, opened fresh in front of you.</p></div>
+        </div>
+        <div class="safety-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 21s-7-4.7-9.5-9A5.5 5.5 0 0 1 12 6a5.5 5.5 0 0 1 9.5 6c-2.5 4.3-9.5 9-9.5 9Z"/></svg>
+          <div><h3>Full PPE, Every Visit</h3><p>Gloves, masks and eyewear are worn throughout treatment and changed between patients.</p></div>
+        </div>
+        <div class="safety-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M7 8h10M7 12h10M7 16h6"/></svg>
+          <div><h3>Paperless Records</h3><p>Digital charting and X-rays reduce contact points and keep your history secure.</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ DOCTOR ============ -->
+<section class="doctor" id="doctor">
+  <div class="wrap">
+    <div class="doctor-layout">
+      <div class="doctor-photo">
+        <div class="frame">
+          <svg viewBox="0 0 200 200" fill="none">
+            <circle cx="100" cy="80" r="42" fill="var(--sage)"/>
+            <path d="M40 190c0-40 27-66 60-66s60 26 60 66Z" fill="var(--sage)"/>
+            <circle cx="100" cy="80" r="42" fill="none" stroke="#fff" stroke-width="2" opacity="0.3"/>
+          </svg>
+        </div>
+        <div class="doctor-badge">
+          <div>
+            <div class="n">4.9 ★</div>
+            <div class="l">340+ Reviews</div>
+          </div>
+        </div>
+      </div>
+      <div class="doctor-copy">
+        <span class="eyebrow">Meet Your Dentist</span>
+        <h2>Dr. Aanya Mehta, BDS, MDS</h2>
+        <p class="bio">Dr. Mehta has practised family and cosmetic dentistry for over 15 years, with advanced training in root canal microscopy and full-mouth rehabilitation. She founded the clinic on a simple idea: dental visits shouldn't be something you dread.</p>
+        <div class="cred-list">
+          <div class="cred-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> BDS — Govt. Dental College</div>
+          <div class="cred-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> MDS — Prosthodontics</div>
+          <div class="cred-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Member, Indian Dental Assoc.</div>
+          <div class="cred-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Certified Invisalign Provider</div>
+        </div>
+        <button class="btn btn-sage" onclick="openBooking()">Book with Dr. Mehta</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PROCESS ============ -->
+<section>
+  <div class="wrap">
+    <div class="section-head left">
+      <span class="eyebrow">Your First Visit</span>
+      <h2>What to expect when you walk in</h2>
+    </div>
+    <div class="process-row">
+      <div class="pstep">
+        <div class="arc-num"><svg viewBox="0 0 46 46"><circle cx="23" cy="23" r="21" fill="var(--sage-light)"/></svg><span>1</span></div>
+        <h3>Book a Slot</h3>
+        <p>Choose a date and time online, by phone, or on WhatsApp — whichever's easiest.</p>
+      </div>
+      <div class="pstep">
+        <div class="arc-num"><svg viewBox="0 0 46 46"><circle cx="23" cy="23" r="21" fill="var(--sage-light)"/></svg><span>2</span></div>
+        <h3>Consultation &amp; Scan</h3>
+        <p>A full exam with digital X-rays so we understand exactly what's going on.</p>
+      </div>
+      <div class="pstep">
+        <div class="arc-num"><svg viewBox="0 0 46 46"><circle cx="23" cy="23" r="21" fill="var(--sage-light)"/></svg><span>3</span></div>
+        <h3>Treatment Plan</h3>
+        <p>We walk you through options and costs before anything is decided.</p>
+      </div>
+      <div class="pstep">
+        <div class="arc-num"><svg viewBox="0 0 46 46"><circle cx="23" cy="23" r="21" fill="var(--sage-light)"/></svg><span>4</span></div>
+        <h3>Treatment &amp; Follow-Up</h3>
+        <p>Comfortable, paced treatment with check-ins until you're fully settled.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ WHY US ============ -->
+<section class="why-strip">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow" style="justify-content:center;">Why Patients Choose Us</span>
+      <h2>Dentistry, done gently</h2>
+    </div>
+    <div class="why-grid">
+      <div class="why-card">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-4.7-9.5-9A5.5 5.5 0 0 1 12 6a5.5 5.5 0 0 1 9.5 6c-2.5 4.3-9.5 9-9.5 9Z"/></svg>
+        <div><h3>Pain-Free Approach</h3><p>Laser dentistry and sedation options for anxious patients.</p></div>
+      </div>
+      <div class="why-card">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+        <div><h3>Same-Day Emergencies</h3><p>Call before 2 PM and we'll fit you in the same day.</p></div>
+      </div>
+      <div class="why-card">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+        <div><h3>0% EMI Available</h3><p>Split larger treatments into easy monthly payments.</p></div>
+      </div>
+      <div class="why-card">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16v16H4z"/><path d="M4 9h16M9 4v16"/></svg>
+        <div><h3>Digital Records</h3><p>Your X-rays, scans and history stored securely and accessibly.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ TESTIMONIALS ============ -->
+<section id="reviews">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow" style="justify-content:center;">Patient Stories</span>
+      <h2>Rated 4.9 out of 5 by 340+ patients</h2>
+    </div>
+    <div class="t-grid">
+      <div class="tcard">
+        <span class="stars">★★★★★</span>
+        <p>"I used to dread the dentist. Dr. Mehta's team made my root canal completely painless — I didn't feel a thing."</p>
+        <div class="who"><div class="avatar">AS</div><div><div class="name">Ananya Shah <svg class="verified-tick" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2 4 6v6c0 5 3.4 8.7 8 10 4.6-1.3 8-5 8-10V6l-8-4Z"/><path d="m9 12 2 2 4-4"/></svg></div><div class="meta">Verified Patient · Root Canal</div></div></div>
+      </div>
+      <div class="tcard">
+        <span class="stars">★★★★★</span>
+        <p>"My daughter actually looks forward to her check-ups now. The clinic is so calm and the staff are wonderful with kids."</p>
+        <div class="who"><div class="avatar">RP</div><div><div class="name">Rahul Parikh <svg class="verified-tick" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2 4 6v6c0 5 3.4 8.7 8 10 4.6-1.3 8-5 8-10V6l-8-4Z"/><path d="m9 12 2 2 4-4"/></svg></div><div class="meta">Verified Patient · Pediatric</div></div></div>
+      </div>
+      <div class="tcard">
+        <span class="stars">★★★★★</span>
+        <p>"Got Invisalign here after putting it off for years. Six months in and the difference is already incredible."</p>
+        <div class="who"><div class="avatar">SN</div><div><div class="name">Sanya Nair <svg class="verified-tick" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2 4 6v6c0 5 3.4 8.7 8 10 4.6-1.3 8-5 8-10V6l-8-4Z"/><path d="m9 12 2 2 4-4"/></svg></div><div class="meta">Verified Patient · Aligners</div></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FAQ ============ -->
+<section class="faq" id="faq">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow" style="justify-content:center;">Common Questions</span>
+      <h2>Before you book</h2>
+    </div>
+    <div class="faq-list">
+      <div class="faq-item open">
+        <button class="faq-q" onclick="toggleFaq(this)">Do you accept dental insurance?<span class="plus">+</span></button>
+        <div class="faq-a"><p>Yes — we work with most major insurance providers and also offer 0% EMI on treatments above ₹20,000. Bring your policy details to your first visit.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">Is root canal treatment painful?<span class="plus">+</span></button>
+        <div class="faq-a"><p>Modern root canal treatment, done under local anaesthesia with microscope assistance, is generally no more uncomfortable than getting a filling.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">Can I walk in for an emergency?<span class="plus">+</span></button>
+        <div class="faq-a"><p>Yes — call ahead if you can, but we keep same-day slots open for pain, breakage or trauma and will always try to see you.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">At what age should my child's first visit be?<span class="plus">+</span></button>
+        <div class="faq-a"><p>We recommend a first visit around age one, or within six months of the first tooth appearing, to build comfort early.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="insure-strip">
+  <div class="wrap">
+    <span class="insure-label">Insurance &amp; Payments Accepted</span>
+    <div class="insure-logos">
+      <span>Star Health</span><span>HDFC Ergo</span><span>ICICI Lombard</span><span>Care Health</span><span>0% EMI</span>
+    </div>
+  </div>
+</div>
+
+<!-- ============ CTA ============ -->
+<section class="cta">
+  <div class="wrap">
+    <span class="eyebrow">Ready When You Are</span>
+    <h2>Let's get your smile taken care of.</h2>
+    <p>Book your appointment online or send us a message on WhatsApp — we'll confirm a slot within the hour.</p>
+    <div class="cta-ctas">
+      <button class="btn btn-coral" onclick="openBooking()">Book an Appointment</button>
+      <a href="tel:+919876543210" class="btn btn-line-light">Call +91 98765 43210</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <div class="foot-logo">Dr. Mehta Dental Studio</div>
+        <p style="font-size:0.86rem; max-width:30ch;">Family &amp; cosmetic dentistry, built around a calmer kind of visit.</p>
+      </div>
+      <div>
+        <h4>Clinic</h4>
+        <ul>
+          <li><a href="#services">Services</a></li>
+          <li><a href="#doctor">About Dr. Mehta</a></li>
+          <li><a href="#reviews">Reviews</a></li>
+          <li><a href="#faq">FAQ</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Contact</h4>
+        <ul>
+          <li>+91 98765 43210</li>
+          <li>hello@mehtadental.in</li>
+          <li>2nd Floor, Sunrise Complex,<br>Alkapuri, Vadodara, Gujarat</li>
+        </ul>
+      </div>
+      <div>
+        <h4>Clinic Hours</h4>
+        <div class="foot-hours">
+          <div><span>Mon – Sat</span><span>9:00 AM – 8:00 PM</span></div>
+          <div><span>Sunday</span><span>10:00 AM – 2:00 PM</span></div>
+          <div><span>Emergencies</span><span>Same-day</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 Dr. Mehta Dental Studio. All rights reserved.</span>
+      <span>Regd. Dental Clinic — Gujarat</span>
+    </div>
+  </div>
+</footer>
+
+<button class="float-book" onclick="openBooking()">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+  Book Appointment
+</button>
+
+<div class="mobile-bar">
+  <a href="tel:+919876543210" class="btn-line" style="border:1.5px solid var(--ink); color:var(--ink);">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.362 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.338 1.85.573 2.81.7A2 2 0 0 1 22 16.92Z"/></svg>
+    Call
+  </a>
+  <button onclick="openBooking()" style="background:var(--coral); color:#fff;">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+    Book Appointment
+  </button>
+</div>
+
+<!-- ============ BOOKING MODAL ============ -->
+<div class="modal-overlay" id="bookingOverlay" onclick="if(event.target===this) closeBooking()">
+  <div class="modal">
+    <div class="modal-head">
+      <div>
+        <h3>Book an Appointment</h3>
+        <div class="sub">We'll confirm your slot on WhatsApp within the hour</div>
+      </div>
+      <button class="modal-close" onclick="closeBooking()">✕</button>
+    </div>
+    <div class="modal-body">
+      <form id="bookingForm" onsubmit="return submitBooking(event)">
+
+        <label class="field-label">Full Name</label>
+        <input type="text" id="bName" required placeholder="Your name">
+
+        <label class="field-label">Phone Number</label>
+        <input type="tel" id="bPhone" required placeholder="+91 9XXXXXXXXX">
+
+        <label class="field-label">Service Needed</label>
+        <select id="bService">
+          <option>General Check-Up &amp; Cleaning</option>
+          <option>Root Canal Treatment</option>
+          <option>Braces &amp; Clear Aligners</option>
+          <option>Dental Implants</option>
+          <option>Teeth Whitening</option>
+          <option>Pediatric Dentistry</option>
+          <option>Smile Makeover</option>
+          <option>Dental Emergency</option>
+        </select>
+
+        <label class="field-label">Preferred Date</label>
+        <input type="date" id="bDate" required>
+
+        <label class="field-label">Preferred Time</label>
+        <div class="time-grid" id="timeGrid">
+          <button type="button" class="time-btn" onclick="selectTime(this,'10:00 AM')">10:00 AM</button>
+          <button type="button" class="time-btn active" onclick="selectTime(this,'12:00 PM')">12:00 PM</button>
+          <button type="button" class="time-btn" onclick="selectTime(this,'3:00 PM')">3:00 PM</button>
+          <button type="button" class="time-btn" onclick="selectTime(this,'5:00 PM')">5:00 PM</button>
+          <button type="button" class="time-btn" onclick="selectTime(this,'6:30 PM')">6:30 PM</button>
+          <button type="button" class="time-btn" onclick="selectTime(this,'Any time')">Any time</button>
+        </div>
+
+        <label class="field-label">Notes <span style="font-weight:400; color:var(--ink-faint);">(optional)</span></label>
+        <textarea id="bNotes" placeholder="Tell us a bit about what's bothering you, or any concerns..."></textarea>
+
+        <div class="modal-foot">
+          <button type="submit" class="btn btn-coral" style="width:100%; justify-content:center;">Send Booking Request →</button>
+          <p class="modal-note">This sends your details to the clinic on WhatsApp for confirmation.</p>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+  let selectedTime = '12:00 PM';
+
+  function openBooking(){
+    document.getElementById('bookingOverlay').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeBooking(){
+    document.getElementById('bookingOverlay').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  function selectTime(btn, time){
+    document.querySelectorAll('.time-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    selectedTime = time;
+  }
+  function toggleFaq(btn){
+    const item = btn.closest('.faq-item');
+    const wasOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+    if(!wasOpen) item.classList.add('open');
+  }
+  function submitBooking(e){
+    e.preventDefault();
+    const name = document.getElementById('bName').value;
+    const phone = document.getElementById('bPhone').value;
+    const service = document.getElementById('bService').value;
+    const date = document.getElementById('bDate').value;
+    const notes = document.getElementById('bNotes').value;
+
+    let msg = `Hi, I'd like to book an appointment:\n`;
+    msg += `Name: ${name}\n`;
+    msg += `Phone: ${phone}\n`;
+    msg += `Service: ${service}\n`;
+    msg += `Preferred Date: ${date}\n`;
+    msg += `Preferred Time: ${selectedTime}\n`;
+    if(notes) msg += `Notes: ${notes}\n`;
+
+    const waUrl = 'https://wa.me/919876543210?text=' + encodeURIComponent(msg);
+    window.open(waUrl, '_blank');
+    closeBooking();
+    return false;
+  }
+  document.addEventListener('keydown', function(e){ if(e.key === 'Escape') closeBooking(); });
+</script>
+
+</body>
+</html>

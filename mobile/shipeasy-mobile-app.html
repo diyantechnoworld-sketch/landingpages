@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ShipEasy — Mobile App UI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700;800&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#F4F6F9;
+    --panel:#FFFFFF;
+    --navy:#241B4B;
+    --navy-2:#34275F;
+    --amber:#FF3D71;
+    --amber-dark:#E8285F;
+    --teal:#06B6D4;
+    --teal-light:#E0F7FA;
+    --ink:#101820;
+    --ink-soft:#5B636E;
+    --ink-faint:#8D95A0;
+    --line:#E3E6EC;
+    --shadow-sm:0 4px 16px rgba(36,27,75,0.06);
+    --shadow-md:0 18px 40px rgba(36,27,75,0.1);
+    --shadow-lg:0 30px 70px rgba(36,27,75,0.28);
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{
+    background:
+      radial-gradient(circle at 20% 15%, rgba(255,61,113,0.10), transparent 45%),
+      radial-gradient(circle at 85% 80%, rgba(6,182,212,0.10), transparent 45%),
+      var(--bg);
+    color:var(--ink); font-family:'Inter',sans-serif; -webkit-font-smoothing:antialiased;
+    min-height:100vh; padding:48px 20px;
+  }
+  img{max-width:100%; display:block;}
+  a{color:inherit; text-decoration:none;}
+  button{font-family:inherit; cursor:pointer; border:none; background:none;}
+  input,textarea{font-family:inherit;}
+  h1,h2,h3,.head{ font-family:'Sora', sans-serif; font-weight:700; letter-spacing:-0.01em; }
+
+  /* ---------- Page chrome (not part of the app itself) ---------- */
+  .stage-head{ max-width:1200px; margin:0 auto 34px; text-align:center; }
+  .stage-head .eyebrow{
+    font-size:0.76rem; font-weight:700; letter-spacing:0.1em; text-transform:uppercase;
+    color:var(--amber); display:inline-flex; align-items:center; gap:9px; margin-bottom:14px;
+  }
+  .stage-head .eyebrow::before, .stage-head .eyebrow::after{ content:""; width:20px; height:1.5px; background:var(--amber); }
+  .stage-head h1{ font-size:clamp(1.6rem,3vw,2.1rem); color:var(--navy); }
+  .stage-head p{ color:var(--ink-soft); margin-top:10px; font-size:0.95rem; }
+
+  .stage{
+    max-width:1200px; margin:0 auto;
+    display:flex; justify-content:center; gap:56px; flex-wrap:wrap; align-items:flex-start;
+  }
+  .device-col{ display:flex; flex-direction:column; align-items:center; gap:16px; }
+  .device-label{
+    font-family:'IBM Plex Mono', monospace; font-size:0.72rem; font-weight:600;
+    color:var(--ink-faint); text-transform:uppercase; letter-spacing:0.08em;
+  }
+
+  /* ---------- Phone frame ---------- */
+  .phone{
+    width:340px; height:700px; background:var(--navy); border-radius:46px;
+    padding:12px; box-shadow:var(--shadow-lg); position:relative; flex-shrink:0;
+  }
+  .phone::before{
+    content:""; position:absolute; top:12px; left:50%; transform:translateX(-50%);
+    width:110px; height:24px; background:var(--navy); border-radius:0 0 16px 16px; z-index:5;
+  }
+  .screen{
+    width:100%; height:100%; background:var(--panel); border-radius:36px; overflow:hidden;
+    position:relative; display:flex; flex-direction:column;
+  }
+  .statusbar{
+    height:40px; flex-shrink:0; display:flex; align-items:center; justify-content:space-between;
+    padding:0 26px; font-family:'Sora'; font-size:0.72rem; font-weight:700; color:var(--ink);
+  }
+  .statusbar .icons{ display:flex; gap:5px; align-items:center; }
+  .statusbar svg{ width:15px; height:15px; }
+
+  .screens-viewport{ flex:1; position:relative; overflow:hidden; }
+  .app-screen{
+    position:absolute; inset:0; display:flex; flex-direction:column;
+    opacity:0; pointer-events:none; transform:translateX(16px);
+    transition:opacity 0.28s ease, transform 0.28s ease;
+    overflow-y:auto;
+  }
+  .app-screen.active{ opacity:1; pointer-events:auto; transform:translateX(0); }
+  .app-screen::-webkit-scrollbar{ display:none; }
+
+  /* ---------- Shared bits ---------- */
+  .px{ padding-left:26px; padding-right:26px; }
+  .logo-row{ display:flex; align-items:center; gap:8px; font-family:'Sora'; font-weight:800; font-size:1.1rem; color:var(--navy); }
+  .logo-row svg{ width:22px; height:22px; color:var(--amber); }
+
+  .field-label{ display:block; font-size:0.72rem; font-weight:700; color:var(--ink-soft); text-transform:uppercase; letter-spacing:0.04em; margin:16px 0 7px; }
+  .field-label:first-of-type{ margin-top:22px; }
+  .input-wrap{ position:relative; }
+  .input-wrap svg.field-icon{ position:absolute; left:13px; top:50%; transform:translateY(-50%); width:16px; height:16px; color:var(--ink-faint); }
+  .field{
+    width:100%; padding:13px 14px 13px 38px; border:1.5px solid var(--line); border-radius:11px;
+    font-size:0.88rem; outline:none; transition:border-color 0.15s ease; background:var(--bg);
+    color:var(--ink);
+  }
+  .field:focus{ border-color:var(--amber); background:#fff; }
+  .field::placeholder{ color:var(--ink-faint); }
+  .pw-toggle{ position:absolute; right:12px; top:50%; transform:translateY(-50%); font-size:0.68rem; font-weight:700; color:var(--teal); text-transform:uppercase; letter-spacing:0.03em; }
+
+  .btn{ display:flex; align-items:center; justify-content:center; gap:8px; width:100%; padding:14px; border-radius:11px; font-weight:700; font-size:0.9rem; transition:all 0.15s ease; }
+  .btn-amber{ background:var(--amber); color:#fff; box-shadow:0 10px 22px rgba(255,61,113,0.32); }
+  .btn-amber:active{ background:var(--amber-dark); transform:translateY(1px); }
+  .btn-ghost{ background:transparent; color:var(--navy); border:1.5px solid var(--line); }
+  .btn-ghost:active{ border-color:var(--navy); }
+
+  .divider-row{ display:flex; align-items:center; gap:10px; margin:20px 0; color:var(--ink-faint); font-size:0.72rem; font-weight:600; text-transform:uppercase; letter-spacing:0.04em; }
+  .divider-row::before,.divider-row::after{ content:""; flex:1; height:1px; background:var(--line); }
+
+  .social-row{ display:flex; gap:10px; }
+  .social-btn{ flex:1; display:flex; align-items:center; justify-content:center; gap:6px; padding:11px; border:1.5px solid var(--line); border-radius:11px; font-size:0.8rem; font-weight:700; color:var(--ink-soft); }
+  .social-btn svg{ width:16px; height:16px; }
+
+  .switch-line{ text-align:center; font-size:0.82rem; color:var(--ink-soft); margin-top:22px; }
+  .switch-line b{ color:var(--amber); font-weight:700; cursor:pointer; }
+
+  .check-row{ display:flex; align-items:flex-start; gap:9px; margin-top:16px; font-size:0.76rem; color:var(--ink-soft); line-height:1.45; }
+  .check-row input{ margin-top:2px; accent-color:var(--amber); flex-shrink:0; }
+  .check-row a{ color:var(--teal); font-weight:600; }
+
+  /* ---------- Login / Register hero panel ---------- */
+  .auth-hero{
+    background:var(--navy); color:#fff; padding:34px 26px 30px; position:relative; overflow:hidden; flex-shrink:0;
+  }
+  .auth-hero::after{
+    content:""; position:absolute; right:-30px; bottom:-40px; width:150px; height:150px;
+    border-radius:50%; background:rgba(255,61,113,0.16);
+  }
+  .auth-hero .tag{
+    display:inline-flex; align-items:center; gap:6px; font-size:0.66rem; font-weight:700; color:#fff;
+    background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.2); padding:5px 10px 5px 8px;
+    border-radius:20px; margin-bottom:14px;
+  }
+  .auth-hero .dot{ width:6px; height:6px; border-radius:50%; background:#3FD17E; }
+  .auth-hero h2{ font-size:1.5rem; position:relative; z-index:2; }
+  .auth-hero p{ font-size:0.82rem; color:#B6BDC9; margin-top:6px; max-width:24ch; position:relative; z-index:2; }
+
+  .auth-body{ flex:1; padding:22px 26px 26px; }
+
+  /* ---------- Home screen ---------- */
+  .home-top{
+    background:var(--navy); color:#fff; padding:20px 22px 60px; flex-shrink:0; position:relative;
+  }
+  .home-topbar{ display:flex; align-items:center; justify-content:space-between; }
+  .avatar-greet{ display:flex; align-items:center; gap:10px; }
+  .avatar{ width:38px; height:38px; border-radius:50%; background:var(--amber); display:flex; align-items:center; justify-content:center; font-family:'Sora'; font-weight:700; font-size:0.9rem; }
+  .greet .hi{ font-size:0.68rem; color:#9AA2AE; }
+  .greet .name{ font-family:'Sora'; font-weight:700; font-size:0.92rem; }
+  .bell{ width:36px; height:36px; border-radius:50%; background:rgba(255,255,255,0.1); display:flex; align-items:center; justify-content:center; position:relative; }
+  .bell svg{ width:17px; height:17px; }
+  .bell::after{ content:""; position:absolute; top:8px; right:9px; width:6px; height:6px; border-radius:50%; background:var(--amber); border:1.5px solid var(--navy); }
+
+  .home-topbar-title{ font-family:'Sora'; font-size:1.15rem; font-weight:700; margin-top:20px; }
+  .home-topbar-sub{ font-size:0.78rem; color:#9AA2AE; margin-top:3px; }
+
+  .book-card{
+    background:#fff; border-radius:18px; padding:18px; box-shadow:var(--shadow-md);
+    position:relative; margin:-42px 20px 0; z-index:3;
+  }
+  .loc-field{ position:relative; margin-bottom:10px; }
+  .loc-field .dot-icon{ position:absolute; left:13px; top:50%; transform:translateY(-50%); width:9px; height:9px; border-radius:50%; border:2.5px solid var(--teal); }
+  .loc-field.drop .dot-icon{ border-radius:2px; border-color:var(--amber); }
+  .loc-field input{
+    width:100%; padding:12px 12px 12px 34px; border:1.5px solid var(--line); border-radius:10px;
+    font-size:0.83rem; outline:none; background:var(--bg);
+  }
+  .loc-field input:focus{ border-color:var(--amber); background:#fff; }
+  .loc-connector{ position:absolute; left:17.5px; top:24px; width:1px; height:14px; border-left:2px dashed var(--line); }
+  .book-card .btn{ margin-top:4px; }
+
+  .home-section{ padding:22px 22px 0; }
+  .home-section-head{ display:flex; align-items:center; justify-content:space-between; margin-bottom:12px; }
+  .home-section-head h3{ font-size:0.95rem; }
+  .home-section-head .see-all{ font-size:0.72rem; font-weight:700; color:var(--teal); }
+
+  .veh-row{ display:flex; gap:9px; overflow-x:auto; padding-bottom:4px; }
+  .veh-row::-webkit-scrollbar{ display:none; }
+  .veh-pill{
+    flex-shrink:0; display:flex; flex-direction:column; align-items:center; gap:5px;
+    padding:10px 13px; border:1.5px solid var(--line); border-radius:12px;
+    font-size:0.66rem; font-weight:700; color:var(--ink-soft); white-space:nowrap;
+  }
+  .veh-pill.active{ border-color:var(--amber); background:#FFF3EA; color:var(--amber-dark); }
+  .veh-pill svg{ width:19px; height:19px; }
+
+  .promo-banner{
+    margin-top:18px; background:linear-gradient(120deg, var(--teal) 0%, #0891A8 100%); border-radius:16px;
+    padding:16px 18px; color:#fff; display:flex; align-items:center; justify-content:space-between; overflow:hidden; position:relative;
+  }
+  .promo-banner::after{ content:""; position:absolute; right:-20px; top:-20px; width:90px; height:90px; border-radius:50%; background:rgba(255,255,255,0.14); }
+  .promo-banner .t1{ font-family:'IBM Plex Mono'; font-size:0.62rem; font-weight:600; letter-spacing:0.06em; text-transform:uppercase; opacity:0.85; }
+  .promo-banner .t2{ font-family:'Sora'; font-weight:700; font-size:1rem; margin-top:3px; }
+  .promo-banner .code{ font-family:'IBM Plex Mono'; font-size:0.68rem; margin-top:6px; background:rgba(255,255,255,0.18); display:inline-block; padding:3px 8px; border-radius:6px; }
+
+  .booking-item{
+    display:flex; align-items:center; gap:12px; padding:13px 0; border-bottom:1px solid var(--line);
+  }
+  .booking-item:last-child{ border-bottom:none; }
+  .booking-icon{ width:38px; height:38px; border-radius:10px; background:var(--teal-light); color:var(--teal); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+  .booking-icon svg{ width:18px; height:18px; }
+  .booking-info{ flex:1; min-width:0; }
+  .booking-info .r1{ font-size:0.82rem; font-weight:700; color:var(--ink); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .booking-info .r2{ font-size:0.72rem; color:var(--ink-faint); margin-top:2px; }
+  .booking-status{ font-size:0.62rem; font-weight:700; text-transform:uppercase; letter-spacing:0.03em; padding:4px 8px; border-radius:6px; flex-shrink:0; }
+  .booking-status.done{ background:#E4F8EC; color:#1E9E5A; }
+  .booking-status.transit{ background:#FFF3EA; color:var(--amber-dark); }
+
+  /* ---------- Bottom nav ---------- */
+  .bottom-nav{
+    flex-shrink:0; display:flex; justify-content:space-around; align-items:center;
+    padding:10px 8px 14px; border-top:1px solid var(--line); background:#fff;
+  }
+  .nav-item{ display:flex; flex-direction:column; align-items:center; gap:4px; color:var(--ink-faint); }
+  .nav-item svg{ width:20px; height:20px; }
+  .nav-item span{ font-size:0.6rem; font-weight:700; }
+  .nav-item.active{ color:var(--amber); }
+  .nav-item.fab{ background:var(--navy); color:#fff; width:44px; height:44px; border-radius:50%; align-items:center; justify-content:center; margin-top:-26px; box-shadow:0 10px 20px rgba(36,27,75,0.35); }
+  .nav-item.fab svg{ width:20px; height:20px; }
+  .nav-item.fab span{ display:none; }
+
+  .home-section.pad-bottom{ padding-bottom:16px; }
+
+  @media (max-width:820px){
+    .stage{ gap:32px; }
+    body{ padding:32px 14px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="stage-head">
+  <span class="eyebrow">Mobile App UI</span>
+  <h1>ShipEasy — Login, Register &amp; Home</h1>
+  <p>Tap the buttons inside each screen to move through the flow — Login → Home, or Login ↔ Register.</p>
+</div>
+
+<div class="stage">
+
+  <!-- ============ LOGIN ============ -->
+  <div class="device-col">
+    <span class="device-label">01 · Login</span>
+    <div class="phone">
+      <div class="screen">
+        <div class="statusbar">
+          <span>9:41</span>
+          <div class="icons">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M2 22h2v-4H2v4zm5 0h2v-8H7v8zm5 0h2v-12h-2v12zm5 0h2v-16h-2v16zm5 0h2v-20h-2v20z"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="18" height="10" rx="2"/><path d="M22 10v4"/></svg>
+          </div>
+        </div>
+
+        <div class="screens-viewport">
+
+          <!-- LOGIN SCREEN -->
+          <div class="app-screen active" id="scr-login">
+            <div class="auth-hero">
+              <div class="tag"><span class="dot"></span>India's fastest logistics app</div>
+              <div class="logo-row" style="color:#fff; margin-bottom:14px;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="7" width="14" height="10" rx="1"/><path d="M15 10h4l3 3v4h-7"/><circle cx="6" cy="19" r="2"/><circle cx="18" cy="19" r="2"/></svg>
+                ShipEasy
+              </div>
+              <h2>Welcome back</h2>
+              <p>Log in to book trucks, riders &amp; track your shipments.</p>
+            </div>
+
+            <div class="auth-body">
+              <label class="field-label" style="margin-top:0;">Phone Number</label>
+              <div class="input-wrap">
+                <svg class="field-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.362 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.338 1.85.573 2.81.7A2 2 0 0 1 22 16.92Z"/></svg>
+                <input class="field" type="tel" placeholder="+91 9XXXXXXXXX">
+              </div>
+
+              <label class="field-label">Password</label>
+              <div class="input-wrap">
+                <svg class="field-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                <input class="field" type="password" placeholder="Enter password">
+                <span class="pw-toggle">Show</span>
+              </div>
+
+              <div style="text-align:right; margin-top:10px;">
+                <span style="font-size:0.76rem; font-weight:700; color:var(--teal);">Forgot password?</span>
+              </div>
+
+              <button class="btn btn-amber" style="margin-top:20px;" onclick="go('scr-home')">
+                Log In
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px;"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+              </button>
+
+              <div class="divider-row">or continue with</div>
+              <div class="social-row">
+                <div class="social-btn">
+                  <svg viewBox="0 0 24 24"><path fill="#4285F4" d="M23.5 12.3c0-.8-.1-1.6-.2-2.3H12v4.5h6.5c-.3 1.5-1.1 2.7-2.4 3.6v3h3.9c2.3-2.1 3.5-5.2 3.5-8.8z"/><path fill="#34A853" d="M12 24c3.2 0 5.9-1.1 7.9-2.9l-3.9-3c-1.1.7-2.4 1.2-4 1.2-3.1 0-5.7-2.1-6.6-4.9H1.4v3.1C3.4 21.4 7.4 24 12 24z"/><path fill="#FBBC05" d="M5.4 14.4c-.2-.7-.4-1.5-.4-2.4s.1-1.6.4-2.4V6.5H1.4A12 12 0 0 0 0 12c0 1.9.5 3.8 1.4 5.5l4-3.1z"/><path fill="#EA4335" d="M12 4.8c1.7 0 3.3.6 4.5 1.7l3.4-3.4C17.9 1.2 15.2 0 12 0 7.4 0 3.4 2.6 1.4 6.5l4 3.1c.9-2.8 3.5-4.8 6.6-4.8z"/></svg>
+                  Google
+                </div>
+                <div class="social-btn">
+                  <svg viewBox="0 0 24 24" fill="#25D366"><path d="M12 0C5.4 0 0 5.4 0 12c0 2.1.6 4.1 1.6 5.9L0 24l6.3-1.6c1.7.9 3.6 1.4 5.7 1.4 6.6 0 12-5.4 12-12S18.6 0 12 0zm0 22c-1.9 0-3.6-.5-5.2-1.4l-.4-.2-3.9 1 1-3.8-.2-.4C2.5 15.6 2 13.8 2 12 2 6.5 6.5 2 12 2s10 4.5 10 10-4.5 10-10 10z"/></svg>
+                  WhatsApp
+                </div>
+              </div>
+
+              <div class="switch-line">New to ShipEasy? <b onclick="go('scr-register')">Create account</b></div>
+            </div>
+          </div>
+
+          <!-- REGISTER SCREEN -->
+          <div class="app-screen" id="scr-register">
+            <div class="auth-hero">
+              <div class="tag"><span class="dot"></span>Onboarding takes 2 minutes</div>
+              <div class="logo-row" style="color:#fff; margin-bottom:14px;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="7" width="14" height="10" rx="1"/><path d="M15 10h4l3 3v4h-7"/><circle cx="6" cy="19" r="2"/><circle cx="18" cy="19" r="2"/></svg>
+                ShipEasy
+              </div>
+              <h2>Create your account</h2>
+              <p>Book your first vehicle in under a minute.</p>
+            </div>
+
+            <div class="auth-body">
+              <label class="field-label" style="margin-top:0;">Full Name</label>
+              <div class="input-wrap">
+                <svg class="field-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                <input class="field" type="text" placeholder="Your full name">
+              </div>
+
+              <label class="field-label">Phone Number</label>
+              <div class="input-wrap">
+                <svg class="field-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.362 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.338 1.85.573 2.81.7A2 2 0 0 1 22 16.92Z"/></svg>
+                <input class="field" type="tel" placeholder="+91 9XXXXXXXXX">
+              </div>
+
+              <label class="field-label">Email <span style="font-weight:400; color:var(--ink-faint); text-transform:none;">(optional)</span></label>
+              <div class="input-wrap">
+                <svg class="field-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 6-10 7L2 6"/></svg>
+                <input class="field" type="email" placeholder="you@example.com">
+              </div>
+
+              <label class="field-label">Password</label>
+              <div class="input-wrap">
+                <svg class="field-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                <input class="field" type="password" placeholder="Create a password">
+                <span class="pw-toggle">Show</span>
+              </div>
+
+              <div class="check-row">
+                <input type="checkbox" id="terms">
+                <label for="terms">I agree to ShipEasy's <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a></label>
+              </div>
+
+              <button class="btn btn-amber" style="margin-top:18px;" onclick="go('scr-home')">
+                Create Account
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px;"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+              </button>
+
+              <div class="switch-line">Already have an account? <b onclick="go('scr-login')">Log in</b></div>
+            </div>
+          </div>
+
+          <!-- HOME SCREEN -->
+          <div class="app-screen" id="scr-home">
+            <div class="home-top">
+              <div class="home-topbar">
+                <div class="avatar-greet">
+                  <div class="avatar">R</div>
+                  <div class="greet">
+                    <div class="hi">Good afternoon</div>
+                    <div class="name">Rohan Mehta</div>
+                  </div>
+                </div>
+                <div class="bell">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>
+                </div>
+              </div>
+              <div class="home-topbar-title">Where's it going today?</div>
+              <div class="home-topbar-sub">Book a truck, mini-truck or rider instantly</div>
+            </div>
+
+            <div class="book-card">
+              <div class="loc-field">
+                <span class="dot-icon"></span>
+                <input type="text" placeholder="Pickup location">
+              </div>
+              <div class="loc-connector"></div>
+              <div class="loc-field drop">
+                <span class="dot-icon"></span>
+                <input type="text" placeholder="Drop location">
+              </div>
+              <button class="btn btn-amber">
+                Get Fare Estimate
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px;"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+              </button>
+            </div>
+
+            <div class="home-section">
+              <div class="home-section-head">
+                <h3>Choose a vehicle</h3>
+                <span class="see-all">See all</span>
+              </div>
+              <div class="veh-row">
+                <div class="veh-pill active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="13" cy="4" r="2"/><path d="m8 21 2-9-3-1 4-6 3 3 3-1v4l-2 1 3 9"/></svg>Foot</div>
+                <div class="veh-pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="5" cy="18" r="3"/><circle cx="19" cy="18" r="3"/><path d="M2 18h3l3-9h5l2 5h4l2-4"/></svg>Bike</div>
+                <div class="veh-pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="10" width="14" height="8" rx="1"/><circle cx="7" cy="19" r="2"/><circle cx="15" cy="19" r="2"/></svg>3-Wheel</div>
+                <div class="veh-pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="8" width="14" height="9" rx="1"/><path d="M15 11h4l3 3v3h-7"/><circle cx="6" cy="19" r="2"/><circle cx="18" cy="19" r="2"/></svg>Mini</div>
+                <div class="veh-pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="6" width="16" height="11" rx="1"/><path d="M17 10h4l2 3v4h-6"/><circle cx="6" cy="19" r="2"/><circle cx="19" cy="19" r="2"/></svg>Truck</div>
+              </div>
+
+              <div class="promo-banner">
+                <div>
+                  <div class="t1">Limited offer</div>
+                  <div class="t2">20% off your next booking</div>
+                  <div class="code">USE SHIP20</div>
+                </div>
+                <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" style="width:34px;height:34px; flex-shrink:0;"><path d="M20 12V8H6a2 2 0 0 1-2-2c0-1.1.9-2 2-2h12v4"/><path d="M4 6v12c0 1.1.9 2 2 2h14v-4"/><path d="M18 12a2 2 0 0 0 0 4h4v-4Z"/></svg>
+              </div>
+            </div>
+
+            <div class="home-section pad-bottom">
+              <div class="home-section-head">
+                <h3>Recent bookings</h3>
+                <span class="see-all">See all</span>
+              </div>
+
+              <div class="booking-item">
+                <div class="booking-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="7" width="14" height="10" rx="1"/><path d="M15 10h4l3 3v4h-7"/><circle cx="6" cy="19" r="2"/><circle cx="18" cy="19" r="2"/></svg>
+                </div>
+                <div class="booking-info">
+                  <div class="r1">Mini Truck · Andheri → Bandra</div>
+                  <div class="r2">Today, 11:20 AM · ₹410</div>
+                </div>
+                <span class="booking-status transit">In transit</span>
+              </div>
+
+              <div class="booking-item">
+                <div class="booking-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="5" cy="18" r="3"/><circle cx="19" cy="18" r="3"/><path d="M2 18h3l3-9h5l2 5h4l2-4"/></svg>
+                </div>
+                <div class="booking-info">
+                  <div class="r1">Two-Wheeler · Powai → Kurla</div>
+                  <div class="r2">Yesterday, 4:05 PM · ₹85</div>
+                </div>
+                <span class="booking-status done">Delivered</span>
+              </div>
+
+              <div class="booking-item">
+                <div class="booking-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="6" width="16" height="11" rx="1"/><path d="M17 10h4l2 3v4h-6"/><circle cx="6" cy="19" r="2"/><circle cx="19" cy="19" r="2"/></svg>
+                </div>
+                <div class="booking-info">
+                  <div class="r1">Pickup Truck · Thane → Vashi</div>
+                  <div class="r2">Mon, 9:40 AM · ₹690</div>
+                </div>
+                <span class="booking-status done">Delivered</span>
+              </div>
+            </div>
+
+            <div class="bottom-nav">
+              <div class="nav-item active">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/><path d="M9 22V12h6v10"/></svg>
+                <span>Home</span>
+              </div>
+              <div class="nav-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="7" width="18" height="13" rx="1"/><path d="M3 11h18M8 7V4h8v3"/></svg>
+                <span>Bookings</span>
+              </div>
+              <div class="nav-item fab" onclick="go('scr-login')">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+                <span>Book</span>
+              </div>
+              <div class="nav-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.7 13.4a2 2 0 0 0 2 1.6h9.7a2 2 0 0 0 2-1.6L23 6H6"/></svg>
+                <span>Wallet</span>
+              </div>
+              <div class="nav-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                <span>Profile</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  function go(id){
+    document.querySelectorAll('.app-screen').forEach(function(s){
+      s.classList.remove('active');
+    });
+    document.getElementById(id).classList.add('active');
+    document.getElementById(id).scrollTop = 0;
+  }
+</script>
+
+</body>
+</html>
