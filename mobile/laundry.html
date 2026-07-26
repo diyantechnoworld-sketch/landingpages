@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pressto — Mobile</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --black:#0a0a0a;
+    --surface:#141414;
+    --surface-2:#1c1c1c;
+    --line:rgba(255,255,255,0.1);
+    --white:#ffffff;
+    --dim:rgba(255,255,255,0.55);
+    --faint:rgba(255,255,255,0.32);
+    --blue:#2f6fff;
+    --blue-dim:rgba(47,111,255,0.16);
+  }
+  *{box-sizing:border-box; margin:0; padding:0; -webkit-tap-highlight-color:transparent;}
+  html,body{height:100%;}
+  body{background:#000; font-family:'Inter',sans-serif; color:var(--white); display:flex; justify-content:center; align-items:center; padding:24px; overflow:hidden;}
+  .display{font-family:'Poppins',sans-serif;}
+  svg{display:block;}
+  button{font-family:inherit; cursor:pointer;}
+  input,textarea{font-family:inherit;}
+
+  .phone{
+    width:min(390px,92vw); height:min(820px,90vh); background:var(--black);
+    border-radius:44px; border:8px solid #050505; box-shadow:0 30px 80px rgba(0,0,0,0.7);
+    position:relative; overflow:hidden; display:flex; flex-direction:column;
+  }
+  .notch{position:absolute; top:0; left:50%; transform:translateX(-50%); width:120px; height:26px; background:#050505; border-radius:0 0 16px 16px; z-index:50;}
+  .statusbar{display:flex; justify-content:space-between; align-items:center; padding:14px 26px 2px; font-size:13px; font-weight:600; flex-shrink:0;}
+
+  .m-screens{flex:1; position:relative; overflow:hidden;}
+  .m-screen{position:absolute; inset:0; display:none; flex-direction:column; overflow-y:auto; scrollbar-width:none;}
+  .m-screen::-webkit-scrollbar{display:none;}
+  .m-screen.active{display:flex;}
+
+  /* header */
+  .app-header{display:flex; align-items:center; justify-content:space-between; padding:14px 18px; flex-shrink:0; border-bottom:1px solid var(--line); position:sticky; top:0; z-index:30; background:var(--black); gap:12px;}
+  .app-header .h-title{font-family:'Poppins',sans-serif; font-weight:800; font-size:18px;}
+  .app-header .addr{display:flex; align-items:center; gap:8px; min-width:0;}
+  .app-header .addr .txt{min-width:0;}
+  .app-header .addr .l1{font-size:10.5px; color:var(--dim); font-weight:600; text-transform:uppercase; letter-spacing:.3px;}
+  .app-header .addr .l2{font-size:13.5px; font-weight:700; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:170px; display:flex; align-items:center; gap:4px;}
+  .app-header .h-actions{display:flex; align-items:center; gap:14px; flex-shrink:0;}
+  .icon-btn{background:none; border:none; color:#fff; display:flex; align-items:center; justify-content:center; position:relative;}
+  .icon-btn .dot{position:absolute; top:-2px; right:-2px; width:8px; height:8px; border-radius:50%; background:var(--blue); border:2px solid var(--black);}
+  .back-btn{background:none; border:none; color:#fff; display:flex; align-items:center; justify-content:center;}
+  .avatar-sm{width:32px; height:32px; border-radius:50%; flex-shrink:0; display:flex; align-items:center; justify-content:center; font-family:'Poppins',sans-serif; font-weight:700; font-size:12px; background:#fff; color:#000;}
+
+  /* ---- HOME ---- */
+  .section{padding:20px 18px 4px;}
+  .section-title{font-family:'Poppins',sans-serif; font-weight:800; font-size:16px; margin-bottom:2px;}
+  .section-sub{font-size:12.5px; color:var(--dim);}
+
+  .porthole-card{margin:16px 18px 0; background:var(--surface); border:1px solid var(--line); border-radius:20px; padding:18px; display:flex; align-items:center; gap:16px;}
+  .porthole{width:64px; height:64px; border-radius:50%; flex-shrink:0; position:relative; background:repeating-conic-gradient(from 0deg, var(--surface-2) 0deg 20deg, #101010 20deg 40deg); border:3px solid var(--blue); display:flex; align-items:center; justify-content:center; animation:spin 5s linear infinite;}
+  .porthole .core{width:34px; height:34px; border-radius:50%; background:var(--black); border:2px solid rgba(255,255,255,0.15);}
+  @keyframes spin{from{transform:rotate(0);} to{transform:rotate(360deg);}}
+  .porthole-info{flex:1; min-width:0;}
+  .porthole-info .pill{display:inline-block; font-size:10px; font-weight:700; color:var(--blue); background:var(--blue-dim); padding:3px 9px; border-radius:20px; margin-bottom:6px;}
+  .porthole-info .t1{font-size:14.5px; font-weight:700;}
+  .porthole-info .t2{font-size:12px; color:var(--dim); margin-top:2px;}
+  .porthole-card .chev{color:var(--faint); flex-shrink:0;}
+
+  .hero{margin:18px 18px 0; background:linear-gradient(135deg,#101010,#000); border:1px solid var(--line); border-radius:20px; padding:22px 20px; position:relative;}
+  .hero-glow{position:absolute; width:110px; height:110px; border-radius:50%; background:var(--blue); opacity:0.22; top:14px; right:14px; pointer-events:none;}
+  .hero h2{position:relative; font-family:'Poppins',sans-serif; font-weight:800; font-size:21px; line-height:1.3;}
+  .hero p{position:relative; font-size:12.5px; color:var(--dim); margin-top:8px; max-width:78%;}
+  .btn-primary{margin-top:14px; background:var(--blue); color:#fff; border:none; padding:12px 20px; border-radius:12px; font-size:13.5px; font-weight:700; display:inline-flex; align-items:center; gap:8px; position:relative; z-index:2;}
+
+  .service-grid{display:grid; grid-template-columns:1fr 1fr; gap:12px; padding:14px 18px 4px;}
+  .service-card{background:var(--surface); border:1px solid var(--line); border-radius:16px; padding:16px; display:flex; flex-direction:column; gap:10px;}
+  .service-card .ic{width:40px; height:40px; border-radius:11px; background:var(--blue-dim); display:flex; align-items:center; justify-content:center; color:var(--blue);}
+  .service-card .t1{font-size:13.5px; font-weight:700;}
+  .service-card .t2{font-size:11px; color:var(--dim);}
+
+  .steps-row{display:flex; padding:16px 18px 6px; gap:10px;}
+  .step{flex:1; display:flex; flex-direction:column; align-items:center; text-align:center; gap:8px;}
+  .step .num{width:30px; height:30px; border-radius:50%; border:1.5px solid var(--blue); color:var(--blue); display:flex; align-items:center; justify-content:center; font-weight:800; font-size:13px; font-family:'Poppins';}
+  .step .t{font-size:11px; color:var(--dim); line-height:1.4;}
+
+  .promo{margin:16px 18px 90px; background:var(--surface-2); border:1px dashed var(--blue); border-radius:16px; padding:16px; display:flex; align-items:center; gap:12px;}
+  .promo .t1{font-size:13px; font-weight:700;}
+  .promo .t2{font-size:11.5px; color:var(--dim); margin-top:2px;}
+
+  /* persistent mini tracker */
+  .mini-tracker{position:absolute; left:12px; right:12px; bottom:78px; z-index:35; background:var(--surface); border:1px solid var(--line); border-radius:14px; padding:10px 12px; display:flex; align-items:center; gap:10px; box-shadow:0 10px 30px rgba(0,0,0,0.5);}
+  .mini-tracker .dot-pulse{width:9px; height:9px; border-radius:50%; background:var(--blue); flex-shrink:0; box-shadow:0 0 0 0 rgba(47,111,255,0.6); animation:pulse 1.6s infinite;}
+  @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(47,111,255,0.55);} 70%{box-shadow:0 0 0 8px rgba(47,111,255,0);} 100%{box-shadow:0 0 0 0 rgba(47,111,255,0);}}
+  .mini-tracker .txt{flex:1; min-width:0;}
+  .mini-tracker .t1{font-size:12px; font-weight:700; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+  .mini-tracker .t2{font-size:10.5px; color:var(--dim);}
+  .mini-tracker .view{font-size:11px; font-weight:700; color:var(--blue); flex-shrink:0;}
+
+  /* bottom nav */
+  .bottomnav{display:flex; align-items:center; justify-content:space-around; padding:10px 6px 16px; background:rgba(6,6,6,0.92); backdrop-filter:blur(14px); border-top:1px solid var(--line); position:absolute; bottom:0; left:0; right:0; z-index:40;}
+  .navbtn{background:none; border:none; display:flex; flex-direction:column; align-items:center; gap:3px; color:var(--faint); width:52px;}
+  .navbtn.active{color:#fff;}
+  .navbtn.active svg{stroke:var(--blue);}
+  .navbtn .lbl{font-size:9px; font-weight:600;}
+  .navbtn.book-btn{width:46px; height:32px; border-radius:10px; background:var(--blue); display:flex; align-items:center; justify-content:center; color:#fff;}
+
+  /* ---- BOOK ---- */
+  .chip-row{display:flex; gap:8px; padding:14px 18px 4px; flex-wrap:wrap;}
+  .chip{padding:9px 14px; border-radius:24px; border:1px solid var(--line); background:var(--surface); font-size:12.5px; font-weight:600; color:var(--dim); display:flex; align-items:center; gap:6px;}
+  .chip.active{background:var(--blue-dim); border-color:var(--blue); color:var(--blue);}
+
+  .date-row{display:flex; gap:10px; padding:12px 18px 4px; overflow-x:auto; scrollbar-width:none;}
+  .date-row::-webkit-scrollbar{display:none;}
+  .date-card{flex-shrink:0; width:58px; padding:12px 0; border-radius:14px; border:1px solid var(--line); background:var(--surface); text-align:center;}
+  .date-card.active{background:var(--blue); border-color:var(--blue);}
+  .date-card .d1{font-size:10.5px; color:var(--dim); font-weight:600;}
+  .date-card.active .d1{color:rgba(255,255,255,0.8);}
+  .date-card .d2{font-size:16px; font-weight:800; font-family:'Poppins'; margin-top:3px;}
+
+  .time-grid{display:grid; grid-template-columns:1fr 1fr 1fr; gap:8px; padding:12px 18px 4px;}
+  .time-card{padding:10px 4px; border-radius:12px; border:1px solid var(--line); background:var(--surface); text-align:center; font-size:12px; font-weight:600; color:var(--dim);}
+  .time-card.active{background:var(--blue-dim); border-color:var(--blue); color:var(--blue);}
+
+  .addr-card{margin:14px 18px 0; background:var(--surface); border:1px solid var(--line); border-radius:14px; padding:14px; display:flex; align-items:center; gap:12px;}
+  .addr-card .ic{width:36px; height:36px; border-radius:10px; background:var(--blue-dim); color:var(--blue); display:flex; align-items:center; justify-content:center; flex-shrink:0;}
+  .addr-card .txt{flex:1; min-width:0;}
+  .addr-card .t1{font-size:13px; font-weight:700;}
+  .addr-card .t2{font-size:11.5px; color:var(--dim);}
+  .addr-card .change{font-size:11.5px; color:var(--blue); font-weight:700;}
+
+  .stepper-row{margin:14px 18px 0; background:var(--surface); border:1px solid var(--line); border-radius:14px; padding:14px; display:flex; align-items:center; justify-content:space-between;}
+  .stepper-row .t1{font-size:13px; font-weight:700;}
+  .stepper-row .t2{font-size:11.5px; color:var(--dim);}
+  .stepper-ctrl{display:flex; align-items:center; gap:14px;}
+  .stepper-btn{width:28px; height:28px; border-radius:50%; border:1px solid var(--line); background:var(--surface-2); color:#fff; display:flex; align-items:center; justify-content:center;}
+  .stepper-ctrl .n{font-size:14px; font-weight:800; font-family:'Poppins'; width:16px; text-align:center;}
+
+  .notes-box{margin:14px 18px 100px; background:var(--surface); border:1px solid var(--line); border-radius:14px; padding:12px 14px; font-size:12.5px; color:var(--faint);}
+
+  .book-bottom{position:absolute; left:0; right:0; bottom:0; z-index:40; background:rgba(10,10,10,0.95); backdrop-filter:blur(14px); border-top:1px solid var(--line); padding:14px 18px calc(16px); display:flex; align-items:center; gap:14px;}
+  .book-bottom .price{flex:1;}
+  .book-bottom .price .p1{font-size:10.5px; color:var(--dim);}
+  .book-bottom .price .p2{font-size:17px; font-weight:800; font-family:'Poppins';}
+  .book-bottom .cta{background:var(--blue); color:#fff; border:none; padding:13px 22px; border-radius:12px; font-size:13.5px; font-weight:700;}
+
+  /* ---- ORDERS ---- */
+  .segmented{display:flex; margin:14px 18px 4px; background:var(--surface); border-radius:12px; padding:4px; border:1px solid var(--line);}
+  .segmented button{flex:1; border:none; background:none; padding:9px; border-radius:9px; font-size:12.5px; font-weight:700; color:var(--dim);}
+  .segmented button.active{background:var(--blue); color:#fff;}
+
+  .order-list{padding:14px 18px 90px; display:flex; flex-direction:column; gap:12px;}
+  .order-card{background:var(--surface); border:1px solid var(--line); border-radius:16px; padding:14px; display:flex; align-items:center; gap:12px;}
+  .order-card .mini-port{width:44px; height:44px; border-radius:50%; flex-shrink:0; background:repeating-conic-gradient(from 0deg, var(--surface-2) 0deg 20deg, #101010 20deg 40deg); border:2.5px solid var(--blue); display:flex; align-items:center; justify-content:center;}
+  .order-card .mini-port .core{width:22px; height:22px; border-radius:50%; background:var(--black);}
+  .order-card .info{flex:1; min-width:0;}
+  .order-card .t1{font-size:13.5px; font-weight:700;}
+  .order-card .t2{font-size:11.5px; color:var(--dim); margin-top:2px;}
+  .status-pill{font-size:10px; font-weight:700; padding:4px 9px; border-radius:20px; border:1px solid var(--blue); color:var(--blue); white-space:nowrap;}
+  .status-pill.done{border-color:var(--faint); color:var(--dim);}
+
+  /* ---- TRACK ---- */
+  .track-hero{margin:16px 18px 0; display:flex; flex-direction:column; align-items:center; text-align:center; gap:6px;}
+  .track-hero .porthole{width:96px; height:96px;}
+  .track-hero .porthole .core{width:52px; height:52px;}
+  .track-hero h2{font-family:'Poppins'; font-weight:800; font-size:18px; margin-top:8px;}
+  .track-hero p{font-size:12px; color:var(--dim);}
+
+  .timeline{margin:22px 18px 0; display:flex; flex-direction:column;}
+  .t-item{display:flex; gap:14px;}
+  .t-item .rail{display:flex; flex-direction:column; align-items:center;}
+  .t-item .node{width:22px; height:22px; border-radius:50%; border:2px solid var(--faint); display:flex; align-items:center; justify-content:center; flex-shrink:0;}
+  .t-item.done .node{background:var(--blue); border-color:var(--blue);}
+  .t-item.current .node{border-color:var(--blue); background:var(--black);}
+  .t-item .line{width:2px; flex:1; background:var(--line); min-height:30px;}
+  .t-item.done .line{background:var(--blue);}
+  .t-item .body{padding-bottom:26px;}
+  .t-item .t1{font-size:13.5px; font-weight:700;}
+  .t-item.current .t1{color:var(--blue);}
+  .t-item .t2{font-size:11.5px; color:var(--dim); margin-top:2px;}
+
+  .map-box{margin:6px 18px 0; height:130px; border-radius:16px; border:1px solid var(--line); background-image:linear-gradient(rgba(255,255,255,0.06) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.06) 1px,transparent 1px); background-size:18px 18px; background-color:#0d0d0d; position:relative; overflow:hidden;}
+  .map-box .pin{position:absolute; top:44%; left:52%; width:26px; height:26px; border-radius:50% 50% 50% 0; background:var(--blue); transform:rotate(-45deg); display:flex; align-items:center; justify-content:center;}
+  .map-box .pin .dot{width:8px; height:8px; border-radius:50%; background:#fff; transform:rotate(45deg);}
+
+  .driver-card{margin:14px 18px 0; background:var(--surface); border:1px solid var(--line); border-radius:16px; padding:14px; display:flex; align-items:center; gap:12px;}
+  .driver-card .av{width:42px; height:42px; border-radius:50%; background:#fff; color:#000; display:flex; align-items:center; justify-content:center; font-family:'Poppins'; font-weight:800;}
+  .driver-card .info{flex:1;}
+  .driver-card .t1{font-size:13px; font-weight:700;}
+  .driver-card .t2{font-size:11.5px; color:var(--dim);}
+  .driver-card .actions{display:flex; gap:8px;}
+  .driver-card .actions button{width:36px; height:36px; border-radius:50%; background:var(--surface-2); border:1px solid var(--line); display:flex; align-items:center; justify-content:center; color:#fff;}
+
+  .items-card{margin:14px 18px 90px; background:var(--surface); border:1px solid var(--line); border-radius:16px; padding:14px;}
+  .items-card .row-title{font-size:13px; font-weight:700; margin-bottom:10px;}
+  .items-card .item-row{display:flex; justify-content:space-between; font-size:12.5px; color:var(--dim); padding:6px 0; border-bottom:1px solid var(--line);}
+  .items-card .item-row:last-child{border-bottom:none;}
+  .items-card .item-row span:last-child{color:#fff; font-weight:600;}
+  .items-card .total-row{display:flex; justify-content:space-between; margin-top:10px; padding-top:10px; border-top:1px solid var(--line); font-size:13.5px; font-weight:800;}
+
+  /* ---- PROFILE ---- */
+  .profile-top{padding:20px 18px 6px; display:flex; align-items:center; gap:14px;}
+  .profile-top .av{width:60px; height:60px; border-radius:50%; background:#fff; color:#000; display:flex; align-items:center; justify-content:center; font-family:'Poppins'; font-weight:800; font-size:20px;}
+  .profile-top .name{font-size:16px; font-weight:800; font-family:'Poppins';}
+  .profile-top .tier{font-size:11.5px; color:var(--blue); font-weight:700; margin-top:2px;}
+  .list-group{margin:16px 18px 0; background:var(--surface); border:1px solid var(--line); border-radius:16px; overflow:hidden;}
+  .list-row{display:flex; align-items:center; gap:12px; padding:14px; border-bottom:1px solid var(--line);}
+  .list-row:last-child{border-bottom:none;}
+  .list-row .ic{width:34px; height:34px; border-radius:10px; background:var(--surface-2); display:flex; align-items:center; justify-content:center; color:var(--blue); flex-shrink:0;}
+  .list-row .t1{flex:1; font-size:13px; font-weight:600;}
+  .list-row .chev{color:var(--faint);}
+  .logout-row{margin:90px 18px 0; text-align:center; font-size:12.5px; color:var(--dim); font-weight:600; padding-bottom:14px;}
+</style>
+</head>
+<body>
+
+<div class="phone">
+  <div class="notch"></div>
+  <div class="statusbar">
+    <span>9:41</span>
+    <span style="display:flex; gap:5px; align-items:center;">
+      <svg width="16" height="11" viewBox="0 0 16 11" fill="none"><rect x="0" y="6" width="3" height="5" rx="0.5" fill="#fff"/><rect x="4.5" y="4" width="3" height="7" rx="0.5" fill="#fff"/><rect x="9" y="2" width="3" height="9" rx="0.5" fill="#fff"/><rect x="13" y="0" width="3" height="11" rx="0.5" fill="#fff"/></svg>
+      <svg width="16" height="11" viewBox="0 0 24 16" fill="none"><rect x="1" y="1" width="19" height="10" rx="2.5" stroke="#fff" stroke-width="1.3"/><rect x="2.5" y="2.5" width="14" height="7" rx="1.2" fill="#fff"/><rect x="21.5" y="4.3" width="1.6" height="3.4" rx="0.8" fill="#fff"/></svg>
+    </span>
+  </div>
+
+  <div class="m-screens">
+
+    <!-- HOME -->
+    <div class="m-screen active" id="m-home">
+      <div class="app-header">
+        <div class="addr">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+          <div class="txt">
+            <div class="l1">Deliver to</div>
+            <div class="l2">221B Baker Street <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"><path d="m6 9 6 6 6-6"/></svg></div>
+          </div>
+        </div>
+        <div class="h-actions">
+          <button class="icon-btn"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 1 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg><span class="dot"></span></button>
+          <div class="avatar-sm">JM</div>
+        </div>
+      </div>
+
+      <div class="porthole-card" onclick="showScreen('track')" style="cursor:pointer;">
+        <div class="porthole"><div class="core"></div></div>
+        <div class="porthole-info">
+          <span class="pill">In Progress</span>
+          <div class="t1">Order #4821 is being washed</div>
+          <div class="t2">Ready by today, 6:00 PM</div>
+        </div>
+        <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m9 6 6 6-6 6"/></svg>
+      </div>
+
+      <div class="hero">
+        <div class="hero-glow"></div>
+        <h2>Fresh laundry,<br>zero effort.</h2>
+        <p>Schedule a free pickup in under a minute. We wash, dry clean, and deliver — right to your door.</p>
+        <button class="btn-primary" onclick="showScreen('book')">
+          Schedule Pickup
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round"><path d="m9 6 6 6-6 6"/></svg>
+        </button>
+      </div>
+
+      <div class="section"><div class="section-title">Our Services</div><div class="section-sub">Pick a service to get started</div></div>
+      <div class="service-grid">
+        <div class="service-card" onclick="showScreen('book')">
+          <div class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3.5"/><circle cx="8.5" cy="6.5" r=".6" fill="currentColor" stroke="none"/></svg></div>
+          <div class="t1">Wash & Fold</div>
+          <div class="t2">From $1.75/lb</div>
+        </div>
+        <div class="service-card" onclick="showScreen('book')">
+          <div class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a2 2 0 0 1 2 2c0 .9-.6 1.6-1.4 1.9L12 7.2v1.3l7 4a2 2 0 0 1-1 3.7H6a2 2 0 0 1-1-3.7l7-4V7.2l-.6-.3C10.6 6.6 10 5.9 10 5a2 2 0 0 1 2-2Z"/><path d="M3 20h18"/></svg></div>
+          <div class="t1">Dry Cleaning</div>
+          <div class="t2">From $6.00/item</div>
+        </div>
+        <div class="service-card" onclick="showScreen('book')">
+          <div class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 16 8 8h9a2.5 2.5 0 0 1 2.5 2.5V16Z"/><path d="M9.5 8V5h4v3"/><path d="M4 16h16"/></svg></div>
+          <div class="t1">Ironing</div>
+          <div class="t2">From $2.50/item</div>
+        </div>
+        <div class="service-card" onclick="showScreen('book')">
+          <div class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18c0-2 2-3 4-4l5-2c2-1 3-1 5-1 2.5 0 3 1.5 3 3v2a2 2 0 0 1-2 2H3Z"/><path d="M8 12V9a2 2 0 0 1 2-2h2"/></svg></div>
+          <div class="t1">Shoe Care</div>
+          <div class="t2">From $9.00/pair</div>
+        </div>
+      </div>
+
+      <div class="section"><div class="section-title">How it works</div></div>
+      <div class="steps-row">
+        <div class="step"><div class="num">1</div><div class="t">Schedule a free pickup online</div></div>
+        <div class="step"><div class="num">2</div><div class="t">We wash, dry clean & fold</div></div>
+        <div class="step"><div class="num">3</div><div class="t">Delivered fresh to your door</div></div>
+      </div>
+
+      <div class="promo">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12v6a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-6"/><path d="M2 7h20v5H2z"/><path d="M12 22V7"/><path d="M12 7S9.5 2 7 2 4 4 4 5.5 5.5 7 7 7Z"/><path d="M12 7s2.5-5 5-5 3 2 3 3.5S18.5 7 17 7Z"/></svg>
+        <div><div class="t1">20% off your first order</div><div class="t2">Use code <b style="color:#fff;">FRESH20</b> at checkout</div></div>
+      </div>
+
+      <div class="mini-tracker" onclick="showScreen('track')">
+        <div class="dot-pulse"></div>
+        <div class="txt"><div class="t1">Order #4821 · Being washed</div><div class="t2">Ready by 6:00 PM today</div></div>
+        <div class="view">View</div>
+      </div>
+    </div>
+
+    <!-- BOOK -->
+    <div class="m-screen" id="m-book">
+      <div class="app-header">
+        <button class="back-btn" onclick="showScreen('home')"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg></button>
+        <div class="h-title">Schedule Pickup</div>
+        <div style="width:22px;"></div>
+      </div>
+
+      <div class="section" style="padding-top:16px;"><div class="section-title">Select Services</div></div>
+      <div class="chip-row">
+        <div class="chip active"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>Wash & Fold</div>
+        <div class="chip">Dry Cleaning</div>
+        <div class="chip">Ironing</div>
+        <div class="chip">Shoe Care</div>
+      </div>
+
+      <div class="section"><div class="section-title">Pickup Date</div></div>
+      <div class="date-row">
+        <div class="date-card active"><div class="d1">TODAY</div><div class="d2">24</div></div>
+        <div class="date-card"><div class="d1">FRI</div><div class="d2">25</div></div>
+        <div class="date-card"><div class="d1">SAT</div><div class="d2">26</div></div>
+        <div class="date-card"><div class="d1">SUN</div><div class="d2">27</div></div>
+        <div class="date-card"><div class="d1">MON</div><div class="d2">28</div></div>
+      </div>
+
+      <div class="section"><div class="section-title">Time Slot</div></div>
+      <div class="time-grid">
+        <div class="time-card">8–11 AM</div>
+        <div class="time-card active">12–3 PM</div>
+        <div class="time-card">4–7 PM</div>
+      </div>
+
+      <div class="addr-card">
+        <div class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></div>
+        <div class="txt"><div class="t1">221B Baker Street</div><div class="t2">London, NW1 6XE</div></div>
+        <div class="change">Change</div>
+      </div>
+
+      <div class="stepper-row">
+        <div><div class="t1">Est. bags</div><div class="t2">~15 lbs per bag</div></div>
+        <div class="stepper-ctrl">
+          <button class="stepper-btn" onclick="adjustBags(-1)">−</button>
+          <span class="n" id="bagCount">2</span>
+          <button class="stepper-btn" onclick="adjustBags(1)">+</button>
+        </div>
+      </div>
+
+      <div class="notes-box">
+        <b style="color:#fff;">Notes for driver:</b> Leave with doorman if not home. Ring bell twice.
+      </div>
+
+      <div class="book-bottom">
+        <div class="price"><div class="p1">Estimated total</div><div class="p2">$38.50</div></div>
+        <button class="cta" onclick="showScreen('orders')">Confirm Pickup</button>
+      </div>
+    </div>
+
+    <!-- ORDERS -->
+    <div class="m-screen" id="m-orders">
+      <div class="app-header"><div class="h-title">Your Orders</div><div class="h-actions"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg></div></div>
+      <div class="segmented"><button class="active">Active</button><button>History</button></div>
+      <div class="order-list">
+        <div class="order-card" onclick="showScreen('track')" style="cursor:pointer;">
+          <div class="mini-port"><div class="core"></div></div>
+          <div class="info"><div class="t1">Order #4821</div><div class="t2">Wash & Fold · 2 bags · Today</div></div>
+          <div class="status-pill">Washing</div>
+        </div>
+        <div class="order-card" onclick="showScreen('track')" style="cursor:pointer;">
+          <div class="mini-port"><div class="core"></div></div>
+          <div class="info"><div class="t1">Order #4790</div><div class="t2">Dry Cleaning · 5 items · Yesterday</div></div>
+          <div class="status-pill">Out for delivery</div>
+        </div>
+        <div class="order-card">
+          <div class="mini-port" style="animation:none;"><div class="core"></div></div>
+          <div class="info"><div class="t1">Order #4732</div><div class="t2">Wash & Fold · 1 bag · Jul 18</div></div>
+          <div class="status-pill done">Delivered</div>
+        </div>
+        <div class="order-card">
+          <div class="mini-port" style="animation:none;"><div class="core"></div></div>
+          <div class="info"><div class="t1">Order #4701</div><div class="t2">Ironing · 8 items · Jul 12</div></div>
+          <div class="status-pill done">Delivered</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TRACK -->
+    <div class="m-screen" id="m-track">
+      <div class="app-header">
+        <button class="back-btn" onclick="showScreen('orders')"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg></button>
+        <div class="h-title">Order #4821</div>
+        <div style="width:22px;"></div>
+      </div>
+
+      <div class="track-hero">
+        <div class="porthole"><div class="core"></div></div>
+        <h2>Your laundry is being washed</h2>
+        <p>Estimated ready by 6:00 PM today</p>
+      </div>
+
+      <div class="timeline">
+        <div class="t-item done"><div class="rail"><div class="node"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg></div><div class="line"></div></div><div class="body"><div class="t1">Scheduled</div><div class="t2">Pickup confirmed for 12–3 PM</div></div></div>
+        <div class="t-item done"><div class="rail"><div class="node"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg></div><div class="line"></div></div><div class="body"><div class="t1">Picked Up</div><div class="t2">Driver collected at 1:42 PM</div></div></div>
+        <div class="t-item current"><div class="rail"><div class="node"></div><div class="line"></div></div><div class="body"><div class="t1">Washing & Folding</div><div class="t2">In progress at our facility</div></div></div>
+        <div class="t-item"><div class="rail"><div class="node"></div><div class="line"></div></div><div class="body"><div class="t1">Out for Delivery</div><div class="t2">Pending</div></div></div>
+        <div class="t-item"><div class="rail"><div class="node"></div></div><div class="body"><div class="t1">Delivered</div><div class="t2">Pending</div></div></div>
+      </div>
+
+      <div class="map-box"><div class="pin"><div class="dot"></div></div></div>
+
+      <div class="driver-card">
+        <div class="av">RK</div>
+        <div class="info"><div class="t1">Ravi K.</div><div class="t2">Facility processing team</div></div>
+        <div class="actions">
+          <button><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3.1-8.7A2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.3 1.8.6 2.7a2 2 0 0 1-.4 2.1L8.1 9.7a16 16 0 0 0 6 6l1.2-1.2a2 2 0 0 1 2.1-.4c.9.3 1.8.5 2.7.6a2 2 0 0 1 1.9 2Z"/></svg></button>
+          <button><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2Z"/></svg></button>
+        </div>
+      </div>
+
+      <div class="items-card">
+        <div class="row-title">Order Summary</div>
+        <div class="item-row"><span>Wash & Fold (2 bags, ~28 lbs)</span><span>$32.00</span></div>
+        <div class="item-row"><span>Fabric softener add-on</span><span>$2.50</span></div>
+        <div class="item-row"><span>Delivery</span><span>Free</span></div>
+        <div class="total-row"><span>Total</span><span>$34.50</span></div>
+      </div>
+    </div>
+
+    <!-- PROFILE -->
+    <div class="m-screen" id="m-profile">
+      <div class="app-header"><div class="h-title">Profile</div><div class="h-actions"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 1 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg></div></div>
+      <div class="profile-top">
+        <div class="av">JM</div>
+        <div><div class="name">Jules Mercer</div><div class="tier">★ Pressto Plus Member</div></div>
+      </div>
+      <div class="list-group">
+        <div class="list-row"><div class="ic"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></div><div class="t1">Saved Addresses</div><svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m9 6 6 6-6 6"/></svg></div>
+        <div class="list-row"><div class="ic"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg></div><div class="t1">Payment Methods</div><svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m9 6 6 6-6 6"/></svg></div>
+        <div class="list-row"><div class="ic"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 1 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg></div><div class="t1">Notifications</div><svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m9 6 6 6-6 6"/></svg></div>
+        <div class="list-row"><div class="ic"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 2-3 4"/><path d="M12 17h.01"/></svg></div><div class="t1">Help & Support</div><svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m9 6 6 6-6 6"/></svg></div>
+        <div class="list-row"><div class="ic"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12v6a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-6"/><path d="M2 7h20v5H2z"/><path d="M12 22V7"/></svg></div><div class="t1">Refer & Earn</div><svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m9 6 6 6-6 6"/></svg></div>
+      </div>
+      <div class="logout-row">Log Out</div>
+    </div>
+
+  </div>
+
+  <div class="bottomnav">
+    <button class="navbtn active" data-mtab="home"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/><path d="M9 22V12h6v10"/></svg><span class="lbl">Home</span></button>
+    <button class="navbtn" data-mtab="orders"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12v6a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-6"/><path d="M2 7h20v5H2z"/><path d="M12 22V7"/></svg><span class="lbl">Orders</span></button>
+    <button class="navbtn book-btn" data-mtab="book"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></button>
+    <button class="navbtn" data-mtab="profile"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg><span class="lbl">Profile</span></button>
+  </div>
+</div>
+
+<script>
+  const navBtns = document.querySelectorAll('.navbtn');
+  const mScreens = document.querySelectorAll('.m-screen');
+
+  function showScreen(id){
+    mScreens.forEach(s=>s.classList.remove('active'));
+    document.getElementById('m-'+id).classList.add('active');
+    navBtns.forEach(b=>{
+      b.classList.toggle('active', b.dataset.mtab===id);
+    });
+  }
+
+  navBtns.forEach(btn=>{
+    btn.addEventListener('click', ()=> showScreen(btn.dataset.mtab));
+  });
+
+  document.querySelectorAll('.chip').forEach(c=>{
+    c.addEventListener('click', ()=> c.classList.toggle('active'));
+  });
+  document.querySelectorAll('.date-card').forEach(c=>{
+    c.addEventListener('click', ()=>{
+      document.querySelectorAll('.date-card').forEach(x=>x.classList.remove('active'));
+      c.classList.add('active');
+    });
+  });
+  document.querySelectorAll('.time-card').forEach(c=>{
+    c.addEventListener('click', ()=>{
+      document.querySelectorAll('.time-card').forEach(x=>x.classList.remove('active'));
+      c.classList.add('active');
+    });
+  });
+  document.querySelectorAll('.segmented button').forEach(b=>{
+    b.addEventListener('click', ()=>{
+      b.parentElement.querySelectorAll('button').forEach(x=>x.classList.remove('active'));
+      b.classList.add('active');
+    });
+  });
+
+  let bags = 2;
+  function adjustBags(delta){
+    bags = Math.max(1, Math.min(9, bags+delta));
+    document.getElementById('bagCount').textContent = bags;
+  }
+</script>
+
+</body>
+</html>

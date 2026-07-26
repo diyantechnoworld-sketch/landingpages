@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Outsole — Grail season. Verified only.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#edeae2;
+    --paper-raised:#e3ddd0;
+    --paper-deep:#d9d2c2;
+    --ink:#17140f;
+    --ink-soft:#5c574c;
+    --ink-faint:#918c7d;
+    --orange:#ff5b1f;
+    --moss:#3f6b4f;
+    --line:#c9c1ac;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Inter',sans-serif;
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+  .display{font-family:'Archivo Black',sans-serif;letter-spacing:-0.01em;line-height:0.98;}
+  .mono{font-family:'Space Mono',monospace;}
+  a{color:inherit;text-decoration:none;}
+  .wrap{max-width:1200px;margin:0 auto;padding:0 32px;}
+  img{max-width:100%;display:block;}
+
+  .eyebrow{
+    font-family:'Space Mono',monospace;
+    font-size:11px;letter-spacing:0.14em;text-transform:uppercase;
+    color:var(--ink-soft);
+    display:flex;align-items:center;gap:8px;
+  }
+  .eyebrow .lit{color:var(--orange);}
+  .eyebrow::before{content:"●";color:var(--orange);font-size:8px;}
+
+  /* header */
+  header{
+    position:sticky;top:0;z-index:60;
+    background:rgba(237,234,226,0.92);
+    backdrop-filter:blur(8px);
+    border-bottom:2px solid var(--ink);
+  }
+  .nav{display:flex;align-items:center;justify-content:space-between;padding:18px 0;}
+  .logo{font-family:'Archivo Black',sans-serif;font-size:22px;letter-spacing:-0.02em;}
+  nav.links ul{list-style:none;display:flex;gap:34px;}
+  nav.links a{font-size:13.5px;font-weight:600;text-transform:uppercase;letter-spacing:0.03em;}
+  nav.links a:hover{color:var(--orange);}
+  .nav-icons{display:flex;align-items:center;gap:22px;}
+  .icon-btn{width:20px;height:20px;stroke:var(--ink);fill:none;stroke-width:1.8;cursor:pointer;}
+  .bag-count{
+    position:relative;
+  }
+  .bag-count::after{
+    content:"3";
+    position:absolute;top:-8px;right:-10px;
+    background:var(--orange);color:#fff;
+    font-family:'Space Mono',monospace;
+    font-size:9px;font-weight:700;
+    width:15px;height:15px;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+  }
+
+  /* hero */
+  .hero{padding:64px 0 0;border-bottom:2px solid var(--ink);}
+  .hero-top{
+    display:flex;justify-content:space-between;align-items:flex-end;
+    gap:40px;padding-bottom:44px;
+  }
+  .hero h1{
+    font-size:clamp(44px,7vw,92px);
+    max-width:780px;
+  }
+  .hero h1 .stroke{
+    -webkit-text-stroke:1.5px var(--ink);
+    color:var(--paper);
+  }
+  .hero-side{
+    max-width:260px;
+    padding-bottom:8px;
+    flex-shrink:0;
+  }
+  .hero-side p{font-size:14px;color:var(--ink-soft);margin-bottom:18px;}
+  .hero-actions{display:flex;flex-direction:column;gap:10px;}
+  .btn{
+    display:inline-flex;align-items:center;justify-content:center;gap:8px;
+    padding:14px 22px;
+    font-size:13.5px;font-weight:700;text-transform:uppercase;letter-spacing:0.04em;
+    border:2px solid var(--ink);
+    cursor:pointer;
+    transition:background 0.15s,color 0.15s,transform 0.15s;
+    white-space:nowrap;
+  }
+  .btn:active{transform:scale(0.97);}
+  .btn-solid{background:var(--ink);color:var(--paper);}
+  .btn-solid:hover{background:var(--orange);border-color:var(--orange);}
+  .btn-outline{background:transparent;color:var(--ink);}
+  .btn-outline:hover{background:var(--ink);color:var(--paper);}
+
+  .drop-strip{
+    display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;
+    border-top:2px solid var(--ink);
+    padding:16px 0;
+  }
+  .drop-strip .timer{
+    display:flex;gap:10px;align-items:center;
+    font-family:'Space Mono',monospace;
+    font-size:13px;
+  }
+  .timer .box{
+    background:var(--ink);color:var(--paper);
+    padding:6px 9px;border-radius:3px;
+    font-weight:700;
+  }
+
+  /* marquee */
+  .marquee{
+    background:var(--ink);color:var(--paper);
+    overflow:hidden;
+    white-space:nowrap;
+    border-bottom:2px solid var(--ink);
+  }
+  .marquee-track{
+    display:inline-flex;gap:40px;
+    padding:11px 0;
+    animation:scroll 22s linear infinite;
+  }
+  .marquee-track span{
+    font-family:'Space Mono',monospace;
+    font-size:12px;letter-spacing:0.08em;text-transform:uppercase;
+    display:flex;align-items:center;gap:40px;
+  }
+  .marquee-track span::after{content:"✦";color:var(--orange);}
+  @keyframes scroll{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+
+  /* section shell */
+  .section{padding:88px 0;border-bottom:2px solid var(--ink);}
+  .section-head{
+    display:flex;justify-content:space-between;align-items:flex-end;
+    margin-bottom:40px;flex-wrap:wrap;gap:16px;
+  }
+  .section-head h2{font-size:clamp(28px,3.6vw,44px);}
+  .section-head .see-all{
+    font-family:'Space Mono',monospace;font-size:12px;
+    text-transform:uppercase;letter-spacing:0.06em;
+    border-bottom:1px solid var(--ink);padding-bottom:2px;
+  }
+
+  /* product grid */
+  .product-grid{
+    display:grid;grid-template-columns:repeat(4,1fr);gap:1px;
+    background:var(--ink);
+    border:2px solid var(--ink);
+  }
+  .product-card{background:var(--paper);position:relative;}
+  .product-shot{
+    aspect-ratio:1/1;
+    position:relative;
+    overflow:hidden;
+    border-bottom:2px solid var(--ink);
+  }
+  .product-shot .fill{position:absolute;inset:0;}
+  .product-card:nth-child(1) .fill{background:linear-gradient(155deg,#232019,#4a4438 60%,#ff5b1f);}
+  .product-card:nth-child(2) .fill{background:linear-gradient(155deg,#e9e4d6,#c9c1ac 55%,#17140f);}
+  .product-card:nth-child(3) .fill{background:linear-gradient(155deg,#3f6b4f,#26402f 60%,#edeae2);}
+  .product-card:nth-child(4) .fill{background:linear-gradient(155deg,#7a1f14,#2b0f0a 60%,#ff5b1f);}
+  .tag-new{
+    position:absolute;top:10px;left:10px;
+    background:var(--orange);color:#fff;
+    font-family:'Space Mono',monospace;font-size:9.5px;font-weight:700;
+    padding:4px 8px;letter-spacing:0.05em;
+  }
+  .product-info{padding:16px;}
+  .product-info .sku{
+    font-family:'Space Mono',monospace;font-size:10px;color:var(--ink-faint);
+    letter-spacing:0.05em;margin-bottom:8px;
+  }
+  .product-info h3{font-size:14.5px;font-weight:600;margin-bottom:6px;}
+  .product-info .price{
+    font-family:'Space Mono',monospace;font-weight:700;font-size:14px;margin-bottom:12px;
+  }
+  .size-dots{display:flex;gap:5px;flex-wrap:wrap;}
+  .size-dots span{
+    font-family:'Space Mono',monospace;font-size:9.5px;
+    border:1px solid var(--line);
+    padding:2px 5px;color:var(--ink-soft);
+  }
+  .size-dots span.out{color:var(--ink-faint);text-decoration:line-through;border-color:var(--paper-deep);}
+
+  /* categories */
+  .cat-row{display:flex;gap:12px;flex-wrap:wrap;}
+  .cat-pill{
+    border:2px solid var(--ink);
+    padding:10px 20px;
+    font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:0.03em;
+    cursor:pointer;transition:background 0.15s,color 0.15s;
+  }
+  .cat-pill:hover, .cat-pill.active{background:var(--ink);color:var(--paper);}
+
+  /* trust / verification steps */
+  .verify-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:36px;}
+  .verify-step .num{
+    font-family:'Archivo Black',sans-serif;font-size:40px;color:var(--paper-deep);
+    -webkit-text-stroke:1.5px var(--ink);
+    margin-bottom:14px;
+  }
+  .verify-step h3{font-size:17px;margin-bottom:8px;}
+  .verify-step p{font-size:14px;color:var(--ink-soft);max-width:280px;}
+  .verify-badge{
+    display:inline-flex;align-items:center;gap:6px;
+    background:var(--moss);color:#fff;
+    font-family:'Space Mono',monospace;font-size:10.5px;font-weight:700;
+    padding:5px 10px;margin-top:14px;letter-spacing:0.04em;
+  }
+
+  /* editorial */
+  .editorial{display:grid;grid-template-columns:1fr 1fr;gap:0;border:2px solid var(--ink);}
+  .editorial-image{
+    aspect-ratio:4/3;
+    background:linear-gradient(160deg,#2b2b23,#5c574c 45%,#ff5b1f 130%);
+    border-right:2px solid var(--ink);
+  }
+  .editorial-copy{padding:44px;display:flex;flex-direction:column;justify-content:center;}
+  .editorial-copy h2{font-size:clamp(26px,3vw,36px);margin-bottom:16px;}
+  .editorial-copy p{font-size:14.5px;color:var(--ink-soft);margin-bottom:22px;max-width:400px;}
+
+  /* newsletter */
+  .newsletter{
+    display:flex;justify-content:space-between;align-items:center;
+    gap:32px;flex-wrap:wrap;
+    padding:56px 0;
+  }
+  .newsletter h2{font-size:clamp(26px,3.4vw,40px);max-width:420px;}
+  .newsletter-form{display:flex;gap:0;max-width:380px;width:100%;}
+  .newsletter-form input{
+    flex:1;border:2px solid var(--ink);border-right:none;
+    padding:14px 16px;font-family:'Inter',sans-serif;font-size:14px;
+    background:var(--paper);color:var(--ink);
+  }
+  .newsletter-form input:focus{outline:none;background:var(--paper-raised);}
+  .barcode{
+    display:flex;gap:2px;align-items:flex-end;height:42px;margin-top:18px;
+  }
+  .barcode span{background:var(--ink);width:2px;}
+
+  /* footer */
+  footer{padding:48px 0 30px;}
+  .footer-top{display:flex;justify-content:space-between;flex-wrap:wrap;gap:32px;margin-bottom:40px;}
+  .footer-cols{display:flex;gap:60px;flex-wrap:wrap;}
+  .footer-col h4{
+    font-family:'Space Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;
+    color:var(--ink-faint);margin-bottom:14px;
+  }
+  .footer-col ul{list-style:none;display:flex;flex-direction:column;gap:9px;}
+  .footer-col a{font-size:13.5px;color:var(--ink-soft);}
+  .footer-col a:hover{color:var(--orange);}
+  .footer-bottom{
+    display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;
+    padding-top:22px;border-top:1px solid var(--line);
+    font-family:'Space Mono',monospace;font-size:11px;color:var(--ink-faint);
+  }
+
+  .reveal{opacity:0;transform:translateY(16px);transition:opacity 0.6s ease,transform 0.6s ease;}
+  .reveal.in{opacity:1;transform:translateY(0);}
+  @media (prefers-reduced-motion:reduce){
+    *{animation-duration:0.001ms !important;animation-iteration-count:1 !important;transition-duration:0.001ms !important;scroll-behavior:auto !important;}
+  }
+
+  @media (max-width:900px){
+    nav.links{display:none;}
+    .hero-top{flex-direction:column;align-items:flex-start;}
+    .product-grid{grid-template-columns:repeat(2,1fr);}
+    .verify-grid{grid-template-columns:1fr;gap:28px;}
+    .editorial{grid-template-columns:1fr;}
+    .editorial-image{border-right:none;border-bottom:2px solid var(--ink);}
+  }
+  @media (max-width:560px){
+    .product-grid{grid-template-columns:1fr;}
+    .newsletter-form{flex-direction:column;}
+    .newsletter-form input{border-right:2px solid var(--ink);border-bottom:none;}
+    .newsletter-form button{border-top:none;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap nav">
+    <div class="logo">OUTSOLE</div>
+    <nav class="links"><ul>
+      <li><a href="#drop">Drops</a></li>
+      <li><a href="#shop">Sneakers</a></li>
+      <li><a href="#shop">Apparel</a></li>
+      <li><a href="#verify">Authentication</a></li>
+      <li><a href="#">Sell</a></li>
+    </ul></nav>
+    <div class="nav-icons">
+      <svg class="icon-btn" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+      <svg class="icon-btn" viewBox="0 0 24 24"><path d="M20 21a8 8 0 10-16 0"/><circle cx="12" cy="7" r="4"/></svg>
+      <svg class="icon-btn bag-count" viewBox="0 0 24 24"><path d="M6 8h12l-1 13H7L6 8z"/><path d="M9 8V6a3 3 0 016 0v2"/></svg>
+    </div>
+  </div>
+</header>
+
+<section class="hero" id="drop">
+  <div class="wrap">
+    <div class="hero-top">
+      <div>
+        <div class="eyebrow">Drop 014 <span class="lit">— live now</span></div>
+        <h1 class="display" style="margin-top:16px;">GRAIL SEASON.<br><span class="stroke">VERIFIED</span> ONLY.</h1>
+      </div>
+      <div class="hero-side">
+        <p>Every pair authenticated by hand before it ships. Buy, sell, and cop the next drop before it's gone.</p>
+        <div class="hero-actions">
+          <a href="#shop" class="btn btn-solid">Shop the drop</a>
+          <a href="#" class="btn btn-outline">Sell your pair</a>
+        </div>
+      </div>
+    </div>
+    <div class="drop-strip">
+      <div class="eyebrow">128 pairs left in Drop 014</div>
+      <div class="timer mono" id="timer">
+        <span class="box" id="hh">04</span>:<span class="box" id="mm">12</span>:<span class="box" id="ss">37</span>
+        <span style="color:var(--ink-soft);">until close</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="marquee">
+  <div class="marquee-track">
+    <span>AUTHENTICATED BY EXPERTS</span>
+    <span>FREE RETURNS ON EVERY PAIR</span>
+    <span>NEW DROPS EVERY FRIDAY</span>
+    <span>SHIPPED IN TAMPER-PROOF BOXES</span>
+    <span>AUTHENTICATED BY EXPERTS</span>
+    <span>FREE RETURNS ON EVERY PAIR</span>
+    <span>NEW DROPS EVERY FRIDAY</span>
+    <span>SHIPPED IN TAMPER-PROOF BOXES</span>
+  </div>
+</div>
+
+<section class="section reveal" id="shop">
+  <div class="wrap">
+    <div class="section-head">
+      <h2 class="display">FEATURED IN<br>THE DROP</h2>
+      <a href="#" class="see-all">View all 42 →</a>
+    </div>
+    <div class="cat-row" style="margin-bottom:32px;">
+      <div class="cat-pill active">Sneakers</div>
+      <div class="cat-pill">Apparel</div>
+      <div class="cat-pill">Accessories</div>
+      <div class="cat-pill">Vintage</div>
+      <div class="cat-pill">Sale</div>
+    </div>
+    <div class="product-grid">
+      <div class="product-card">
+        <div class="product-shot"><div class="fill"></div><span class="tag-new">New</span></div>
+        <div class="product-info">
+          <div class="sku mono">SKU AR‑002‑BLK</div>
+          <h3>Aero Runner '02</h3>
+          <div class="price mono">$185</div>
+          <div class="size-dots">
+            <span>8</span><span>9</span><span>10</span><span>10.5</span><span class="out">11</span>
+          </div>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-shot"><div class="fill"></div></div>
+        <div class="product-info">
+          <div class="sku mono">SKU CL‑114‑WHT</div>
+          <h3>Cloudline Low</h3>
+          <div class="price mono">$210</div>
+          <div class="size-dots">
+            <span>7</span><span>8</span><span class="out">9</span><span>10</span><span>11</span>
+          </div>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-shot"><div class="fill"></div><span class="tag-new">New</span></div>
+        <div class="product-info">
+          <div class="sku mono">SKU TG‑330‑OLV</div>
+          <h3>Trail Ghost Mid</h3>
+          <div class="price mono">$240</div>
+          <div class="size-dots">
+            <span>9</span><span>9.5</span><span>10</span><span>11</span><span>12</span>
+          </div>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-shot"><div class="fill"></div></div>
+        <div class="product-info">
+          <div class="sku mono">SKU RC‑088‑RED</div>
+          <h3>Retro Court 88</h3>
+          <div class="price mono">$165</div>
+          <div class="size-dots">
+            <span class="out">7</span><span>8</span><span>8.5</span><span>9</span><span>10</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section reveal" id="verify">
+  <div class="wrap">
+    <div class="section-head">
+      <h2 class="display">HOW WE<br>VERIFY EVERY PAIR</h2>
+    </div>
+    <div class="verify-grid">
+      <div class="verify-step">
+        <div class="num">01</div>
+        <h3>Submitted</h3>
+        <p>Sellers ship the pair straight to our authentication facility — never to the buyer directly.</p>
+      </div>
+      <div class="verify-step">
+        <div class="num">02</div>
+        <h3>Inspected</h3>
+        <p>Our authenticators check stitching, materials, box codes, and weight against manufacturer records.</p>
+        <div class="verify-badge">✓ VERIFIED</div>
+      </div>
+      <div class="verify-step">
+        <div class="num">03</div>
+        <h3>Shipped</h3>
+        <p>Approved pairs go out in a tamper-proof box with an Outsole authentication tag.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section reveal">
+  <div class="wrap">
+    <div class="editorial">
+      <div class="editorial-image"></div>
+      <div class="editorial-copy">
+        <div class="eyebrow">The lookbook</div>
+        <h2 class="display" style="margin-top:14px;">FROM THE<br>ARCHIVE.</h2>
+        <p>A running edit of the pairs worth knowing about — restocks, retros, and the ones that got away. Updated every drop.</p>
+        <a href="#" class="btn btn-outline" style="align-self:flex-start;">Read the edit</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="reveal">
+  <div class="wrap newsletter">
+    <div>
+      <div class="eyebrow">Drop alerts</div>
+      <h2 class="display" style="margin-top:12px;">NEVER MISS<br>A DROP AGAIN.</h2>
+    </div>
+    <div>
+      <form class="newsletter-form" onsubmit="return false;">
+        <input type="email" placeholder="you@email.com" required>
+        <button type="submit" class="btn btn-solid" style="border-left:none;">Notify me</button>
+      </form>
+      <div class="barcode" aria-hidden="true" id="barcode"></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-top">
+      <div class="logo">OUTSOLE</div>
+      <div class="footer-cols">
+        <div class="footer-col">
+          <h4>Shop</h4>
+          <ul><li><a href="#">Sneakers</a></li><li><a href="#">Apparel</a></li><li><a href="#">Vintage</a></li></ul>
+        </div>
+        <div class="footer-col">
+          <h4>Sell</h4>
+          <ul><li><a href="#">List a pair</a></li><li><a href="#">Payouts</a></li><li><a href="#">Seller guide</a></li></ul>
+        </div>
+        <div class="footer-col">
+          <h4>Support</h4>
+          <ul><li><a href="#">Authentication</a></li><li><a href="#">Returns</a></li><li><a href="#">Contact</a></li></ul>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 OUTSOLE, INC.</span>
+      <span>PRIVACY · TERMS · SHIPPING</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // countdown
+  var target = Date.now() + (4*3600 + 12*60 + 37)*1000;
+  function pad(n){ return String(n).padStart(2,'0'); }
+  function tick(){
+    var diff = Math.max(0, target - Date.now());
+    var hh = Math.floor(diff/3600000);
+    var mm = Math.floor((diff%3600000)/60000);
+    var ss = Math.floor((diff%60000)/1000);
+    document.getElementById('hh').textContent = pad(hh);
+    document.getElementById('mm').textContent = pad(mm);
+    document.getElementById('ss').textContent = pad(ss);
+  }
+  tick();
+  setInterval(tick, 1000);
+
+  // barcode
+  var bc = document.getElementById('barcode');
+  for(var i=0;i<48;i++){
+    var b = document.createElement('span');
+    b.style.height = (30 + Math.random()*12) + 'px';
+    if(Math.random() > 0.6) b.style.width = '3px';
+    bc.appendChild(b);
+  }
+
+  // reveal on scroll
+  var revealEls = document.querySelectorAll('.reveal');
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
+    });
+  },{threshold:0.1});
+  revealEls.forEach(function(el){ io.observe(el); });
+
+  // category pill toggle
+  document.querySelectorAll('.cat-pill').forEach(function(p){
+    p.addEventListener('click', function(){
+      document.querySelectorAll('.cat-pill').forEach(function(x){ x.classList.remove('active'); });
+      p.classList.add('active');
+    });
+  });
+</script>
+
+</body>
+</html>
