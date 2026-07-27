@@ -1,42 +1,99 @@
-# Simple workflow for deploying static content to GitHub Pages
-name: Deploy static content to Pages
+# ============================================================
+# AUTO-SCREENSHOT WORKFLOW
+# ------------------------------------------------------------
+# WHERE THIS FILE GOES: put this in the OTHER repo — the one your
+# demo pages already live in (diyantechnoworld-sketch/landingpages),
+# at the path: .github/workflows/screenshot.yml
+# (GitHub Actions only runs workflows found in that exact folder.)
+#
+# WHAT IT DOES:
+# Runs only when you push a new or changed .html file into
+# website/ or mobile/. Takes ONE screenshot of that page with a
+# real headless browser, saves it as a normal .png file in this
+# same repo, and commits it. It does NOT run on every visitor —
+# only on your pushes. GitHub Pages then serves that .png like
+# any other static image, so it's cached forever until you next
+# change that page.
+#
+# RESULT: your site's work.html shows a real screenshot that
+# updates only when you actually update the demo — never a live
+# render per visit, never a third-party billing/quota risk.
+# ============================================================
+name: Screenshot changed demo pages
 
 on:
-  # Runs on pushes targeting the default branch
   push:
-    branches: ["main"]
-  # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
+    branches: [main]
+    paths:
+      - 'website/**.html'
+      - 'mobile/**.html'
 
-# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
+# Lets the workflow commit the generated screenshot back to the repo.
 permissions:
-  contents: read
-  pages: write
-  id-token: write
-
-# Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
-# However, do NOT cancel in-progress runs as we want to allow these production deployments to complete.
-concurrency:
-  group: "pages"
-  cancel-in-progress: false
+  contents: write
 
 jobs:
-  # Single deploy job since we're just deploying
-  deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+  screenshot:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Setup Pages
-        uses: actions/configure-pages@v5
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+      - uses: actions/checkout@v4
         with:
-          # Upload entire repository
-          path: '.'
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+          fetch-depth: 2   # need the previous commit to diff changed files
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install Puppeteer (headless Chrome)
+        run: npm install puppeteer@22
+
+      - name: Find changed html files in website/ or mobile/
+        id: changed
+        run: |
+          FILES=$(git diff --name-only HEAD~1 HEAD -- 'website/*.html' 'mobile/*.html' | tr '\n' ' ')
+          echo "files=$FILES" >> "$GITHUB_OUTPUT"
+
+      - name: Screenshot each changed page
+        if: steps.changed.outputs.files != ''
+        run: |
+          cat <<'EOF' > shot.js
+          const puppeteer = require('puppeteer');
+          const path = require('path');
+          const fs = require('fs');
+
+          (async () => {
+            const files = process.argv.slice(2);
+            const browser = await puppeteer.launch({
+              args: ['--no-sandbox', '--disable-setuid-sandbox']
+            });
+            const page = await browser.newPage();
+            await page.setViewport({ width: 1200, height: 1200 });
+
+            for (const file of files) {
+              const category = file.startsWith('website/') ? 'website' : 'mobile';
+              const name = path.basename(file, path.extname(file));
+              const outDir = path.join('screenshots', category);
+              fs.mkdirSync(outDir, { recursive: true });
+              const outPath = path.join(outDir, name + '.png');
+
+              const fileUrl = 'file://' + path.resolve(file);
+              await page.goto(fileUrl, { waitUntil: 'networkidle0', timeout: 30000 });
+              // brief settle time for animated/JS-driven pages
+              await new Promise(r => setTimeout(r, 1500));
+              await page.screenshot({ path: outPath, clip: { x: 0, y: 0, width: 1200, height: 750 } });
+              console.log('Saved ' + outPath);
+            }
+
+            await browser.close();
+          })();
+          EOF
+          node shot.js ${{ steps.changed.outputs.files }}
+
+      - name: Commit generated screenshots
+        if: steps.changed.outputs.files != ''
+        run: |
+          git config user.name "screenshot-bot"
+          git config user.email "actions@github.com"
+          git add screenshots/
+          git diff --cached --quiet && echo "No screenshot changes" || git commit -m "Auto-screenshot: update demo previews [skip ci]"
+          git push
