@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ember — Some things shouldn't happen at swipe speed</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,ital@9..144,300..700,0..1&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #1C1420;
+    --bg-deep: #140D18;
+    --surface: #2A1F2E;
+    --surface-hi: #362A3B;
+    --text: #F5EDE4;
+    --text-muted: #B8A9AE;
+    --ember: #FF6B35;
+    --ember-dim: #7A3F26;
+    --rose: #C97B84;
+    --sage: #8FA382;
+    --line: rgba(245,237,228,0.09);
+    --display: 'Fraunces', serif;
+    --body: 'Space Grotesk', sans-serif;
+    --mono: 'JetBrains Mono', monospace;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--body);
+    line-height: 1.5;
+    overflow-x: hidden;
+  }
+
+  a { color: inherit; text-decoration: none; }
+
+  .wrap { max-width: 1120px; margin: 0 auto; padding: 0 32px; }
+
+  /* ---------- NAV ---------- */
+  nav {
+    position: sticky; top: 0; z-index: 50;
+    background: rgba(28,20,32,0.85);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--line);
+  }
+  nav .wrap {
+    display: flex; align-items: center; justify-content: space-between;
+    height: 72px;
+  }
+  .logo {
+    font-family: var(--display);
+    font-weight: 600; font-size: 22px;
+    letter-spacing: 0.01em;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .logo .dot {
+    width: 9px; height: 9px; border-radius: 50%;
+    background: var(--ember);
+    box-shadow: 0 0 12px 3px rgba(255,107,53,0.6);
+  }
+  .nav-links { display: flex; gap: 36px; font-size: 14px; color: var(--text-muted); }
+  .nav-links a:hover { color: var(--text); }
+  .nav-cta {
+    font-size: 14px; font-weight: 500;
+    padding: 10px 20px; border-radius: 999px;
+    border: 1px solid var(--line);
+    transition: border-color .2s, color .2s;
+  }
+  .nav-cta:hover { border-color: var(--ember); color: var(--ember); }
+
+  @media (max-width: 720px) { .nav-links { display: none; } }
+
+  /* ---------- HERO ---------- */
+  .hero {
+    position: relative;
+    padding: 120px 0 100px;
+    overflow: hidden;
+  }
+  .hero-glow {
+    position: absolute;
+    width: 900px; height: 900px;
+    left: 50%; top: -420px; transform: translateX(-50%);
+    background: radial-gradient(circle, rgba(255,107,53,0.20) 0%, rgba(255,107,53,0.06) 35%, transparent 70%);
+    pointer-events: none;
+    animation: breathe 7s ease-in-out infinite;
+  }
+  @keyframes breathe {
+    0%, 100% { opacity: 0.7; transform: translateX(-50%) scale(1); }
+    50% { opacity: 1; transform: translateX(-50%) scale(1.06); }
+  }
+  .hero-inner { position: relative; text-align: center; }
+  .eyebrow {
+    font-family: var(--mono); font-size: 12px; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--rose);
+    display: inline-flex; align-items: center; gap: 10px;
+    margin-bottom: 28px;
+  }
+  .eyebrow::before, .eyebrow::after {
+    content: ''; width: 24px; height: 1px; background: var(--rose); opacity: 0.5;
+  }
+  h1 {
+    font-family: var(--display);
+    font-weight: 500;
+    font-size: clamp(40px, 6.2vw, 78px);
+    line-height: 1.08;
+    letter-spacing: -0.01em;
+    max-width: 900px;
+    margin: 0 auto 26px;
+  }
+  h1 em {
+    font-style: italic; font-weight: 400; color: var(--ember);
+  }
+  .hero-sub {
+    font-size: 18px; color: var(--text-muted);
+    max-width: 520px; margin: 0 auto 44px;
+  }
+  .hero-ctas { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+  .btn-primary {
+    background: var(--ember); color: #1C1420;
+    font-weight: 600; font-size: 15px;
+    padding: 15px 30px; border-radius: 999px;
+    box-shadow: 0 8px 30px -8px rgba(255,107,53,0.55);
+    transition: transform .2s, box-shadow .2s;
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 34px -6px rgba(255,107,53,0.7); }
+  .btn-ghost {
+    border: 1px solid var(--line); font-weight: 500; font-size: 15px;
+    padding: 15px 28px; border-radius: 999px; color: var(--text-muted);
+    transition: border-color .2s, color .2s;
+  }
+  .btn-ghost:hover { border-color: var(--text-muted); color: var(--text); }
+
+  /* ---------- SLOW REVEAL (signature) ---------- */
+  .reveal {
+    padding: 100px 0 120px;
+    border-top: 1px solid var(--line);
+  }
+  .section-head { text-align: center; max-width: 620px; margin: 0 auto 72px; }
+  .section-label {
+    font-family: var(--mono); font-size: 12px; color: var(--sage);
+    text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 16px;
+  }
+  .section-head h2 {
+    font-family: var(--display); font-weight: 500;
+    font-size: clamp(28px, 3.6vw, 42px); line-height: 1.2; margin-bottom: 14px;
+  }
+  .section-head p { color: var(--text-muted); font-size: 16px; }
+
+  .timeline {
+    display: flex; align-items: flex-end; justify-content: space-between;
+    gap: 16px; max-width: 900px; margin: 0 auto 56px;
+    position: relative;
+  }
+  .timeline::before {
+    content: ''; position: absolute; left: 4%; right: 4%; top: 66px;
+    height: 1px; background: linear-gradient(90deg, var(--ember-dim), var(--ember));
+    z-index: 0;
+  }
+  .tstep { position: relative; z-index: 1; flex: 1; text-align: center; }
+  .tcard {
+    width: 100%; aspect-ratio: 3/4; border-radius: 16px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    margin-bottom: 18px;
+    display: flex; align-items: center; justify-content: center;
+    position: relative; overflow: hidden;
+  }
+  .tcard .figure {
+    width: 58%; height: 58%; border-radius: 50%;
+    background: radial-gradient(circle at 35% 30%, var(--ember-dim), var(--surface-hi) 70%);
+    filter: blur(14px); opacity: 0.5;
+    transition: filter .3s, opacity .3s;
+  }
+  .tstep[data-day="1"] .figure { filter: blur(14px); opacity: 0.35; }
+  .tstep[data-day="3"] .figure { filter: blur(7px); opacity: 0.6; background: radial-gradient(circle at 35% 30%, var(--rose), var(--surface-hi) 70%); }
+  .tstep[data-day="7"] .figure { filter: blur(2px); opacity: 0.85; background: radial-gradient(circle at 35% 30%, var(--ember), var(--surface-hi) 70%); }
+  .tstep[data-day="14"] .figure { filter: blur(0); opacity: 1; background: radial-gradient(circle at 35% 30%, var(--ember), var(--rose) 75%); box-shadow: 0 0 30px 6px rgba(255,107,53,0.35); }
+  .ember-dot {
+    width: 12px; height: 12px; border-radius: 50%; margin: 0 auto 12px;
+    background: var(--ember-dim);
+  }
+  .tstep[data-day="3"] .ember-dot { background: var(--rose); box-shadow: 0 0 8px 2px rgba(201,123,132,0.5); }
+  .tstep[data-day="7"] .ember-dot { background: var(--ember); box-shadow: 0 0 10px 2px rgba(255,107,53,0.55); }
+  .tstep[data-day="14"] .ember-dot { background: var(--ember); box-shadow: 0 0 16px 4px rgba(255,107,53,0.8); }
+  .tstep .day-label { font-family: var(--mono); font-size: 12px; color: var(--text-muted); margin-bottom: 4px; }
+  .tstep .day-desc { font-size: 13px; color: var(--text-muted); max-width: 130px; margin: 0 auto; }
+
+  @media (max-width: 720px) {
+    .timeline { flex-wrap: wrap; }
+    .timeline::before { display: none; }
+    .tstep { flex-basis: 40%; margin-bottom: 24px; }
+  }
+
+  /* ---------- FEATURES ---------- */
+  .features { padding: 100px 0; border-top: 1px solid var(--line); }
+  .feature-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px;
+    background: var(--line); border: 1px solid var(--line); border-radius: 20px; overflow: hidden;
+  }
+  .feature {
+    background: var(--bg); padding: 40px 32px;
+    transition: background .2s;
+  }
+  .feature:hover { background: var(--surface); }
+  .feature .ficon {
+    width: 40px; height: 40px; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 24px; font-size: 18px;
+  }
+  .feature:nth-child(1) .ficon { background: rgba(255,107,53,0.14); color: var(--ember); }
+  .feature:nth-child(2) .ficon { background: rgba(201,123,132,0.14); color: var(--rose); }
+  .feature:nth-child(3) .ficon { background: rgba(143,163,130,0.14); color: var(--sage); }
+  .feature h3 { font-family: var(--display); font-weight: 500; font-size: 20px; margin-bottom: 10px; }
+  .feature p { color: var(--text-muted); font-size: 14.5px; }
+
+  @media (max-width: 820px) { .feature-grid { grid-template-columns: 1fr; } }
+
+  /* ---------- PROMPT SAMPLE ---------- */
+  .prompt-section { padding: 100px 0; border-top: 1px solid var(--line); }
+  .prompt-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; }
+  .prompt-card {
+    background: var(--surface); border: 1px solid var(--line);
+    border-radius: 20px; padding: 32px;
+  }
+  .prompt-card .pdate { font-family: var(--mono); font-size: 12px; color: var(--text-muted); margin-bottom: 18px; }
+  .prompt-card .pquestion {
+    font-family: var(--display); font-style: italic; font-weight: 400;
+    font-size: 23px; line-height: 1.4; color: var(--text); margin-bottom: 22px;
+  }
+  .prompt-answer {
+    background: var(--bg-deep); border-radius: 14px; padding: 16px 18px;
+    font-size: 14.5px; color: var(--text-muted); border-left: 2px solid var(--ember);
+  }
+  .prompt-text h2 { font-family: var(--display); font-weight: 500; font-size: clamp(26px,3.2vw,36px); margin-bottom: 18px; line-height: 1.25; }
+  .prompt-text p { color: var(--text-muted); font-size: 16px; margin-bottom: 14px; max-width: 440px; }
+
+  @media (max-width: 820px) { .prompt-layout { grid-template-columns: 1fr; gap: 40px; } }
+
+  /* ---------- CTA ---------- */
+  .final-cta {
+    padding: 130px 0 140px; text-align: center;
+    border-top: 1px solid var(--line);
+    position: relative; overflow: hidden;
+  }
+  .final-cta .hero-glow { top: auto; bottom: -500px; opacity: 0.6; }
+  .final-cta h2 {
+    font-family: var(--display); font-weight: 500;
+    font-size: clamp(32px, 5vw, 54px); margin-bottom: 24px; position: relative;
+    max-width: 700px; margin-left: auto; margin-right: auto;
+  }
+  .final-cta p { color: var(--text-muted); margin-bottom: 40px; position: relative; }
+
+  /* ---------- FOOTER ---------- */
+  footer { border-top: 1px solid var(--line); padding: 40px 0; }
+  footer .wrap { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
+  footer .fnote { font-family: var(--mono); font-size: 12px; color: var(--text-muted); }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-glow { animation: none; }
+    html { scroll-behavior: auto; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <div class="logo"><span class="dot"></span>Ember</div>
+    <div class="nav-links">
+      <a href="#reveal">How it works</a>
+      <a href="#features">Why Ember</a>
+      <a href="#prompts">Daily prompts</a>
+    </div>
+    <a href="#cta" class="nav-cta">Get early access</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-glow"></div>
+  <div class="wrap hero-inner">
+    <div class="eyebrow">Now opening in 6 cities</div>
+    <h1>Some things shouldn't happen<br>at <em>swipe speed.</em></h1>
+    <p class="hero-sub">Ember shows you one person at a time and lets you actually get to know them before their face fully loads. No stack, no scroll, no burnout.</p>
+    <div class="hero-ctas">
+      <a href="#cta" class="btn-primary">Get early access</a>
+      <a href="#reveal" class="btn-ghost">See how it works</a>
+    </div>
+  </div>
+</section>
+
+<section class="reveal" id="reveal">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="section-label">The slow reveal</div>
+      <h2>Every match starts as an ember, not a photo grid</h2>
+      <p>Profiles come into focus as you talk — not before. The picture sharpens with every real exchange, so first impressions are made of words, not thumbnails.</p>
+    </div>
+    <div class="timeline">
+      <div class="tstep" data-day="1">
+        <div class="tcard"><div class="figure"></div></div>
+        <div class="ember-dot"></div>
+        <div class="day-label">DAY 1</div>
+        <div class="day-desc">A silhouette and one honest line</div>
+      </div>
+      <div class="tstep" data-day="3">
+        <div class="tcard"><div class="figure"></div></div>
+        <div class="ember-dot"></div>
+        <div class="day-label">DAY 3</div>
+        <div class="day-desc">Shape and warmth start to show</div>
+      </div>
+      <div class="tstep" data-day="7">
+        <div class="tcard"><div class="figure"></div></div>
+        <div class="ember-dot"></div>
+        <div class="day-label">DAY 7</div>
+        <div class="day-desc">Full profile, still no rush</div>
+      </div>
+      <div class="tstep" data-day="14">
+        <div class="tcard"><div class="figure"></div></div>
+        <div class="ember-dot"></div>
+        <div class="day-label">DAY 14</div>
+        <div class="day-desc">Time to meet, if you both want to</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="features" id="features">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="section-label">Why Ember</div>
+      <h2>Built to slow the whole thing down</h2>
+    </div>
+    <div class="feature-grid">
+      <div class="feature">
+        <div class="ficon">✶</div>
+        <h3>One match a day</h3>
+        <p>Ember surfaces a single new person daily, chosen from your daily prompt answers — not an infinite feed to burn through.</p>
+      </div>
+      <div class="feature">
+        <div class="ficon">✎</div>
+        <h3>Words before faces</h3>
+        <p>You read someone's answers before you see them clearly. Attraction gets a chance to build on more than a thumbnail.</p>
+      </div>
+      <div class="feature">
+        <div class="ficon">◐</div>
+        <h3>No ghosting spiral</h3>
+        <p>Conversations that go quiet fade gently instead of sitting in an unread pile — Ember closes the loop for you.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="prompt-section" id="prompts">
+  <div class="wrap prompt-layout">
+    <div class="prompt-text">
+      <div class="section-label">Daily prompts</div>
+      <h2>One good question, every day, instead of a bio to perform</h2>
+      <p>Ember replaces the blank-page bio with a new prompt each morning. Your answer — not your best angle — is what gets you matched.</p>
+      <p>Reply thoughtfully and you'll see who else answered in a way that made Ember pay attention.</p>
+    </div>
+    <div class="prompt-card">
+      <div class="pdate">TODAY — JUL 27</div>
+      <div class="pquestion">"What's something you changed your mind about this year?"</div>
+      <div class="prompt-answer">"That moving slower on purpose isn't the same as being scared. Took me a while to believe that one."</div>
+    </div>
+  </div>
+</section>
+
+<section class="final-cta" id="cta">
+  <div class="hero-glow"></div>
+  <div class="wrap">
+    <h2>Your next match is still a silhouette. Good.</h2>
+    <p>Join the waitlist — Ember opens city by city, slowly, on purpose.</p>
+    <a href="#" class="btn-primary">Get early access</a>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="logo"><span class="dot"></span>Ember</div>
+    <div class="fnote">SLOW BY DESIGN — 2026</div>
+  </div>
+</footer>
+
+</body>
+</html>

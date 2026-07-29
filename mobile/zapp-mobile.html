@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zapp — Mobile</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --brand:#ffcc00;
+    --brand-dark:#e6b800;
+    --black:#161616;
+    --gray-900:#1f1f22;
+    --gray-600:#75757e;
+    --gray-300:#d8d8dd;
+    --gray-200:#e9e9ed;
+    --gray-100:#f5f5f7;
+    --white:#ffffff;
+    --green:#1caa5c;
+  }
+  *{box-sizing:border-box; margin:0; padding:0; -webkit-tap-highlight-color:transparent;}
+  html,body{height:100%;}
+  body{background:#000; font-family:'Inter',sans-serif; color:var(--black); display:flex; justify-content:center; align-items:center; padding:24px; overflow:hidden;}
+  .display{font-family:'Poppins',sans-serif;}
+  svg{display:block;}
+  button{font-family:inherit; cursor:pointer;}
+  input{font-family:inherit;}
+
+  .phone{
+    width:min(390px,92vw); height:min(820px,90vh); background:var(--white);
+    border-radius:44px; border:8px solid #050505; box-shadow:0 30px 80px rgba(0,0,0,0.7);
+    position:relative; overflow:hidden; display:flex; flex-direction:column;
+  }
+  .notch{position:absolute; top:0; left:50%; transform:translateX(-50%); width:120px; height:26px; background:#050505; border-radius:0 0 16px 16px; z-index:50;}
+  .statusbar{display:flex; justify-content:space-between; align-items:center; padding:14px 26px 2px; font-size:13px; font-weight:700; flex-shrink:0; color:var(--black);}
+
+  .m-screens{flex:1; position:relative; overflow:hidden;}
+  .m-screen{position:absolute; inset:0; display:none; flex-direction:column; overflow-y:auto; scrollbar-width:none; background:var(--white);}
+  .m-screen::-webkit-scrollbar{display:none;}
+  .m-screen.active{display:flex;}
+
+  /* ---- header ---- */
+  .app-header{padding:12px 18px 12px; flex-shrink:0; border-bottom:1px solid var(--gray-200); position:sticky; top:0; z-index:30; background:var(--white);}
+  .header-top{display:flex; align-items:flex-start; justify-content:space-between;}
+  .eta-block{display:flex; align-items:center; gap:8px;}
+  .eta-block .bolt{width:30px; height:30px; border-radius:9px; background:var(--brand); display:flex; align-items:center; justify-content:center; flex-shrink:0;}
+  .eta-block .txt .t1{font-family:'Poppins'; font-weight:800; font-size:18px; line-height:1;}
+  .eta-block .txt .t2{font-size:11px; color:var(--gray-600); font-weight:600; margin-top:2px; display:flex; align-items:center; gap:3px;}
+  .header-icons{display:flex; align-items:center; gap:14px;}
+  .icon-btn{background:none; border:none; color:var(--black); display:flex; align-items:center; justify-content:center; position:relative;}
+  .icon-btn .dot{position:absolute; top:-2px; right:-2px; width:8px; height:8px; border-radius:50%; background:var(--brand); border:2px solid var(--white);}
+  .avatar-sm{width:30px; height:30px; border-radius:50%; background:var(--black); color:var(--brand); display:flex; align-items:center; justify-content:center; font-family:'Poppins'; font-weight:800; font-size:11px;}
+
+  .addr-row{display:flex; align-items:center; gap:6px; margin-top:6px; font-size:12.5px; font-weight:700;}
+  .addr-row svg{flex-shrink:0;}
+  .addr-row .lbl{color:var(--gray-600); font-weight:500;}
+
+  .search-bar{margin-top:12px; display:flex; align-items:center; gap:10px; background:var(--gray-100); border-radius:12px; padding:11px 14px; color:var(--gray-600);}
+  .search-bar span{font-size:13px;}
+
+  /* ---- home content ---- */
+  .banner-row{display:flex; gap:12px; padding:14px 18px 4px; overflow-x:auto; scrollbar-width:none;}
+  .banner-row::-webkit-scrollbar{display:none;}
+  .banner{flex-shrink:0; width:280px; height:110px; border-radius:16px; padding:16px; display:flex; flex-direction:column; justify-content:center; position:relative; overflow:hidden;}
+  .banner .t1{font-family:'Poppins'; font-weight:800; font-size:18px; position:relative; z-index:2;}
+  .banner .t2{font-size:11.5px; margin-top:4px; position:relative; z-index:2; font-weight:600;}
+  .banner .deco{position:absolute; width:90px; height:90px; border-radius:50%; top:-30px; right:-25px; opacity:0.5;}
+
+  .section-h{display:flex; align-items:center; justify-content:space-between; padding:18px 18px 12px;}
+  .section-h .t{font-family:'Poppins'; font-weight:800; font-size:15.5px;}
+  .section-h .s{font-size:12px; color:var(--gray-600); font-weight:700;}
+
+  .cat-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:14px 8px; padding:0 18px 8px;}
+  .cat-item{display:flex; flex-direction:column; align-items:center; gap:6px;}
+  .cat-item .ic{width:56px; height:56px; border-radius:16px; background:var(--gray-100); display:flex; align-items:center; justify-content:center; color:var(--black);}
+  .cat-item span{font-size:10.5px; font-weight:600; text-align:center; line-height:1.2;}
+
+  .prod-row{display:flex; gap:12px; padding:0 18px 22px; overflow-x:auto; scrollbar-width:none;}
+  .prod-row::-webkit-scrollbar{display:none;}
+  .prod-card{flex-shrink:0; width:128px; border:1px solid var(--gray-200); border-radius:14px; overflow:hidden; background:var(--white);}
+  .prod-card .img{width:100%; height:104px; position:relative; display:flex; align-items:center; justify-content:center;}
+  .prod-card .img .emoji{font-size:38px;}
+  .prod-card .tag{position:absolute; top:6px; left:6px; background:var(--white); font-size:8.5px; font-weight:800; color:var(--green); padding:2px 6px; border-radius:6px; border:1px solid var(--gray-200);}
+  .prod-card .add-btn{position:absolute; bottom:-2px; right:6px; background:var(--white); border:1.5px solid var(--brand-dark); color:var(--black); font-size:11px; font-weight:800; padding:5px 12px; border-radius:8px; box-shadow:0 2px 6px rgba(0,0,0,0.08);}
+  .prod-card .stepper{position:absolute; bottom:-2px; right:6px; background:var(--brand); border:1.5px solid var(--brand-dark); border-radius:8px; display:flex; align-items:center; gap:8px; padding:4px 8px; box-shadow:0 2px 6px rgba(0,0,0,0.08);}
+  .prod-card .stepper button{background:none; border:none; color:var(--black); font-weight:800; font-size:13px; width:14px;}
+  .prod-card .stepper .n{font-size:11px; font-weight:800;}
+  .prod-card .body{padding:10px 10px 12px;}
+  .prod-card .weight{font-size:10px; color:var(--gray-600); font-weight:600;}
+  .prod-card .name{font-size:12px; font-weight:700; margin-top:3px; line-height:1.3; height:31px; overflow:hidden;}
+  .prod-card .price-row{display:flex; align-items:center; gap:6px; margin-top:8px;}
+  .prod-card .price{font-size:13px; font-weight:800;}
+  .prod-card .mrp{font-size:10.5px; color:var(--gray-600); text-decoration:line-through;}
+
+  /* ---- floating cart bar ---- */
+  .cart-bar{position:absolute; left:12px; right:12px; bottom:76px; z-index:35; background:var(--black); border-radius:14px; padding:11px 14px; display:flex; align-items:center; gap:10px; box-shadow:0 10px 30px rgba(0,0,0,0.35);}
+  .cart-bar .ic{width:30px; height:30px; border-radius:8px; background:var(--brand); display:flex; align-items:center; justify-content:center; flex-shrink:0;}
+  .cart-bar .txt{flex:1; color:#fff;}
+  .cart-bar .t1{font-size:12.5px; font-weight:700;}
+  .cart-bar .t2{font-size:10.5px; color:rgba(255,255,255,0.6);}
+  .cart-bar .view{background:var(--brand); color:var(--black); font-size:12px; font-weight:800; padding:8px 14px; border-radius:9px; display:flex; align-items:center; gap:4px;}
+
+  /* ---- bottom nav ---- */
+  .bottomnav{display:flex; align-items:center; justify-content:space-around; padding:10px 6px 16px; background:rgba(255,255,255,0.96); backdrop-filter:blur(14px); border-top:1px solid var(--gray-200); position:absolute; bottom:0; left:0; right:0; z-index:40;}
+  .navbtn{background:none; border:none; display:flex; flex-direction:column; align-items:center; gap:3px; color:var(--gray-300); width:56px;}
+  .navbtn.active{color:var(--black);}
+  .navbtn .lbl{font-size:9px; font-weight:700;}
+
+  /* ---- CATEGORIES screen ---- */
+  .cat-layout{flex:1; display:flex; overflow:hidden;}
+  .cat-side{width:92px; flex-shrink:0; background:var(--gray-100); overflow-y:auto; scrollbar-width:none; padding:8px 0 90px;}
+  .cat-side::-webkit-scrollbar{display:none;}
+  .cat-side-item{padding:14px 8px; display:flex; flex-direction:column; align-items:center; gap:6px; border-left:3px solid transparent; text-align:center;}
+  .cat-side-item.active{background:var(--white); border-left-color:var(--brand-dark);}
+  .cat-side-item .ic{width:38px; height:38px; border-radius:12px; background:var(--white); display:flex; align-items:center; justify-content:center;}
+  .cat-side-item.active .ic{background:var(--brand);}
+  .cat-side-item span{font-size:9.5px; font-weight:700; line-height:1.2;}
+  .cat-main{flex:1; overflow-y:auto; scrollbar-width:none; padding:14px 14px 90px;}
+  .cat-main::-webkit-scrollbar{display:none;}
+  .cat-main h3{font-family:'Poppins'; font-weight:800; font-size:15px; margin-bottom:12px;}
+  .cat-prod-grid{display:grid; grid-template-columns:1fr 1fr; gap:12px;}
+
+  /* ---- CART screen ---- */
+  .cart-items{padding:6px 18px 0;}
+  .cart-item{display:flex; align-items:center; gap:12px; padding:14px 0; border-bottom:1px solid var(--gray-200);}
+  .cart-item .img{width:52px; height:52px; border-radius:10px; background:var(--gray-100); display:flex; align-items:center; justify-content:center; font-size:24px; flex-shrink:0;}
+  .cart-item .info{flex:1; min-width:0;}
+  .cart-item .name{font-size:12.5px; font-weight:700;}
+  .cart-item .weight{font-size:10.5px; color:var(--gray-600); margin-top:2px;}
+  .cart-item .price{font-size:12.5px; font-weight:800; margin-top:4px;}
+  .cart-stepper{display:flex; align-items:center; gap:10px; background:var(--brand); border-radius:8px; padding:6px 10px; flex-shrink:0;}
+  .cart-stepper button{background:none; border:none; font-weight:800; color:var(--black);}
+  .cart-stepper .n{font-size:12px; font-weight:800;}
+
+  .eta-banner{margin:14px 18px 0; background:var(--gray-100); border-radius:14px; padding:12px 14px; display:flex; align-items:center; gap:10px;}
+  .eta-banner .bolt{width:32px; height:32px; border-radius:9px; background:var(--brand); display:flex; align-items:center; justify-content:center; flex-shrink:0;}
+  .eta-banner .t1{font-size:12.5px; font-weight:700;}
+  .eta-banner .t2{font-size:10.5px; color:var(--gray-600);}
+
+  .bill-card{margin:16px 18px 100px; border:1px solid var(--gray-200); border-radius:14px; padding:16px;}
+  .bill-card .row-title{font-size:13px; font-weight:800; margin-bottom:10px;}
+  .bill-row{display:flex; justify-content:space-between; font-size:12.5px; color:var(--gray-600); padding:6px 0;}
+  .bill-row span:last-child{color:var(--black); font-weight:600;}
+  .bill-row.save span:last-child{color:var(--green);}
+  .bill-total{display:flex; justify-content:space-between; margin-top:8px; padding-top:10px; border-top:1px dashed var(--gray-300); font-size:14px; font-weight:800;}
+
+  .checkout-bar{position:absolute; left:0; right:0; bottom:0; z-index:40; background:var(--white); border-top:1px solid var(--gray-200); padding:14px 18px calc(16px); display:flex; align-items:center; gap:14px;}
+  .checkout-bar .price{flex:1;}
+  .checkout-bar .p1{font-size:10.5px; color:var(--gray-600);}
+  .checkout-bar .p2{font-size:16px; font-weight:800;}
+  .checkout-bar .cta{background:var(--black); color:var(--brand); border:none; padding:13px 22px; border-radius:12px; font-size:13.5px; font-weight:800; display:flex; align-items:center; gap:8px;}
+
+  /* ---- ORDERS / TRACK ---- */
+  .segmented{display:flex; margin:14px 18px 4px; background:var(--gray-100); border-radius:12px; padding:4px;}
+  .segmented button{flex:1; border:none; background:none; padding:9px; border-radius:9px; font-size:12.5px; font-weight:700; color:var(--gray-600);}
+  .segmented button.active{background:var(--black); color:var(--brand);}
+
+  .order-list{padding:14px 18px 90px; display:flex; flex-direction:column; gap:12px;}
+  .order-card{border:1px solid var(--gray-200); border-radius:16px; padding:14px; display:flex; align-items:center; gap:12px;}
+  .order-card .ic{width:44px; height:44px; border-radius:12px; background:var(--gray-100); display:flex; align-items:center; justify-content:center; font-size:20px; flex-shrink:0;}
+  .order-card .info{flex:1; min-width:0;}
+  .order-card .t1{font-size:13px; font-weight:700;}
+  .order-card .t2{font-size:11px; color:var(--gray-600); margin-top:2px;}
+  .status-pill{font-size:10px; font-weight:800; padding:4px 9px; border-radius:20px; background:var(--brand); color:var(--black); white-space:nowrap;}
+  .status-pill.done{background:var(--gray-100); color:var(--gray-600);}
+
+  .track-hero{padding:22px 18px 6px; display:flex; flex-direction:column; align-items:center; text-align:center; gap:6px;}
+  .ring-timer{width:130px; height:130px; border-radius:50%; position:relative; display:flex; align-items:center; justify-content:center; background:conic-gradient(var(--brand) 0deg 216deg, var(--gray-200) 216deg 360deg);}
+  .ring-timer .core{width:104px; height:104px; border-radius:50%; background:var(--white); display:flex; flex-direction:column; align-items:center; justify-content:center;}
+  .ring-timer .core .n{font-family:'Poppins'; font-weight:800; font-size:28px;}
+  .ring-timer .core .u{font-size:10.5px; color:var(--gray-600); font-weight:700;}
+  .track-hero h2{font-family:'Poppins'; font-weight:800; font-size:16px; margin-top:10px;}
+  .track-hero p{font-size:12px; color:var(--gray-600);}
+
+  .rider-card{margin:14px 18px 0; background:var(--gray-100); border-radius:16px; padding:14px; display:flex; align-items:center; gap:12px;}
+  .rider-card .av{width:42px; height:42px; border-radius:50%; background:var(--black); color:var(--brand); display:flex; align-items:center; justify-content:center; font-family:'Poppins'; font-weight:800; flex-shrink:0;}
+  .rider-card .info{flex:1;}
+  .rider-card .t1{font-size:13px; font-weight:700;}
+  .rider-card .t2{font-size:11px; color:var(--gray-600);}
+  .rider-card .actions{display:flex; gap:8px;}
+  .rider-card .actions button{width:36px; height:36px; border-radius:50%; background:var(--white); border:1px solid var(--gray-200); display:flex; align-items:center; justify-content:center; color:var(--black);}
+
+  .map-box{margin:14px 18px 0; height:120px; border-radius:16px; background-image:linear-gradient(var(--gray-200) 1px,transparent 1px),linear-gradient(90deg,var(--gray-200) 1px,transparent 1px); background-size:18px 18px; background-color:var(--gray-100); position:relative; overflow:hidden;}
+  .map-box .pin{position:absolute; top:44%; left:52%; width:26px; height:26px; border-radius:50% 50% 50% 0; background:var(--black); transform:rotate(-45deg); display:flex; align-items:center; justify-content:center;}
+  .map-box .pin .dot{width:8px; height:8px; border-radius:50%; background:var(--brand); transform:rotate(45deg);}
+
+  .track-items{margin:14px 18px 90px; border:1px solid var(--gray-200); border-radius:14px; padding:14px;}
+  .track-items .row-title{font-size:13px; font-weight:800; margin-bottom:10px;}
+  .track-items .item-row{display:flex; justify-content:space-between; font-size:12px; color:var(--gray-600); padding:5px 0;}
+  .track-items .item-row span:last-child{color:var(--black); font-weight:600;}
+
+  /* ---- ACCOUNT ---- */
+  .acct-top{padding:20px 18px 6px; display:flex; align-items:center; gap:14px;}
+  .acct-top .av{width:60px; height:60px; border-radius:50%; background:var(--black); color:var(--brand); display:flex; align-items:center; justify-content:center; font-family:'Poppins'; font-weight:800; font-size:20px;}
+  .acct-top .name{font-size:16px; font-weight:800; font-family:'Poppins';}
+  .acct-top .sub{font-size:11.5px; color:var(--gray-600); margin-top:2px;}
+  .list-group{margin:16px 18px 0; border:1px solid var(--gray-200); border-radius:16px; overflow:hidden;}
+  .list-row{display:flex; align-items:center; gap:12px; padding:14px; border-bottom:1px solid var(--gray-200);}
+  .list-row:last-child{border-bottom:none;}
+  .list-row .ic{width:34px; height:34px; border-radius:10px; background:var(--gray-100); display:flex; align-items:center; justify-content:center; color:var(--black); flex-shrink:0;}
+  .list-row .t1{flex:1; font-size:13px; font-weight:600;}
+  .list-row .chev{color:var(--gray-300);}
+  .logout-row{margin:90px 18px 0; text-align:center; font-size:12.5px; color:var(--gray-600); font-weight:700; padding-bottom:14px;}
+</style>
+</head>
+<body>
+
+<div class="phone">
+  <div class="notch"></div>
+  <div class="statusbar">
+    <span>9:41</span>
+    <span style="display:flex; gap:5px; align-items:center;">
+      <svg width="16" height="11" viewBox="0 0 16 11" fill="none"><rect x="0" y="6" width="3" height="5" rx="0.5" fill="#161616"/><rect x="4.5" y="4" width="3" height="7" rx="0.5" fill="#161616"/><rect x="9" y="2" width="3" height="9" rx="0.5" fill="#161616"/><rect x="13" y="0" width="3" height="11" rx="0.5" fill="#161616"/></svg>
+      <svg width="16" height="11" viewBox="0 0 24 16" fill="none"><rect x="1" y="1" width="19" height="10" rx="2.5" stroke="#161616" stroke-width="1.3"/><rect x="2.5" y="2.5" width="14" height="7" rx="1.2" fill="#161616"/><rect x="21.5" y="4.3" width="1.6" height="3.4" rx="0.8" fill="#161616"/></svg>
+    </span>
+  </div>
+
+  <div class="m-screens">
+
+    <!-- HOME -->
+    <div class="m-screen active" id="m-home">
+      <div class="app-header">
+        <div class="header-top">
+          <div class="eta-block">
+            <div class="bolt"><svg width="16" height="16" viewBox="0 0 24 24" fill="#161616"><path d="M13 2 3 14h7l-1 8 10-12h-7z"/></svg></div>
+            <div class="txt"><div class="t1">10 MINS</div><div class="t2">Delivery time <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#75757e" stroke-width="3" stroke-linecap="round"><path d="m6 9 6 6 6-6"/></svg></div></div>
+          </div>
+          <div class="header-icons">
+            <button class="icon-btn"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="#161616" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 1 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg><span class="dot"></span></button>
+            <div class="avatar-sm">JM</div>
+          </div>
+        </div>
+        <div class="addr-row"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#161616" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg> <span class="lbl">Home —</span> 221B Baker Street</div>
+        <div class="search-bar"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#75757e" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg><span>Search for atta, dal, oil...</span></div>
+      </div>
+
+      <div class="banner-row">
+        <div class="banner" style="background:linear-gradient(120deg,#ffcc00,#ffe259);">
+          <div class="deco" style="background:#161616;"></div>
+          <div class="t1">Flat 50% OFF</div><div class="t2">On your first 3 orders</div>
+        </div>
+        <div class="banner" style="background:var(--black); color:#fff;">
+          <div class="deco" style="background:var(--brand);"></div>
+          <div class="t1">Free Delivery</div><div class="t2">On orders above $10</div>
+        </div>
+      </div>
+
+      <div class="section-h"><div class="t">Shop by Category</div><div class="s" onclick="showScreen('categories')">See all</div></div>
+      <div class="cat-grid">
+        <div class="cat-item" onclick="showScreen('categories')"><div class="ic">🍎</div><span>Fruits & Veggies</span></div>
+        <div class="cat-item" onclick="showScreen('categories')"><div class="ic">🥛</div><span>Dairy & Eggs</span></div>
+        <div class="cat-item" onclick="showScreen('categories')"><div class="ic">🍪</div><span>Snacks</span></div>
+        <div class="cat-item" onclick="showScreen('categories')"><div class="ic">🥤</div><span>Beverages</span></div>
+        <div class="cat-item" onclick="showScreen('categories')"><div class="ic">🍞</div><span>Bakery</span></div>
+        <div class="cat-item" onclick="showScreen('categories')"><div class="ic">🧴</div><span>Personal Care</span></div>
+        <div class="cat-item" onclick="showScreen('categories')"><div class="ic">🧽</div><span>Household</span></div>
+        <div class="cat-item" onclick="showScreen('categories')"><div class="ic">🍫</div><span>Chocolates</span></div>
+      </div>
+
+      <div class="section-h"><div class="t">Best Sellers</div><div class="s">See all</div></div>
+      <div class="prod-row">
+        <div class="prod-card">
+          <div class="img" style="background:#fdf1cf;"><span class="tag">20% OFF</span><span class="emoji">🍌</span>
+            <button class="add-btn" onclick="addToCart(this)">ADD</button>
+          </div>
+          <div class="body"><div class="weight">6 pcs</div><div class="name">Fresh Bananas</div><div class="price-row"><span class="price">$1.99</span><span class="mrp">$2.49</span></div></div>
+        </div>
+        <div class="prod-card">
+          <div class="img" style="background:#eef6ff;"><span class="emoji">🥛</span>
+            <button class="add-btn" onclick="addToCart(this)">ADD</button>
+          </div>
+          <div class="body"><div class="weight">1 L</div><div class="name">Whole Milk</div><div class="price-row"><span class="price">$2.49</span></div></div>
+        </div>
+        <div class="prod-card">
+          <div class="img" style="background:#fff0ee;"><span class="tag">15% OFF</span><span class="emoji">🍞</span>
+            <button class="add-btn" onclick="addToCart(this)">ADD</button>
+          </div>
+          <div class="body"><div class="weight">400 g</div><div class="name">Multigrain Bread</div><div class="price-row"><span class="price">$1.69</span><span class="mrp">$1.99</span></div></div>
+        </div>
+        <div class="prod-card">
+          <div class="img" style="background:#f0fbf0;"><span class="emoji">🥑</span>
+            <button class="add-btn" onclick="addToCart(this)">ADD</button>
+          </div>
+          <div class="body"><div class="weight">2 pcs</div><div class="name">Avocado</div><div class="price-row"><span class="price">$3.20</span></div></div>
+        </div>
+      </div>
+
+      <div class="section-h"><div class="t">Fresh Vegetables</div><div class="s">See all</div></div>
+      <div class="prod-row">
+        <div class="prod-card">
+          <div class="img" style="background:#fdf1cf;"><span class="emoji">🥕</span>
+            <button class="add-btn" onclick="addToCart(this)">ADD</button>
+          </div>
+          <div class="body"><div class="weight">500 g</div><div class="name">Carrots</div><div class="price-row"><span class="price">$1.29</span></div></div>
+        </div>
+        <div class="prod-card">
+          <div class="img" style="background:#eef8ee;"><span class="tag">10% OFF</span><span class="emoji">🥦</span>
+            <button class="add-btn" onclick="addToCart(this)">ADD</button>
+          </div>
+          <div class="body"><div class="weight">300 g</div><div class="name">Broccoli</div><div class="price-row"><span class="price">$2.10</span><span class="mrp">$2.35</span></div></div>
+        </div>
+        <div class="prod-card">
+          <div class="img" style="background:#fff2ee;"><span class="emoji">🍅</span>
+            <button class="add-btn" onclick="addToCart(this)">ADD</button>
+          </div>
+          <div class="body"><div class="weight">1 kg</div><div class="name">Tomatoes</div><div class="price-row"><span class="price">$1.89</span></div></div>
+        </div>
+      </div>
+
+      <div style="height:80px;"></div>
+    </div>
+
+    <!-- CATEGORIES -->
+    <div class="m-screen" id="m-categories">
+      <div class="app-header" style="padding-bottom:12px;">
+        <div class="header-top"><div class="t1" style="font-family:'Poppins'; font-weight:800; font-size:18px;">Categories</div><div class="header-icons"><div class="avatar-sm">JM</div></div></div>
+        <div class="search-bar" style="margin-top:10px;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#75757e" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg><span>Search for atta, dal, oil...</span></div>
+      </div>
+      <div class="cat-layout">
+        <div class="cat-side">
+          <div class="cat-side-item active"><div class="ic">🍎</div><span>Fruits &<br>Veggies</span></div>
+          <div class="cat-side-item"><div class="ic">🥛</div><span>Dairy &<br>Eggs</span></div>
+          <div class="cat-side-item"><div class="ic">🍪</div><span>Snacks</span></div>
+          <div class="cat-side-item"><div class="ic">🥤</div><span>Beverages</span></div>
+          <div class="cat-side-item"><div class="ic">🍞</div><span>Bakery</span></div>
+          <div class="cat-side-item"><div class="ic">🧴</div><span>Personal<br>Care</span></div>
+          <div class="cat-side-item"><div class="ic">🧽</div><span>Household</span></div>
+        </div>
+        <div class="cat-main">
+          <h3>Fruits & Vegetables</h3>
+          <div class="cat-prod-grid">
+            <div class="prod-card" style="width:100%;">
+              <div class="img" style="background:#fdf1cf;"><span class="tag">20% OFF</span><span class="emoji">🍌</span><button class="add-btn" onclick="addToCart(this)">ADD</button></div>
+              <div class="body"><div class="weight">6 pcs</div><div class="name">Fresh Bananas</div><div class="price-row"><span class="price">$1.99</span><span class="mrp">$2.49</span></div></div>
+            </div>
+            <div class="prod-card" style="width:100%;">
+              <div class="img" style="background:#f0fbf0;"><span class="emoji">🥑</span><button class="add-btn" onclick="addToCart(this)">ADD</button></div>
+              <div class="body"><div class="weight">2 pcs</div><div class="name">Avocado</div><div class="price-row"><span class="price">$3.20</span></div></div>
+            </div>
+            <div class="prod-card" style="width:100%;">
+              <div class="img" style="background:#fdf1cf;"><span class="emoji">🥕</span><button class="add-btn" onclick="addToCart(this)">ADD</button></div>
+              <div class="body"><div class="weight">500 g</div><div class="name">Carrots</div><div class="price-row"><span class="price">$1.29</span></div></div>
+            </div>
+            <div class="prod-card" style="width:100%;">
+              <div class="img" style="background:#eef8ee;"><span class="tag">10% OFF</span><span class="emoji">🥦</span><button class="add-btn" onclick="addToCart(this)">ADD</button></div>
+              <div class="body"><div class="weight">300 g</div><div class="name">Broccoli</div><div class="price-row"><span class="price">$2.10</span><span class="mrp">$2.35</span></div></div>
+            </div>
+            <div class="prod-card" style="width:100%;">
+              <div class="img" style="background:#fff2ee;"><span class="emoji">🍅</span><button class="add-btn" onclick="addToCart(this)">ADD</button></div>
+              <div class="body"><div class="weight">1 kg</div><div class="name">Tomatoes</div><div class="price-row"><span class="price">$1.89</span></div></div>
+            </div>
+            <div class="prod-card" style="width:100%;">
+              <div class="img" style="background:#fff7e6;"><span class="emoji">🍋</span><button class="add-btn" onclick="addToCart(this)">ADD</button></div>
+              <div class="body"><div class="weight">500 g</div><div class="name">Lemons</div><div class="price-row"><span class="price">$1.10</span></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CART -->
+    <div class="m-screen" id="m-cart">
+      <div class="app-header"><div class="t1" style="font-family:'Poppins'; font-weight:800; font-size:18px;">My Cart</div></div>
+      <div class="eta-banner">
+        <div class="bolt"><svg width="16" height="16" viewBox="0 0 24 24" fill="#161616"><path d="M13 2 3 14h7l-1 8 10-12h-7z"/></svg></div>
+        <div><div class="t1">Delivery in 10 mins</div><div class="t2">Shipment of 3 items</div></div>
+      </div>
+      <div class="cart-items">
+        <div class="cart-item">
+          <div class="img">🍌</div>
+          <div class="info"><div class="name">Fresh Bananas</div><div class="weight">6 pcs</div><div class="price">$1.99</div></div>
+          <div class="cart-stepper"><button onclick="adjustQty(this,-1)">−</button><span class="n">2</span><button onclick="adjustQty(this,1)">+</button></div>
+        </div>
+        <div class="cart-item">
+          <div class="img">🥛</div>
+          <div class="info"><div class="name">Whole Milk</div><div class="weight">1 L</div><div class="price">$2.49</div></div>
+          <div class="cart-stepper"><button onclick="adjustQty(this,-1)">−</button><span class="n">1</span><button onclick="adjustQty(this,1)">+</button></div>
+        </div>
+        <div class="cart-item">
+          <div class="img">🍅</div>
+          <div class="info"><div class="name">Tomatoes</div><div class="weight">1 kg</div><div class="price">$1.89</div></div>
+          <div class="cart-stepper"><button onclick="adjustQty(this,-1)">−</button><span class="n">1</span><button onclick="adjustQty(this,1)">+</button></div>
+        </div>
+      </div>
+      <div class="bill-card">
+        <div class="row-title">Bill Details</div>
+        <div class="bill-row"><span>Item total</span><span>$8.36</span></div>
+        <div class="bill-row"><span>Delivery fee</span><span>$1.00</span></div>
+        <div class="bill-row"><span>Handling charge</span><span>$0.50</span></div>
+        <div class="bill-row save"><span>You saved</span><span>−$0.75</span></div>
+        <div class="bill-total"><span>To Pay</span><span>$9.86</span></div>
+      </div>
+      <div class="checkout-bar">
+        <div class="price"><div class="p1">3 items</div><div class="p2">$9.86</div></div>
+        <button class="cta" onclick="showScreen('track')">Proceed to Pay <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ffcc00" stroke-width="2.5" stroke-linecap="round"><path d="m9 6 6 6-6 6"/></svg></button>
+      </div>
+    </div>
+
+    <!-- ORDERS -->
+    <div class="m-screen" id="m-orders">
+      <div class="app-header"><div class="t1" style="font-family:'Poppins'; font-weight:800; font-size:18px;">Your Orders</div></div>
+      <div class="segmented"><button class="active">Active</button><button>History</button></div>
+      <div class="order-list">
+        <div class="order-card" onclick="showScreen('track')" style="cursor:pointer;">
+          <div class="ic">🛍️</div>
+          <div class="info"><div class="t1">Order #8213</div><div class="t2">3 items · $9.86 · Placed 2 min ago</div></div>
+          <div class="status-pill">Arriving in 8 min</div>
+        </div>
+        <div class="order-card">
+          <div class="ic">🛍️</div>
+          <div class="info"><div class="t1">Order #8190</div><div class="t2">7 items · $22.40 · Yesterday</div></div>
+          <div class="status-pill done">Delivered</div>
+        </div>
+        <div class="order-card">
+          <div class="ic">🛍️</div>
+          <div class="info"><div class="t1">Order #8144</div><div class="t2">2 items · $5.10 · Jul 20</div></div>
+          <div class="status-pill done">Delivered</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TRACK -->
+    <div class="m-screen" id="m-track">
+      <div class="app-header"><div class="t1" style="font-family:'Poppins'; font-weight:800; font-size:18px;">Order #8213</div></div>
+      <div class="track-hero">
+        <div class="ring-timer"><div class="core"><div class="n">8</div><div class="u">MINS LEFT</div></div></div>
+        <h2>Your order is on the way!</h2>
+        <p>Packed with care, arriving soon</p>
+      </div>
+      <div class="map-box"><div class="pin"><div class="dot"></div></div></div>
+      <div class="rider-card">
+        <div class="av">RK</div>
+        <div class="info"><div class="t1">Ravi K.</div><div class="t2">Your delivery partner · 🛵</div></div>
+        <div class="actions">
+          <button><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3.1-8.7A2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.3 1.8.6 2.7a2 2 0 0 1-.4 2.1L8.1 9.7a16 16 0 0 0 6 6l1.2-1.2a2 2 0 0 1 2.1-.4c.9.3 1.8.5 2.7.6a2 2 0 0 1 1.9 2Z"/></svg></button>
+          <button><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2Z"/></svg></button>
+        </div>
+      </div>
+      <div class="track-items">
+        <div class="row-title">Order Summary</div>
+        <div class="item-row"><span>Fresh Bananas × 2</span><span>$3.98</span></div>
+        <div class="item-row"><span>Whole Milk × 1</span><span>$2.49</span></div>
+        <div class="item-row"><span>Tomatoes × 1</span><span>$1.89</span></div>
+        <div class="item-row"><span>Delivery & handling</span><span>$1.50</span></div>
+      </div>
+    </div>
+
+    <!-- ACCOUNT -->
+    <div class="m-screen" id="m-account">
+      <div class="app-header"><div class="t1" style="font-family:'Poppins'; font-weight:800; font-size:18px;">Account</div></div>
+      <div class="acct-top">
+        <div class="av">JM</div>
+        <div><div class="name">Jules Mercer</div><div class="sub">+1 (555) 019-2837</div></div>
+      </div>
+      <div class="list-group">
+        <div class="list-row"><div class="ic"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12v6a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-6"/><path d="M2 7h20v5H2z"/><path d="M12 22V7"/></svg></div><div class="t1">My Orders</div><svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m9 6 6 6-6 6"/></svg></div>
+        <div class="list-row"><div class="ic"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></div><div class="t1">Saved Addresses</div><svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m9 6 6 6-6 6"/></svg></div>
+        <div class="list-row"><div class="ic"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg></div><div class="t1">Payment Methods</div><svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m9 6 6 6-6 6"/></svg></div>
+        <div class="list-row"><div class="ic"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12v6a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-6"/><path d="M2 7h20v5H2z"/><path d="M12 22V7"/></svg></div><div class="t1">Offers & Coupons</div><svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m9 6 6 6-6 6"/></svg></div>
+        <div class="list-row"><div class="ic"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 2-3 4"/><path d="M12 17h.01"/></svg></div><div class="t1">Help & Support</div><svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m9 6 6 6-6 6"/></svg></div>
+      </div>
+      <div class="logout-row">Log Out</div>
+    </div>
+
+  </div>
+
+  <div class="cart-bar" id="cartBar" style="display:none;" onclick="showScreen('cart')">
+    <div class="ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#161616" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1.4"/><circle cx="19" cy="21" r="1.4"/><path d="M1 1h4l2.7 13.4a2 2 0 0 0 2 1.6h9.7a2 2 0 0 0 2-1.6L23 6H6"/></svg></div>
+    <div class="txt"><div class="t1"><span id="cartCount">0</span> items added</div><div class="t2">$<span id="cartTotal">0.00</span></div></div>
+    <div class="view">View Cart <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#161616" stroke-width="3" stroke-linecap="round"><path d="m9 6 6 6-6 6"/></svg></div>
+  </div>
+
+  <div class="bottomnav">
+    <button class="navbtn active" data-mtab="home"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/><path d="M9 22V12h6v10"/></svg><span class="lbl">Home</span></button>
+    <button class="navbtn" data-mtab="categories"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg><span class="lbl">Categories</span></button>
+    <button class="navbtn" data-mtab="orders"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12v6a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-6"/><path d="M2 7h20v5H2z"/><path d="M12 22V7"/></svg><span class="lbl">Orders</span></button>
+    <button class="navbtn" data-mtab="account"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg><span class="lbl">Account</span></button>
+  </div>
+</div>
+
+<script>
+  const navBtns = document.querySelectorAll('.navbtn');
+  const mScreens = document.querySelectorAll('.m-screen');
+
+  function showScreen(id){
+    mScreens.forEach(s=>s.classList.remove('active'));
+    document.getElementById('m-'+id).classList.add('active');
+    navBtns.forEach(b=> b.classList.toggle('active', b.dataset.mtab===id));
+  }
+  navBtns.forEach(btn=> btn.addEventListener('click', ()=> showScreen(btn.dataset.mtab)));
+
+  document.querySelectorAll('.cat-side-item').forEach(item=>{
+    item.addEventListener('click', ()=>{
+      document.querySelectorAll('.cat-side-item').forEach(x=>x.classList.remove('active'));
+      item.classList.add('active');
+    });
+  });
+  document.querySelectorAll('.segmented button').forEach(b=>{
+    b.addEventListener('click', ()=>{
+      b.parentElement.querySelectorAll('button').forEach(x=>x.classList.remove('active'));
+      b.classList.add('active');
+    });
+  });
+
+  let cartCount = 0, cartTotal = 0;
+  function refreshCartBar(){
+    const bar = document.getElementById('cartBar');
+    document.getElementById('cartCount').textContent = cartCount;
+    document.getElementById('cartTotal').textContent = cartTotal.toFixed(2);
+    bar.style.display = cartCount > 0 ? 'flex' : 'none';
+  }
+  function addToCart(btn){
+    const price = parseFloat(btn.closest('.prod-card').querySelector('.price').textContent.replace('$',''));
+    cartCount += 1; cartTotal += price;
+    const wrap = btn.parentElement;
+    btn.remove();
+    const stepper = document.createElement('div');
+    stepper.className = 'stepper';
+    stepper.innerHTML = '<button onclick="event.stopPropagation(); stepDown(this)">−</button><span class="n">1</span><button onclick="event.stopPropagation(); stepUp(this)">+</button>';
+    wrap.appendChild(stepper);
+    refreshCartBar();
+  }
+  function stepUp(btn){
+    const n = btn.previousElementSibling;
+    n.textContent = parseInt(n.textContent)+1;
+    cartCount += 1;
+    const price = parseFloat(btn.closest('.prod-card').querySelector('.price').textContent.replace('$',''));
+    cartTotal += price;
+    refreshCartBar();
+  }
+  function stepDown(btn){
+    const n = btn.nextElementSibling;
+    let val = parseInt(n.textContent)-1;
+    const price = parseFloat(btn.closest('.prod-card').querySelector('.price').textContent.replace('$',''));
+    if(val<=0){
+      const stepper = btn.closest('.stepper');
+      const wrap = stepper.parentElement;
+      stepper.remove();
+      const addBtn = document.createElement('button');
+      addBtn.className='add-btn'; addBtn.textContent='ADD';
+      addBtn.onclick=function(){addToCart(this);};
+      wrap.appendChild(addBtn);
+      cartCount -= 1; cartTotal -= price;
+    } else {
+      n.textContent = val;
+      cartCount -= 1; cartTotal -= price;
+    }
+    refreshCartBar();
+  }
+
+  function adjustQty(btn, delta){
+    const stepper = btn.closest('.cart-stepper');
+    const n = stepper.querySelector('.n');
+    let val = Math.max(1, parseInt(n.textContent)+delta);
+    n.textContent = val;
+  }
+</script>
+
+</body>
+</html>
