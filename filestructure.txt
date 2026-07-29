@@ -1,0 +1,25 @@
+|-- .github
+    |-- workflows
+        |-- static.yml
+|-- landing.html
+|-- mobile
+    |-- booking.html
+    |-- ember.html
+    |-- index.html
+    |-- laundry.html
+    |-- music.html
+    |-- zapp-mobile.html
+|-- website
+    |-- booking.html
+    |-- boxmaking.html
+    |-- Consulting.html
+    |-- dental.html
+    |-- ember-landing.html
+    |-- home-services.html
+    |-- index.html
+    |-- law-firm.html
+    |-- outsole-landing.html
+    |-- physio.html
+    |-- realestate.html
+    |-- voice-ai.html
+    |-- wedding.html
