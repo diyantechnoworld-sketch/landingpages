@@ -166,6 +166,28 @@
     .ticket-grid{grid-template-columns:1fr;}
     .footer-grid{grid-template-columns:1fr 1fr;}
   }
+  @media (max-width:600px){
+    .wrap{padding:0 18px;}
+    .nav-inner{padding:13px 18px;}
+    .brand-mark{width:28px;height:28px;}
+    .brand-name{font-size:17px;}
+    .nav-cta{font-size:12px;padding:9px 14px;white-space:nowrap;}
+    .emergency-strip{font-size:10.5px;padding:8px 14px;line-height:1.5;}
+    .hero{padding:128px 0 64px;}
+    .hero h1{font-size:clamp(34px,10vw,44px);}
+    .hero p.sub{font-size:15px;}
+    .hero-ctas{flex-direction:column;align-items:stretch;}
+    .hero-ctas a{text-align:center;}
+    section{padding:60px 0;}
+    .service-grid{grid-template-columns:1fr;}
+    .service-card{padding:26px 22px;}
+    .section-head h2{font-size:clamp(26px,7vw,34px);}
+    .cta{padding:64px 0;}
+    .cta h2{font-size:clamp(28px,8vw,38px);}
+    .footer-grid{grid-template-columns:1fr;gap:28px;}
+    .footer-bottom{flex-direction:column;gap:8px;text-align:center;}
+    .dispatch-panel{margin-top:8px;}
+  }
   @media (prefers-reduced-motion: reduce){*{animation-duration:0.001ms !important;transition-duration:0.001ms !important;}}
   :focus-visible{outline:2px solid var(--orange);outline-offset:2px;}
 </style>

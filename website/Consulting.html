@@ -556,6 +556,7 @@
     .ledger-tabs{display:flex;border-right:none;border-bottom:1px solid var(--rule);overflow-x:auto;}
     .ledger-tab{border-bottom:none;border-right:1px solid var(--rule);min-width:150px;}
     .panel-content{grid-template-columns:1fr;}
+    .panel-visual{margin-top:24px;}
     .steps{grid-template-columns:1fr;gap:36px;}
     .steps::before{display:none;}
     .result-row{grid-template-columns:1fr;gap:10px;}
@@ -563,6 +564,27 @@
     .result-row .rmetric small{text-align:left;}
     .quote-grid{grid-template-columns:1fr;}
     .footer-grid{grid-template-columns:1fr 1fr;}
+  }
+
+  @media (max-width:600px){
+    .wrap{padding:0 18px;}
+    .nav-inner{padding:14px 18px;}
+    .brand-mark{width:28px;height:28px;}
+    .brand-mark span{font-size:11px;}
+    .brand-name{font-size:16px;}
+    .nav-cta{font-size:11px;padding:8px 13px;white-space:nowrap;}
+    .hero{padding:130px 0 64px;}
+    .hero h1{font-size:clamp(30px,9vw,40px);}
+    .hero p.sub{font-size:15.5px;}
+    .hero-ctas{flex-direction:column;align-items:flex-start;gap:14px;}
+    .ticker-panel{padding:20px 18px 4px;}
+    section{padding:64px 0;}
+    .section-head h2{font-size:clamp(24px,7vw,32px);}
+    .ledger-tab{min-width:132px;padding:18px 16px;}
+    .ledger-panel{padding:26px 20px;min-height:auto;}
+    .panel-content h3{font-size:21px;}
+    .footer-grid{grid-template-columns:1fr;gap:26px;}
+    .footer-bottom{flex-direction:column;gap:8px;align-items:flex-start;}
   }
 
   @media (prefers-reduced-motion: reduce){

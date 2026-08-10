@@ -177,6 +177,24 @@
     .postcard-row{grid-template-columns:1fr;}
     .footer-grid{grid-template-columns:1fr 1fr;}
   }
+  @media (max-width:600px){
+    .wrap{padding:0 18px;}
+    .nav-inner{padding:14px 18px;}
+    .brand-mark{width:28px;height:28px;}
+    .brand-name{font-size:16px;}
+    .nav-cta{font-size:10.5px;padding:8px 12px;white-space:nowrap;}
+    .hero{padding:120px 0 64px;}
+    .hero h1{font-size:clamp(30px,9vw,40px);}
+    .hero-ctas{flex-direction:column;align-items:stretch;}
+    .hero-ctas a{text-align:center;}
+    section{padding:56px 0;}
+    .stat-strip .wrap{grid-template-columns:1fr;}
+    .stat-item:nth-child(odd){border-right:none;}
+    .compass-grid{grid-template-columns:1fr;}
+    .agent-grid{grid-template-columns:1fr;}
+    .footer-grid{grid-template-columns:1fr;gap:26px;}
+    .footer-bottom{flex-direction:column;gap:8px;align-items:flex-start;}
+  }
   @media (prefers-reduced-motion: reduce){*{animation-duration:0.001ms !important;transition-duration:0.001ms !important;}}
   :focus-visible{outline:2px solid var(--gold);outline-offset:2px;}
 </style>
