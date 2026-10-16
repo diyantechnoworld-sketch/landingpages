@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OnlyFemales — AURA WOMEN'S WORLD | AI-Driven Luxury Fashion & Styling Ecosystem</title>
+  <meta name="description" content="AURA WOMEN'S WORLD (OnlyFemales) is an AI-powered luxury fashion & personal styling platform featuring Banarasi Sarees, Bridal Lehengas, Cushioned Artisan Footwear, 3D View, and 'See It On Me' AI Try-On.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #130a11;
+      --bg-surface: #1e101b;
+      --bg-card: rgba(36, 17, 32, 0.85);
+      --burgundy-900: #3D091B;
+      --burgundy-800: #570D26;
+      --burgundy-700: #721435;
+      --burgundy-600: #8E1B44;
+      --rose: #C95477;
+      --rose-light: #F6CCD7;
+      --gold: #D4AF37;
+      --gold-light: #FAF4E1;
+      --gold-accent: #C29D38;
+      --cream: #FDFBF7;
+      --text: #FAF8F5;
+      --text-muted: #B5A8B2;
+      --border: rgba(201, 84, 119, 0.22);
+      --border-gold: rgba(212, 175, 55, 0.35);
+      --font-display: 'Cormorant Garamond', Georgia, serif;
+      --font-sans: 'Plus Jakarta Sans', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-sans);
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    /* Ambient Lighting */
+    .ambient-glow {
+      position: fixed; top: 0; left: 50%;
+      transform: translateX(-50%);
+      width: 1100px; height: 550px;
+      background: radial-gradient(circle, rgba(114, 20, 53, 0.3) 0%, rgba(212, 175, 55, 0.08) 50%, transparent 70%);
+      pointer-events: none; z-index: 0;
+    }
+
+    /* Top Strip (Matching Live App) */
+    .top-strip {
+      background: #230814;
+      border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+      padding: 7px 24px;
+      font-size: 11px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      color: var(--gold-light);
+      position: relative;
+      z-index: 101;
+    }
+    .top-strip-item { display: flex; align-items: center; gap: 6px; }
+    .top-strip-code {
+      background: rgba(212, 175, 55, 0.15);
+      border: 1px dashed var(--gold);
+      padding: 2px 8px; border-radius: 4px;
+      font-weight: 700; color: #fff;
+    }
+
+    /* Main Live Navigation Bar */
+    nav.aura-nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(19, 10, 17, 0.92);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 32px;
+      height: 72px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+
+    .brand-group {
+      display: flex; align-items: center; gap: 14px;
+      text-decoration: none; color: #fff;
+    }
+    .brand-logo-text {
+      display: flex; flex-direction: column; line-height: 1;
+    }
+    .brand-logo-main {
+      font-family: var(--font-display);
+      font-size: 26px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      color: #fff;
+    }
+    .brand-logo-sub {
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      color: var(--gold);
+      text-transform: uppercase;
+      margin-top: 3px;
+    }
+
+    .nav-categories {
+      display: flex; gap: 22px; list-style: none; align-items: center;
+    }
+    .nav-categories a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 13.5px;
+      font-weight: 600;
+      transition: color 0.2s;
+    }
+    .nav-categories a:hover, .nav-categories a.active {
+      color: var(--rose-light);
+    }
+    .nav-badge-pill {
+      background: linear-gradient(135deg, var(--burgundy-700), var(--rose));
+      color: #fff !important;
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: 12px !important;
+      display: inline-flex; align-items: center; gap: 5px;
+      box-shadow: 0 3px 12px rgba(114, 20, 53, 0.4);
+    }
+
+    .nav-actions { display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
+    .live-status-pill {
+      background: rgba(34, 197, 94, 0.15);
+      border: 1px solid rgba(34, 197, 94, 0.35);
+      color: #22c55e;
+      padding: 4px 12px; border-radius: 999px;
+      font-size: 11px; font-weight: 700;
+      white-space: nowrap;
+    }
+    @media (max-width: 1200px) {
+      .live-status-pill { display: none; }
+    }
+    .btn-open-live {
+      background: linear-gradient(135deg, var(--burgundy-700), var(--rose));
+      color: #fff; padding: 8px 18px; border-radius: 999px;
+      font-size: 12.5px; font-weight: 700; text-decoration: none;
+      box-shadow: 0 4px 18px rgba(114, 20, 53, 0.45);
+      display: inline-flex; align-items: center; gap: 6px;
+      white-space: nowrap;
+      transition: all 0.2s;
+    }
+    .btn-open-live:hover { transform: translateY(-2px); box-shadow: 0 6px 22px rgba(201, 84, 119, 0.55); }
+
+    .aura-nav-toggle {
+      display: none;
+      background: rgba(114, 20, 53, 0.25);
+      border: 1px solid var(--border-gold);
+      color: var(--gold-light);
+      width: 38px; height: 38px; border-radius: 10px;
+      font-size: 18px; cursor: pointer;
+      align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .aura-mobile-drawer {
+      display: none;
+      position: fixed;
+      top: 72px; left: 0; right: 0;
+      background: rgba(19, 10, 17, 0.98);
+      backdrop-filter: blur(25px);
+      border-bottom: 1px solid var(--border-gold);
+      padding: 1.25rem 1.5rem;
+      z-index: 999;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.85);
+      flex-direction: column;
+      gap: 10px;
+      max-height: calc(100vh - 72px);
+      overflow-y: auto;
+    }
+    .aura-mobile-drawer.open { display: flex; }
+    .aura-mobile-drawer a {
+      color: #FAF8F5;
+      text-decoration: none;
+      font-size: 14.5px;
+      font-weight: 600;
+      padding: 11px 14px;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border);
+      transition: all 0.2s;
+    }
+    .aura-mobile-drawer a:hover, .aura-mobile-drawer a:active {
+      background: rgba(114, 20, 53, 0.3);
+      border-color: var(--gold);
+      color: var(--gold-light);
+    }
+
+    @media (max-width: 1100px) {
+      .nav-categories { display: none; }
+      .aura-nav-toggle { display: inline-flex; }
+    }
+    @media (max-width: 640px) {
+      .top-strip { justify-content: center; text-align: center; font-size: 10px; padding: 6px 12px; }
+      .top-strip-item:not(:last-child) { display: none; }
+      nav.aura-nav { padding: 0 1rem; height: 64px; }
+      .brand-logo-main { font-size: 20px; }
+      .btn-open-live { font-size: 11.5px; padding: 6px 12px; }
+    }
+
+    .container { max-width: 1220px; margin: 0 auto; padding: 0 20px; position: relative; z-index: 1; }
+
+    /* Hero */
+    .hero {
+      padding: 80px 0 60px;
+      text-align: center;
+      position: relative;
+    }
+    .hero-badge-wrap { display: flex; justify-content: center; gap: 10px; margin-bottom: 22px; flex-wrap: wrap; }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: rgba(114, 20, 53, 0.25);
+      border: 1px solid var(--border);
+      color: var(--rose-light);
+      padding: 6px 16px; border-radius: 999px;
+      font-size: 11.5px; font-weight: 700; letter-spacing: 1.5px;
+      text-transform: uppercase;
+    }
+
+    .hero-title {
+      font-family: var(--font-display);
+      font-size: clamp(38px, 6vw, 76px);
+      font-weight: 700;
+      line-height: 1.1;
+      margin-bottom: 18px;
+    }
+    .hero-title span {
+      background: linear-gradient(135deg, #fff 15%, var(--rose-light) 50%, var(--gold) 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+
+    .hero-sub {
+      font-size: clamp(16px, 2vw, 19px);
+      color: var(--text-muted);
+      max-width: 820px;
+      margin: 0 auto 36px;
+      line-height: 1.65;
+    }
+
+    /* Live App Launch Banner */
+    .live-render-card {
+      background: linear-gradient(135deg, rgba(114, 20, 53, 0.35) 0%, rgba(35, 12, 28, 0.75) 100%);
+      border: 1px solid var(--border-gold);
+      border-radius: 20px;
+      padding: 24px 34px;
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 20px; flex-wrap: wrap;
+      margin: 0 auto 45px;
+      max-width: 900px;
+      box-shadow: 0 15px 40px rgba(0,0,0,0.6);
+      text-align: left;
+    }
+    .live-render-title { font-family: var(--font-display); font-size: 22px; font-weight: 700; color: #fff; margin-bottom: 4px; }
+    .live-render-url { font-family: var(--font-mono); font-size: 13px; color: var(--gold); text-decoration: none; }
+    .live-render-url:hover { text-decoration: underline; }
+
+    /* Interactive Live App Replica (Haute Collection Showcase) */
+    .live-replica-box {
+      background: #170b15;
+      border: 1px solid var(--border-gold);
+      border-radius: 24px;
+      overflow: hidden;
+      box-shadow: 0 25px 60px rgba(0,0,0,0.7);
+      margin-bottom: 80px;
+      text-align: left;
+    }
+
+    .replica-header-banner {
+      background: radial-gradient(circle at 70% 30%, #3d1028 0%, #1c0c1a 100%);
+      padding: 36px 40px;
+      border-bottom: 1px solid var(--border);
+      position: relative;
+    }
+
+    .replica-breadcrumbs {
+      font-size: 12px; color: var(--text-muted); margin-bottom: 16px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .replica-breadcrumbs span { color: var(--rose-light); }
+
+    .haute-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: rgba(212, 175, 55, 0.15);
+      border: 1px solid var(--border-gold);
+      color: var(--gold-light);
+      padding: 4px 12px; border-radius: 6px;
+      font-size: 11px; font-weight: 700; letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .replica-title-row {
+      display: flex; justify-content: space-between; align-items: flex-end; gap: 20px; flex-wrap: wrap;
+    }
+    .replica-headline {
+      font-family: var(--font-display);
+      font-size: clamp(28px, 4.5vw, 46px);
+      font-weight: 700;
+      color: #fff; margin-bottom: 8px;
+    }
+    .replica-subhead {
+      font-size: 15px; color: var(--text-muted); max-width: 620px; line-height: 1.5;
+    }
+
+    .creations-stat-box {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border-gold);
+      border-radius: 14px;
+      padding: 16px 24px;
+      text-align: right;
+    }
+    .stat-number { font-family: var(--font-display); font-size: 32px; font-weight: 700; color: #fff; line-height: 1; }
+    .stat-label { font-size: 10px; font-weight: 700; letter-spacing: 1px; color: var(--gold); text-transform: uppercase; margin-top: 4px; }
+    .stat-cert { font-size: 11px; color: var(--text-muted); margin-top: 4px; display: flex; align-items: center; gap: 4px; justify-content: flex-end; }
+
+    /* Category Pill Strip from Screenshot */
+    .collection-pills-row {
+      background: #1a0d18;
+      padding: 18px 40px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      display: flex; gap: 10px; overflow-x: auto;
+      scrollbar-width: none;
+    }
+    .pill-btn {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      padding: 8px 18px; border-radius: 999px;
+      font-size: 13px; font-weight: 600;
+      white-space: nowrap; cursor: pointer;
+      display: flex; align-items: center; gap: 6px;
+      transition: all 0.2s;
+    }
+    .pill-btn:hover, .pill-btn.active {
+      background: rgba(114, 20, 53, 0.4);
+      border-color: var(--gold);
+      color: #fff;
+    }
+
+    /* Filter Bar with AI Try-On & 3D View from Screenshot */
+    .filter-bar {
+      padding: 20px 40px;
+      display: flex; justify-content: space-between; align-items: center;
+      gap: 16px; flex-wrap: wrap;
+      background: #140912;
+    }
+    .search-input-mock {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 10px 16px;
+      font-size: 13px;
+      color: var(--text-muted);
+      display: flex; align-items: center; gap: 10px;
+      min-width: 260px;
+    }
+    .toggle-group { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+    .toggle-pill {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 8px 14px;
+      font-size: 12px; font-weight: 700;
+      color: #e2e8f0;
+      display: flex; align-items: center; gap: 6px;
+      cursor: pointer;
+    }
+    .toggle-pill.active {
+      border-color: var(--gold);
+      background: rgba(212, 175, 55, 0.15);
+      color: var(--gold-light);
+    }
+
+    /* Product Grid Preview */
+    .products-showcase-grid {
+      padding: 40px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+    @media (max-width: 950px) { .products-showcase-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 600px) { .products-showcase-grid { grid-template-columns: 1fr; padding: 20px; } }
+
+    .product-card {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      transition: all 0.3s;
+    }
+    .product-card:hover {
+      border-color: var(--gold);
+      transform: translateY(-4px);
+      box-shadow: 0 15px 30px rgba(114, 20, 53, 0.35);
+    }
+    .product-img-box {
+      height: 220px;
+      background: linear-gradient(135deg, #260d1f 0%, #180914 100%);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      position: relative;
+    }
+    .product-icon { font-size: 52px; filter: drop-shadow(0 0 15px rgba(212, 175, 55, 0.3)); }
+    .product-badge-float {
+      position: absolute; top: 12px; left: 12px;
+      background: rgba(114, 20, 53, 0.85);
+      border: 1px solid var(--border-gold);
+      padding: 3px 10px; border-radius: 999px;
+      font-size: 10px; font-weight: 700; color: var(--gold-light);
+    }
+    .product-actions-float {
+      position: absolute; bottom: 12px; right: 12px;
+      display: flex; gap: 6px;
+    }
+    .action-btn-mini {
+      background: rgba(0, 0, 0, 0.6);
+      border: 1px solid var(--border-gold);
+      border-radius: 6px;
+      padding: 4px 8px;
+      font-size: 10px; font-weight: 700; color: #fff;
+    }
+
+    .product-details { padding: 20px; }
+    .product-title { font-family: var(--font-display); font-size: 18px; font-weight: 700; color: #fff; margin-bottom: 6px; }
+    .product-desc { font-size: 12.5px; color: var(--text-muted); margin-bottom: 14px; line-height: 1.5; }
+    .product-price-row { display: flex; justify-content: space-between; align-items: center; }
+    .price-val { font-size: 17px; font-weight: 800; color: var(--gold-light); }
+    .btn-buy-mini {
+      background: linear-gradient(135deg, var(--burgundy-700), var(--rose));
+      color: #fff; border: none; padding: 6px 14px; border-radius: 8px;
+      font-size: 11px; font-weight: 700; text-decoration: none;
+    }
+
+    /* Core Features Grid */
+    .section-head { text-align: center; max-width: 780px; margin: 0 auto 50px; }
+    .eyebrow {
+      font-size: 11.5px; font-weight: 800; letter-spacing: 2px;
+      text-transform: uppercase; color: var(--rose);
+      display: inline-block; margin-bottom: 10px;
+    }
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(30px, 4.5vw, 44px);
+      font-weight: 700; color: #fff; margin-bottom: 14px;
+    }
+    .section-desc { font-size: 16px; color: var(--text-muted); }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      margin-bottom: 80px;
+    }
+    @media (max-width: 950px) { .feature-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 600px) { .feature-grid { grid-template-columns: 1fr; } }
+    .feature-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 30px;
+      transition: all 0.3s;
+    }
+    .feature-card:hover {
+      border-color: var(--gold);
+      transform: translateY(-4px);
+      box-shadow: 0 15px 30px rgba(114, 20, 53, 0.25);
+    }
+    .feature-icon {
+      width: 52px; height: 52px; border-radius: 12px;
+      background: rgba(114, 20, 53, 0.25);
+      border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 26px; margin-bottom: 18px;
+    }
+    .feature-card h3 { font-family: var(--font-display); font-size: 22px; font-weight: 700; margin-bottom: 10px; color: #fff; }
+    .feature-card p { font-size: 14px; color: var(--text-muted); line-height: 1.6; }
+
+    /* Market Benchmark */
+    .table-box {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      overflow-x: auto;
+      margin-bottom: 80px;
+    }
+    table { width: 100%; border-collapse: collapse; text-align: left; font-size: 14px; }
+    th {
+      background: rgba(45, 15, 35, 0.8);
+      padding: 18px 22px; color: #fff; font-weight: 700;
+      border-bottom: 1px solid var(--border);
+    }
+    td { padding: 18px 22px; border-bottom: 1px solid rgba(255, 255, 255, 0.05); color: var(--text-muted); }
+    td.highlight { color: #fff; font-weight: 600; background: rgba(201, 84, 119, 0.06); }
+    .check { color: #22c55e; font-weight: 800; }
+    .cross { color: #ef4444; font-weight: 800; }
+
+    /* Footer CTA */
+    .footer-cta {
+      background: radial-gradient(circle at center, #381028 0%, #170914 100%);
+      border: 1px solid var(--border-gold);
+      border-radius: 24px;
+      padding: 60px 40px;
+      text-align: center;
+      margin: 80px 0 40px;
+    }
+    .cta-title { font-family: var(--font-display); font-size: 36px; color: #fff; margin-bottom: 14px; }
+    .cta-sub { font-size: 16px; color: var(--text-muted); max-width: 650px; margin: 0 auto 30px; }
+
+    footer {
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      padding: 30px 0;
+      text-align: center;
+      font-size: 13px; color: var(--text-muted);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="ambient-glow"></div>
+
+  <!-- Top Announcement Strip from Live App -->
+  <div class="top-strip">
+    <div class="top-strip-item">
+      <span>💎 Handcrafted Luxury & 100% Certified Authentic</span>
+    </div>
+    <div class="top-strip-item">
+      <span>🚚 Complimentary Express Shipping on orders over ₹1,999</span>
+    </div>
+    <div class="top-strip-item">
+      <span>Use code <strong class="top-strip-code">AURA10</strong> for 10% off your first order</span>
+    </div>
+  </div>
+
+  <!-- Sticky Nav from Live App -->
+  <nav class="aura-nav">
+    <a href="https://onlyfemales-web.onrender.com/#/" target="_blank" class="brand-group">
+      <div class="brand-logo-text">
+        <span class="brand-logo-main">AURA</span>
+        <span class="brand-logo-sub">WOMEN'S WORLD</span>
+      </div>
+    </a>
+
+    <ul class="nav-categories">
+      <li><a href="https://onlyfemales-web.onrender.com/#/" target="_blank">Home</a></li>
+      <li><a href="https://onlyfemales-web.onrender.com/#/category/fashion" target="_blank">Fashion ▾</a></li>
+      <li><a href="https://onlyfemales-web.onrender.com/#/category/jewellery" target="_blank">Jewellery</a></li>
+      <li><a href="https://onlyfemales-web.onrender.com/#/category/footwear" target="_blank" class="active">Footwear</a></li>
+      <li><a href="https://onlyfemales-web.onrender.com/#/category/bags" target="_blank">Bags</a></li>
+      <li><a href="https://onlyfemales-web.onrender.com/#/reels" target="_blank">🎬 Reels</a></li>
+      <li><a href="https://onlyfemales-web.onrender.com/#/ai-stylist" target="_blank" class="nav-badge-pill">🪄 AI Stylist</a></li>
+    </ul>
+
+    <div class="nav-actions">
+      <span class="live-status-pill">● Live on Render</span>
+      <a href="https://onlyfemales-web.onrender.com/#/" target="_blank" class="btn-open-live">
+        Visit Live App ➔
+      </a>
+      <button class="aura-nav-toggle" id="auraNavToggle" aria-label="Toggle navigation">☰</button>
+    </div>
+  </nav>
+
+  <!-- Mobile Drawer -->
+  <div class="aura-mobile-drawer" id="auraMobileNav">
+    <a href="https://onlyfemales-web.onrender.com/#/" target="_blank">🏠 Home</a>
+    <a href="https://onlyfemales-web.onrender.com/#/category/fashion" target="_blank">👗 Fashion & Couture</a>
+    <a href="https://onlyfemales-web.onrender.com/#/category/jewellery" target="_blank">💎 Luxury Jewellery</a>
+    <a href="https://onlyfemales-web.onrender.com/#/category/footwear" target="_blank">👠 Cushioned Artisan Footwear</a>
+    <a href="https://onlyfemales-web.onrender.com/#/category/bags" target="_blank">👜 Handcrafted Bags</a>
+    <a href="https://onlyfemales-web.onrender.com/#/reels" target="_blank">🎬 Shoppable Reels</a>
+    <a href="https://onlyfemales-web.onrender.com/#/ai-stylist" target="_blank" style="color:var(--gold-light); background:rgba(114,20,53,0.3); border-color:var(--gold);">🪄 AI Stylist & Try-On ➔</a>
+  </div>
+
+  <!-- Hero Section -->
+  <header class="hero">
+    <div class="container">
+      <div class="hero-badge-wrap">
+        <span class="hero-badge">AURA WOMEN'S WORLD</span>
+        <span class="hero-badge" style="color:var(--gold); border-color:var(--border-gold);">ONLYFEMALES PLATFORM</span>
+      </div>
+
+      <h1 class="hero-title">
+        The Premier AI-Driven<br>
+        <span>Women's Fashion & Styling Ecosystem</span>
+      </h1>
+      <p class="hero-sub">
+        Explore curated ethnic and western collections, handcrafted artisan footwear, 360° interactive 3D inspection, and patented <strong>'See It On Me' AI Virtual Try-On</strong>.
+      </p>
+
+      <!-- Live Render App Callout -->
+      <div class="live-render-card">
+        <div>
+          <div class="live-render-title">🌟 Live Production Application Active on Render</div>
+          <a href="https://onlyfemales-web.onrender.com/#/" target="_blank" class="live-render-url">
+            https://onlyfemales-web.onrender.com/#/ ➔
+          </a>
+        </div>
+        <a href="https://onlyfemales-web.onrender.com/#/" target="_blank" class="btn-open-live">
+          Launch Aura Women's World ➔
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <!-- Live App UI Showcase Replica -->
+    <div class="live-replica-box">
+      <!-- Banner from Screenshot -->
+      <div class="replica-header-banner">
+        <div class="replica-breadcrumbs">
+          🏠 Home › Categories › <span>Cushioned Artisan Footwear</span>
+        </div>
+        <div class="haute-badge">👑 AURA HAUTE COLLECTION</div>
+        <div class="replica-title-row">
+          <div>
+            <h2 class="replica-headline">Cushioned Artisan Footwear</h2>
+            <p class="replica-subhead">
+              Memory-foam padded bridal juttis and pointed toe Italian leather pumps engineered for royal comfort.
+            </p>
+          </div>
+          <div class="creations-stat-box">
+            <div class="stat-number">2</div>
+            <div class="stat-label">Artisan Creations</div>
+            <div class="stat-cert">🛡️ 100% Certified Authentic</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Collection Pills Strip -->
+      <div class="collection-pills-row">
+        <div class="pill-btn">All Collections</div>
+        <div class="pill-btn">👗 Fashion & Couture</div>
+        <div class="pill-btn">🥻 Banarasi Sarees</div>
+        <div class="pill-btn">🖊️ Bridal Lehengas</div>
+        <div class="pill-btn">⚙️ Anarkalis & Sets</div>
+        <div class="pill-btn">🧣 Shararas & Ghararas</div>
+        <div class="pill-btn">💃 Evening Gowns</div>
+      </div>
+
+      <!-- Filter Bar with AI Try-On & 3D View from Screenshot -->
+      <div class="filter-bar">
+        <div class="search-input-mock">
+          <span>🔍</span>
+          <span>Filter by title, weave, color...</span>
+        </div>
+
+        <div class="toggle-group">
+          <div class="toggle-pill active">
+            <span>🪄</span> AI Try-On Active
+          </div>
+          <div class="toggle-pill active">
+            <span>🧊</span> 3D View Enabled
+          </div>
+          <div class="toggle-pill">
+            <span>🏷️</span> On Sale
+          </div>
+          <div class="toggle-pill" style="border-color: var(--border-gold); color: var(--gold-light);">
+            Occasions: All ▾
+          </div>
+        </div>
+      </div>
+
+      <!-- Product Grid -->
+      <div class="products-showcase-grid">
+        <!-- Item 1 -->
+        <div class="product-card">
+          <div class="product-img-box">
+            <span class="product-badge-float">BRIDAL COUTURE</span>
+            <div class="product-icon">👠</div>
+            <div class="product-actions-float">
+              <span class="action-btn-mini">🪄 AI Try-On</span>
+              <span class="action-btn-mini">🧊 3D Orbit</span>
+            </div>
+          </div>
+          <div class="product-details">
+            <div class="product-title">Royal Zardozi Velvet Bridal Jutti</div>
+            <p class="product-desc">Triple memory-foam cushioning with hand-embroidered dabka & pearls on crimson velvet.</p>
+            <div class="product-price-row">
+              <span class="price-val">₹4,850</span>
+              <a href="https://onlyfemales-web.onrender.com/#/category/footwear" target="_blank" class="btn-buy-mini">Try On ➔</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Item 2 -->
+        <div class="product-card">
+          <div class="product-img-box">
+            <span class="product-badge-float">HAUTE COLLECTION</span>
+            <div class="product-icon">🥿</div>
+            <div class="product-actions-float">
+              <span class="action-btn-mini">🪄 AI Try-On</span>
+              <span class="action-btn-mini">🧊 3D Orbit</span>
+            </div>
+          </div>
+          <div class="product-details">
+            <div class="product-title">Pointed Toe Tuscan Leather Stiletto</div>
+            <p class="product-desc">Ergonomic arch support engineered for 12+ hour reception wear with Italian metallic sheen.</p>
+            <div class="product-price-row">
+              <span class="price-val">₹7,200</span>
+              <a href="https://onlyfemales-web.onrender.com/#/category/footwear" target="_blank" class="btn-buy-mini">Try On ➔</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Item 3 -->
+        <div class="product-card">
+          <div class="product-img-box">
+            <span class="product-badge-float">BANARASI WEAVE</span>
+            <div class="product-icon">🥻</div>
+            <div class="product-actions-float">
+              <span class="action-btn-mini">🪄 AI Try-On</span>
+              <span class="action-btn-mini">🧊 3D Orbit</span>
+            </div>
+          </div>
+          <div class="product-details">
+            <div class="product-title">Kadhwa Pure Katan Silk Saree</div>
+            <p class="product-desc">Certified handloom gold zari floral jaal from master weavers of Varanasi.</p>
+            <div class="product-price-row">
+              <span class="price-val">₹24,500</span>
+              <a href="https://onlyfemales-web.onrender.com/#/" target="_blank" class="btn-buy-mini">Try On ➔</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Core AI & Commerce Features -->
+    <div class="section-head">
+      <span class="eyebrow">TECHNOLOGY & USER EXPERIENCE</span>
+      <h2 class="section-title">Six Pillars of Aura Women's World</h2>
+      <p class="section-desc">Engineered from the ground up for women's luxury fashion, privacy, and fit perfection.</p>
+    </div>
+
+    <div class="feature-grid">
+      <div class="feature-card">
+        <div class="feature-icon">🪄</div>
+        <h3>'See It On Me' AI Try-On</h3>
+        <p>Neural silhouette mapping models fabric draping, stretch, and movement directly against customer body profiles to eliminate return rates.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">🧊</div>
+        <h3>Interactive 3D Orbital Canvas</h3>
+        <p>Rotate garments 360 degrees to inspect zardozi embroidery, pleating, stitch density, and silk sheen under photorealistic lighting.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">🎬</div>
+        <h3>Interactive Video Reels Feed</h3>
+        <p>Shoppable short-form video reels showcasing real fabric drape, walking movement, and styling inspirations with 1-tap cart additions.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">👑</div>
+        <h3>Aura Haute Collections</h3>
+        <p>Curated capsules across Banarasi Sarees, Bridal Lehengas, Cushioned Artisan Footwear, and Evening Gowns from verified luxury creators.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">🛡️</div>
+        <h3>Women-Safe Private Space</h3>
+        <p>Moderated community environment ensuring verified authentic reviews, safe feedback sharing, and discrete packaging delivery.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">💎</div>
+        <h3>100% Certified Authentic</h3>
+        <p>Direct partnerships with independent weavers, leather craftsmen, and boutique ateliers across India with guaranteed origin certificates.</p>
+      </div>
+    </div>
+
+    <!-- Benchmark Comparison -->
+    <div class="section-head">
+      <span class="eyebrow">MARKET BENCHMARK</span>
+      <h2 class="section-title">Aura vs. Standard eCommerce Marketplaces</h2>
+      <p class="section-desc">Why modern luxury shoppers prefer Aura Women's World over generic shopping apps.</p>
+    </div>
+
+    <div class="table-box">
+      <table>
+        <thead>
+          <tr>
+            <th>Feature Dimension</th>
+            <th>Generic Portals (Myntra / Ajio)</th>
+            <th style="color:var(--gold);">AURA WOMEN'S WORLD (OnlyFemales)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="font-weight: 700; color: #fff;">AI Virtual Try-On ('See It On Me')</td>
+            <td><span class="cross">✕</span> Static flat images only</td>
+            <td class="highlight"><span class="check">✓</span> Neural garment draping on user body profile</td>
+          </tr>
+          <tr>
+            <td style="font-weight: 700; color: #fff;">360° 3D Orbital Inspection</td>
+            <td><span class="cross">✕</span> 2D static pictures</td>
+            <td class="highlight"><span class="check">✓</span> Full 3D orbital fabric and seam inspection</td>
+          </tr>
+          <tr>
+            <td style="font-weight: 700; color: #fff;">Shoppable Reels Feed</td>
+            <td><span class="cross">✕</span> Text and thumbnail grids</td>
+            <td class="highlight"><span class="check">✓</span> Interactive video reels with 1-click cart</td>
+          </tr>
+          <tr>
+            <td style="font-weight: 700; color: #fff;">Cushioned Artisan Footwear Lab</td>
+            <td><span class="cross">✕</span> Standard shoe catalogs</td>
+            <td class="highlight"><span class="check">✓</span> Memory-foam padded bridal comfort engineering</td>
+          </tr>
+          <tr>
+            <td style="font-weight: 700; color: #fff;">Direct Artisan Traceability</td>
+            <td><span class="cross">✕</span> Mass manufacturer warehouses</td>
+            <td class="highlight"><span class="check">✓</span> 100% verified independent Indian master artisans</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Handover CTA -->
+    <div class="footer-cta">
+      <h2 class="cta-title">Experience AURA — WOMEN'S WORLD Live</h2>
+      <p class="cta-sub">
+        The application is live and operational on Render. Browse Cushioned Artisan Footwear, Banarasi Sarees, and test the AI Try-On engine now.
+      </p>
+      <div style="display: flex; justify-content: center; gap: 16px; flex-wrap: wrap;">
+        <a href="https://onlyfemales-web.onrender.com/#/" target="_blank" class="btn-open-live" style="padding: 14px 34px; font-size: 15px;">
+          <span>Open Live App (onlyfemales-web)</span> ➔
+        </a>
+      </div>
+    </div>
+
+  </main>
+
+  <footer>
+    <div class="container">
+      AURA WOMEN'S WORLD™ (OnlyFemales) • Executive Product Presentation • Live URL: <a href="https://onlyfemales-web.onrender.com/#/" target="_blank" style="color:var(--gold);">https://onlyfemales-web.onrender.com/#/</a>
+    </div>
+  </footer>
+
+  <script>
+    const auraToggle = document.getElementById('auraNavToggle');
+    const auraMobileNav = document.getElementById('auraMobileNav');
+    if (auraToggle && auraMobileNav) {
+      auraToggle.addEventListener('click', () => {
+        auraMobileNav.classList.toggle('open');
+        auraToggle.textContent = auraMobileNav.classList.contains('open') ? '✕' : '☰';
+      });
+      auraMobileNav.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => {
+          auraMobileNav.classList.remove('open');
+          auraToggle.textContent = '☰';
+        });
+      });
+    }
+  </script>
+
+</body>
+</html>

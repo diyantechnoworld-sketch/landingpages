@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Enterprise Software Showcase — 8 Production-Grade Client Platforms</title>
+  <meta name="description" content="Executive client portfolio featuring 8 enterprise platforms: eCommerce, Mobility, Real Estate, B2B Distribution, On-Demand Services, Digital Art, and Luxury Retail.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Syne:wght@700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #07090f;
+      --bg-surface: #0e1322;
+      --bg-card: rgba(16, 23, 40, 0.7);
+      --bg-card-hover: rgba(26, 36, 62, 0.88);
+      --cyan: #06b6d4;
+      --sky: #38bdf8;
+      --blue: #3b82f6;
+      --indigo: #6366f1;
+      --purple: #a855f7;
+      --emerald: #10b981;
+      --gold: #f59e0b;
+      --rose: #f43f5e;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+      --border: rgba(255, 255, 255, 0.08);
+      --border-bright: rgba(56, 189, 248, 0.45);
+      --glow: rgba(56, 189, 248, 0.15);
+      --font-display: 'Syne', sans-serif;
+      --font-body: 'Plus Jakarta Sans', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+      background-image: 
+        radial-gradient(ellipse 80% 50% at 50% -10%, rgba(56,189,248,0.14) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 40% at 85% 30%, rgba(168,85,247,0.12) 0%, transparent 55%),
+        radial-gradient(circle at 15% 75%, rgba(16,185,129,0.08) 0%, transparent 50%);
+    }
+
+    /* Ambient Lighting */
+    .ambient-glow {
+      position: fixed; top: 0; left: 50%; transform: translateX(-50%);
+      width: 1200px; height: 600px;
+      background: radial-gradient(circle, rgba(56,189,248,0.08) 0%, transparent 70%);
+      pointer-events: none; z-index: 0;
+    }
+
+    /* Top Strip */
+    .top-strip {
+      background: rgba(10, 15, 28, 0.96);
+      border-bottom: 1px solid var(--border);
+      padding: 7px 24px;
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: var(--text-muted);
+      z-index: 101;
+      position: relative;
+    }
+    .strip-badge {
+      background: rgba(16, 185, 129, 0.15);
+      color: #34d399;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 11px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .pulse-dot {
+      width: 7px; height: 7px; border-radius: 50%;
+      background: #10b981; box-shadow: 0 0 8px #10b981;
+      animation: pulseAnim 1.8s infinite;
+    }
+    @keyframes pulseAnim {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.85); }
+    }
+
+    /* Navigation */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(7, 9, 15, 0.9);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 32px;
+      display: flex; align-items: center; justify-content: space-between;
+      height: 70px;
+    }
+    .nav-brand {
+      display: flex; align-items: center; gap: 12px;
+      text-decoration: none; color: #fff;
+    }
+    .brand-mark {
+      width: 40px; height: 40px; border-radius: 10px;
+      background: linear-gradient(135deg, var(--sky), var(--indigo));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px; box-shadow: 0 0 20px rgba(56,189,248,0.4);
+    }
+    .brand-name {
+      font-family: var(--font-display); font-size: 20px; font-weight: 800;
+      letter-spacing: -0.01em;
+    }
+    .brand-pill {
+      font-size: 10.5px; font-weight: 800; text-transform: uppercase;
+      background: rgba(255,255,255,0.08); border: 1px solid var(--border);
+      padding: 3px 8px; border-radius: 999px; color: var(--sky);
+    }
+    .nav-links { display: flex; gap: 24px; align-items: center; }
+    .nav-links a {
+      color: var(--text-muted); text-decoration: none; font-size: 14px; font-weight: 600;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: #fff; }
+
+    /* Hero */
+    .hero {
+      text-align: center;
+      padding: 85px 24px 60px;
+      position: relative; z-index: 1;
+    }
+    .hero-eyebrow {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(56, 189, 248, 0.1); border: 1px solid rgba(56, 189, 248, 0.35);
+      color: var(--sky); padding: 7px 20px; border-radius: 999px;
+      font-size: 12px; font-weight: 800; letter-spacing: 2px;
+      text-transform: uppercase; margin-bottom: 24px;
+    }
+    h1 {
+      font-family: var(--font-display);
+      font-size: clamp(38px, 6.5vw, 76px);
+      font-weight: 800; letter-spacing: -0.02em; line-height: 1.05;
+      margin-bottom: 20px;
+    }
+    h1 em {
+      font-style: normal;
+      background: linear-gradient(135deg, #38bdf8 0%, #a855f7 50%, #f43f5e 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .hero-sub {
+      font-size: clamp(16px, 2vw, 20px);
+      color: var(--text-muted); max-width: 760px; margin: 0 auto 44px;
+      font-weight: 400; line-height: 1.6;
+    }
+
+    /* Metrics Ribbon */
+    .metrics-ribbon {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px;
+      max-width: 1000px; margin: 0 auto;
+    }
+    @media(max-width: 768px) { .metrics-ribbon { grid-template-columns: repeat(2, 1fr); } }
+    .metric-card {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: 16px; padding: 22px 18px; text-align: center;
+      backdrop-filter: blur(12px); transition: all 0.25s;
+    }
+    .metric-card:hover {
+      transform: translateY(-3px); border-color: var(--border-bright);
+      box-shadow: 0 10px 30px var(--glow);
+    }
+    .metric-val {
+      font-family: var(--font-display); font-size: 34px; font-weight: 800;
+      color: var(--sky); display: block; line-height: 1.1; margin-bottom: 4px;
+    }
+    .metric-lbl {
+      font-size: 12px; font-weight: 700; color: var(--text-muted);
+      text-transform: uppercase; letter-spacing: 0.5px;
+    }
+
+    /* Layout */
+    .container { max-width: 1280px; margin: 0 auto; padding: 0 24px; }
+    section { padding: 80px 0; position: relative; z-index: 1; }
+    .sec-eyebrow {
+      font-size: 12px; font-weight: 800; letter-spacing: 2.5px;
+      color: var(--sky); text-transform: uppercase; display: block; margin-bottom: 12px;
+    }
+    .sec-h2 {
+      font-family: var(--font-display); font-size: clamp(28px, 4vw, 44px);
+      font-weight: 800; letter-spacing: -0.015em; margin-bottom: 14px; line-height: 1.2;
+    }
+    .sec-p { font-size: 16px; color: var(--text-muted); max-width: 620px; }
+
+    /* Filter Bar */
+    .filter-bar {
+      display: flex; gap: 10px; margin-top: 36px; margin-bottom: 36px;
+      flex-wrap: wrap; align-items: center;
+    }
+    .filter-btn {
+      background: rgba(255,255,255,0.04); border: 1px solid var(--border);
+      color: var(--text-muted); padding: 9px 20px; border-radius: 999px;
+      font-size: 13.5px; font-weight: 700; cursor: pointer; transition: all 0.2s;
+    }
+    .filter-btn.active, .filter-btn:hover {
+      background: rgba(56,189,248,0.18); border-color: var(--sky); color: #fff;
+    }
+
+    /* Products Grid */
+    .products-grid {
+      display: grid; grid-template-columns: repeat(2, 1fr); gap: 28px;
+    }
+    @media(max-width: 900px) { .products-grid { grid-template-columns: 1fr; } }
+
+    .product-card {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: 24px; padding: 32px; transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      display: flex; flex-direction: column; justify-content: space-between;
+      position: relative; overflow: hidden;
+      backdrop-filter: blur(14px);
+    }
+    .product-card:hover {
+      transform: translateY(-6px);
+      border-color: var(--border-bright);
+      box-shadow: 0 20px 50px rgba(0,0,0,0.5), 0 0 40px var(--glow);
+    }
+    .card-top-row {
+      display: flex; justify-content: space-between; align-items: flex-start;
+      margin-bottom: 20px; gap: 12px;
+    }
+    .prod-icon-box {
+      width: 54px; height: 54px; border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 26px; flex-shrink: 0;
+    }
+    .live-status-pill {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 11.5px; font-weight: 700; padding: 4px 12px; border-radius: 999px;
+      text-decoration: none; transition: transform 0.2s;
+    }
+    .live-status-pill:hover { transform: scale(1.04); }
+    .live-green {
+      background: rgba(16, 185, 129, 0.15); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.35);
+    }
+    .live-gold {
+      background: rgba(245, 158, 11, 0.15); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.35);
+    }
+
+    .prod-title {
+      font-family: var(--font-display); font-size: 24px; font-weight: 800;
+      color: #fff; margin-bottom: 6px;
+    }
+    .prod-tagline {
+      font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;
+      margin-bottom: 12px;
+    }
+    .prod-desc {
+      font-size: 14.5px; color: var(--text-muted); line-height: 1.6; margin-bottom: 22px;
+    }
+
+    .prod-tags-cluster {
+      display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 26px;
+    }
+    .tech-tag {
+      background: rgba(255,255,255,0.04); border: 1px solid var(--border);
+      font-size: 12px; font-weight: 600; padding: 4px 10px; border-radius: 6px;
+      color: #cbd5e1; font-family: var(--font-mono);
+    }
+
+    .card-footer-actions {
+      display: flex; gap: 12px; align-items: center; flex-wrap: wrap;
+      border-top: 1px solid var(--border); padding-top: 20px;
+    }
+    .btn-presentation {
+      background: linear-gradient(135deg, var(--sky), var(--blue));
+      color: #fff; text-decoration: none; padding: 10px 22px; border-radius: 999px;
+      font-size: 13.5px; font-weight: 800; display: inline-flex; align-items: center; gap: 6px;
+      box-shadow: 0 4px 16px rgba(56,189,248,0.3); transition: all 0.2s;
+    }
+    .btn-presentation:hover {
+      transform: translateY(-2px); box-shadow: 0 6px 22px rgba(56,189,248,0.5);
+    }
+    .btn-live-ext {
+      background: rgba(255,255,255,0.05); border: 1px solid var(--border);
+      color: #fff; text-decoration: none; padding: 10px 18px; border-radius: 999px;
+      font-size: 13px; font-weight: 700; display: inline-flex; align-items: center; gap: 6px;
+      transition: all 0.2s;
+    }
+    .btn-live-ext:hover {
+      background: rgba(255,255,255,0.1); border-color: #fff;
+    }
+
+    /* Category Theming Colors */
+    .icon-gold { background: rgba(245,158,11,0.15); border: 1px solid rgba(245,158,11,0.3); color: #fbbf24; }
+    .icon-rose { background: rgba(244,63,94,0.15); border: 1px solid rgba(244,63,94,0.3); color: #fb7185; }
+    .icon-sky { background: rgba(56,189,248,0.15); border: 1px solid rgba(56,189,248,0.3); color: #38bdf8; }
+    .icon-yellow { background: rgba(255,214,0,0.15); border: 1px solid rgba(255,214,0,0.3); color: #ffd600; }
+    .icon-orange { background: rgba(249,115,22,0.15); border: 1px solid rgba(249,115,22,0.3); color: #fb923c; }
+    .icon-cyan { background: rgba(6,182,212,0.15); border: 1px solid rgba(6,182,212,0.3); color: #22d3ee; }
+    .icon-blue { background: rgba(59,130,246,0.15); border: 1px solid rgba(59,130,246,0.3); color: #60a5fa; }
+    .icon-purple { background: rgba(168,85,247,0.15); border: 1px solid rgba(168,85,247,0.3); color: #c084fc; }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid var(--border); padding: 48px 24px;
+      text-align: center; font-size: 14px; color: var(--text-muted);
+      background: rgba(4, 6, 12, 0.85); position: relative; z-index: 1;
+    }
+    footer a { color: var(--sky); text-decoration: none; font-weight: 600; }
+  </style>
+</head>
+<body>
+
+<div class="ambient-glow"></div>
+
+<!-- Top Live Deployment Ribbon -->
+<aside class="top-strip" aria-label="System Status">
+  <div class="strip-badge">
+    <div class="pulse-dot"></div>
+    <span>4 Platforms Live on Render &bull; 4 Deployments Coming Soon &bull; 100% Codebases Complete</span>
+  </div>
+  <div>
+    <span>Executive Client Presentation Suite &bull; 2026 Production Catalog</span>
+  </div>
+</aside>
+
+<!-- Navigation -->
+<nav>
+  <a href="index.html" class="nav-brand">
+    <div class="brand-mark">✦</div>
+    <div>
+      <div class="brand-name">Enterprise Suite</div>
+    </div>
+    <div class="brand-pill">8 Live Platforms</div>
+  </a>
+
+  <div class="nav-links">
+    <a href="#showcase">Explore All 8 Products</a>
+    <a href="#metrics">Platform Benchmarks</a>
+  </div>
+</nav>
+
+<!-- Hero -->
+<header class="hero">
+  <div class="hero-eyebrow">✦ CLIENT DEMONSTRATION SHOWCASE</div>
+  <h1>Production-Grade Software<br><em>Engineered for Scale.</em></h1>
+  <p class="hero-sub">Explore the complete 8-platform demonstration suite spanning High-Growth eCommerce, Turnkey Mobility, Real Estate Super-Apps, B2B Distribution, and Luxury Digital Marketplaces.</p>
+
+  <div class="metrics-ribbon" id="metrics">
+    <div class="metric-card">
+      <span class="metric-val">8</span>
+      <span class="metric-lbl">Enterprise Platforms</span>
+    </div>
+    <div class="metric-card">
+      <span class="metric-val">4</span>
+      <span class="metric-lbl">Live Hosted Instances</span>
+    </div>
+    <div class="metric-card">
+      <span class="metric-val">3</span>
+      <span class="metric-lbl">Signed Android APKs</span>
+    </div>
+    <div class="metric-card">
+      <span class="metric-val">100%</span>
+      <span class="metric-lbl">Full-Stack Codebases</span>
+    </div>
+  </div>
+</header>
+
+<main>
+  <!-- SHOWCASE SECTION -->
+  <section id="showcase">
+    <div class="container">
+      <span class="sec-eyebrow">PORTFOLIO DIRECTORY</span>
+      <h2 class="sec-h2">Select a Product Presentation</h2>
+      <p class="sec-p">Each product presentation contains architectural diagrams, feature comparisons, tech stack audits, and live cloud demonstration launch buttons.</p>
+
+      <!-- Category Filter -->
+      <div class="filter-bar">
+        <button class="filter-btn active" onclick="filterCatalog('all', this)">All Platforms (8)</button>
+        <button class="filter-btn" onclick="filterCatalog('ecommerce', this)">Retail & eCommerce (2)</button>
+        <button class="filter-btn" onclick="filterCatalog('mobility', this)">Mobility & Logistics (2)</button>
+        <button class="filter-btn" onclick="filterCatalog('realestate', this)">Real Estate & FinTech (1)</button>
+        <button class="filter-btn" onclick="filterCatalog('enterprise', this)">B2B & Enterprise (1)</button>
+        <button class="filter-btn" onclick="filterCatalog('luxury', this)">Luxury & Art (2)</button>
+      </div>
+
+      <div class="products-grid">
+        <!-- 1. JaiNMart -->
+        <article class="product-card" data-category="ecommerce">
+          <div>
+            <div class="card-top-row">
+              <div class="prod-icon-box icon-orange">🛒</div>
+              <a href="coming-soon.html?p=jainmart" class="live-status-pill live-gold"><span>&#x23F3; Coming Soon</span></a>
+            </div>
+            <h3 class="prod-title">JaiNMart</h3>
+            <div class="prod-tagline" style="color: #fb923c;">eMart v2 &bull; Retail & Grocery eCommerce OS</div>
+            <p class="prod-desc">Turnkey multi-vendor grocery and retail marketplace uniting a high-conversion Web Storefront, granular Vendor Admin Panel, and Ionic Mobile App with atomic digital wallet ledgers and 5 hot-swappable payment gateways.</p>
+            <div class="prod-tags-cluster">
+              <span class="tech-tag">Laravel 7</span>
+              <span class="tech-tag">Ionic Angular</span>
+              <span class="tech-tag">PostgreSQL</span>
+              <span class="tech-tag">Razorpay / UPI</span>
+              <span class="tech-tag">Docker</span>
+            </div>
+          </div>
+          <div class="card-footer-actions">
+            <a href="JaiNMart.html" class="btn-presentation">Explore Presentation ➔</a>
+            <a href="coming-soon.html?p=jainmart" class="btn-live-ext">Live Demo &#x2197;</a>
+          </div>
+        </article>
+
+        <!-- 2. Aarvi Jewellery Studio -->
+        <article class="product-card" data-category="luxury">
+          <div>
+            <div class="card-top-row">
+              <div class="prod-icon-box icon-gold">💎</div>
+              <a href="https://aarvijewellery-studio-web.onrender.com/" target="_blank" rel="noopener" class="live-status-pill live-green">
+                <div class="pulse-dot"></div>
+                <span>Live on Render</span>
+              </a>
+            </div>
+            <h3 class="prod-title">Aarvi Jewellery Studio</h3>
+            <div class="prod-tagline" style="color: #fbbf24;">Luxury Studio &bull; 3D Customizer & Bullion Ticker</div>
+            <p class="prod-desc">Omnichannel luxury jewellery commerce suite featuring photorealistic 360° interactive 3D inspection, live bullion gold & diamond pricing tickers, multi-currency FX settlement, and multi-vendor B2B enterprise ordering.</p>
+            <div class="prod-tags-cluster">
+              <span class="tech-tag">Nx Monorepo</span>
+              <span class="tech-tag">Three.js 3D</span>
+              <span class="tech-tag">Live Bullion API</span>
+              <span class="tech-tag">Angular</span>
+              <span class="tech-tag">Node.js</span>
+            </div>
+          </div>
+          <div class="card-footer-actions">
+            <a href="AarvijewellaryStudio.html" class="btn-presentation">Explore Presentation ➔</a>
+            <a href="https://aarvijewellery-studio-web.onrender.com/" target="_blank" rel="noopener" class="btn-live-ext">Launch App ↗</a>
+          </div>
+        </article>
+
+        <!-- 3. GHAR.io -->
+        <article class="product-card" data-category="realestate">
+          <div>
+            <div class="card-top-row">
+              <div class="prod-icon-box icon-sky">🏠</div>
+              <a href="https://ghar-io-web.onrender.com/" target="_blank" rel="noopener" class="live-status-pill live-green">
+                <div class="pulse-dot"></div>
+                <span>Live on Render</span>
+              </a>
+            </div>
+            <h3 class="prod-title">GHAR.io</h3>
+            <div class="prod-tagline" style="color: #38bdf8;">Real Estate Super-App &bull; 99acres & Housing Caliber</div>
+            <p class="prod-desc">Full-stack property platform covering web, tablet, and mobile from a single Angular 18 + Ionic PWA codebase. Powered by 14 MongoDB collections, cascading location APIs (195 countries), and instant home loan EMI calculators.</p>
+            <div class="prod-tags-cluster">
+              <span class="tech-tag">Node.js Express</span>
+              <span class="tech-tag">MongoDB (14 Colls)</span>
+              <span class="tech-tag">Angular 18</span>
+              <span class="tech-tag">Ionic PWA</span>
+              <span class="tech-tag">JWT OTP Auth</span>
+            </div>
+          </div>
+          <div class="card-footer-actions">
+            <a href="gharIO.html" class="btn-presentation">Explore Presentation ➔</a>
+            <a href="https://ghar-io-web.onrender.com/" target="_blank" rel="noopener" class="btn-live-ext">Launch App ↗</a>
+          </div>
+        </article>
+
+        <!-- 4. RideSocial (ConnecttoRide) -->
+        <article class="product-card" data-category="mobility">
+          <div>
+            <div class="card-top-row">
+              <div class="prod-icon-box icon-yellow">🛵</div>
+              <a href="coming-soon.html?p=connecttoride" class="live-status-pill live-gold"><span>&#x23F3; Coming Soon</span></a>
+            </div>
+            <h3 class="prod-title">RideSocial (ConnecttoRide)</h3>
+            <div class="prod-tagline" style="color: #ffd600;">4-in-1 Mobility & Logistics Platform &bull; 3 APKs</div>
+            <p class="prod-desc">Unified Rapido-style ride hailing and Porter-style parcel logistics platform. Four purpose-built applications (Rider, Porter, Captain, SuperAdmin) with dual-pool vehicle isolation and 3 signed Android APKs.</p>
+            <div class="prod-tags-cluster">
+              <span class="tech-tag">Node.js</span>
+              <span class="tech-tag">Socket.io Dispatch</span>
+              <span class="tech-tag">3 Android APKs</span>
+              <span class="tech-tag">MongoDB</span>
+              <span class="tech-tag">Capacitor</span>
+            </div>
+          </div>
+          <div class="card-footer-actions">
+            <a href="ConnecttoRide.html" class="btn-presentation">Explore Presentation ➔</a>
+            <a href="coming-soon.html?p=connecttoride" class="btn-live-ext">Live Demo &#x2197;</a>
+          </div>
+        </article>
+
+        <!-- 5. AURA Women's World (Onlyfemales) -->
+        <article class="product-card" data-category="ecommerce">
+          <div>
+            <div class="card-top-row">
+              <div class="prod-icon-box icon-rose">👗</div>
+              <a href="https://onlyfemales-web.onrender.com/#/" target="_blank" rel="noopener" class="live-status-pill live-green">
+                <div class="pulse-dot"></div>
+                <span>Live on Render</span>
+              </a>
+            </div>
+            <h3 class="prod-title">AURA Women's World</h3>
+            <div class="prod-tagline" style="color: #fb7185;">OnlyFemales Platform &bull; AI Stylist & Couture</div>
+            <p class="prod-desc">AI-driven fashion, couture, and artisan footwear ecosystem featuring interactive 360° product inspection, shoppable reels, curated lifestyle categories, and patented 'See It On Me' AI virtual fitting recommendations.</p>
+            <div class="prod-tags-cluster">
+              <span class="tech-tag">Angular</span>
+              <span class="tech-tag">AI Stylist</span>
+              <span class="tech-tag">Shoppable Reels</span>
+              <span class="tech-tag">Virtual Try-On</span>
+              <span class="tech-tag">Render Cloud</span>
+            </div>
+          </div>
+          <div class="card-footer-actions">
+            <a href="Onlyfemales.html" class="btn-presentation">Explore Presentation ➔</a>
+            <a href="https://onlyfemales-web.onrender.com/#/" target="_blank" rel="noopener" class="btn-live-ext">Launch App ↗</a>
+          </div>
+        </article>
+
+        <!-- 6. FreshLine (LaundryApp) -->
+        <article class="product-card" data-category="mobility">
+          <div>
+            <div class="card-top-row">
+              <div class="prod-icon-box icon-cyan">🧺</div>
+              <a href="https://laundryapp-web.onrender.com/" target="_blank" rel="noopener" class="live-status-pill live-green">
+                <div class="pulse-dot"></div>
+                <span>Live on Render</span>
+              </a>
+            </div>
+            <h3 class="prod-title">FreshLine Laundry</h3>
+            <div class="prod-tagline" style="color: #22d3ee;">On-Demand Laundry &bull; 4-App Vendor Ecosystem</div>
+            <p class="prod-desc">Multi-vendor on-demand laundry and dry cleaning operating system uniting 14 verified partners in Vadodara, driver pickup dispatch, customer scheduling, atomic digital wallets, and FreshLine Prime membership tiers.</p>
+            <div class="prod-tags-cluster">
+              <span class="tech-tag">Node.js Express</span>
+              <span class="tech-tag">MongoDB</span>
+              <span class="tech-tag">FreshLine Prime</span>
+              <span class="tech-tag">Driver Dispatch</span>
+              <span class="tech-tag">Render Live</span>
+            </div>
+          </div>
+          <div class="card-footer-actions">
+            <a href="laundryApp.html" class="btn-presentation">Explore Presentation ➔</a>
+            <a href="https://laundryapp-web.onrender.com/" target="_blank" rel="noopener" class="btn-live-ext">Launch App ↗</a>
+          </div>
+        </article>
+
+        <!-- 7. B2BConnect -->
+        <article class="product-card" data-category="enterprise">
+          <div>
+            <div class="card-top-row">
+              <div class="prod-icon-box icon-blue">🏢</div>
+              <a href="coming-soon.html?p=b2bconnect" class="live-status-pill live-gold">
+                <span>⏳ Coming Soon</span>
+              </a>
+            </div>
+            <h3 class="prod-title">B2BConnect</h3>
+            <div class="prod-tagline" style="color: #60a5fa;">Enterprise SFA &bull; Multi-Tier Distribution Engine</div>
+            <p class="prod-desc">Unified supply chain distribution engine connecting Company Brands, Regional Distributors, Field Sales Reps, and Retailers with offline-first order taking, credit line financing, GST invoice automation, and real-time inventory.</p>
+            <div class="prod-tags-cluster">
+              <span class="tech-tag">Next-Gen SFA</span>
+              <span class="tech-tag">Offline Sync</span>
+              <span class="tech-tag">Credit Financing</span>
+              <span class="tech-tag">B2B Pricing Matrix</span>
+              <span class="tech-tag">Docker</span>
+            </div>
+          </div>
+          <div class="card-footer-actions">
+            <a href="B2BConnect.html" class="btn-presentation">Explore Presentation ➔</a>
+            <a href="coming-soon.html?p=b2bconnect" class="btn-live-ext">Live Demo ↗</a>
+          </div>
+        </article>
+
+        <!-- 8. Artplatt -->
+        <article class="product-card" data-category="luxury">
+          <div>
+            <div class="card-top-row">
+              <div class="prod-icon-box icon-purple">🎨</div>
+              <a href="coming-soon.html?p=artplatt" class="live-status-pill live-gold"><span>&#x23F3; Coming Soon</span></a>
+            </div>
+            <h3 class="prod-title">Artplatt</h3>
+            <div class="prod-tagline" style="color: #c084fc;">Digital Art OS &bull; Generative AI & Auction Engine</div>
+            <p class="prod-desc">Next-generation digital art marketplace empowering creators and collectors with AI-guided art recommendation, 3D spatial virtual exhibition rooms, automated creator smart royalty splits (85/10/5), and live WebSocket auctions.</p>
+            <div class="prod-tags-cluster">
+              <span class="tech-tag">Angular 17</span>
+              <span class="tech-tag">Node.js Express</span>
+              <span class="tech-tag">MongoDB GridFS</span>
+              <span class="tech-tag">WebSocket Auction</span>
+              <span class="tech-tag">DRM Protection</span>
+            </div>
+          </div>
+          <div class="card-footer-actions">
+            <a href="artplatt.html" class="btn-presentation">Explore Presentation ➔</a>
+            <a href="coming-soon.html?p=artplatt" class="btn-live-ext">Live Demo &#x2197;</a>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <p><strong>Executive Client Presentation Showcase</strong> &bull; 8 Production-Grade Software Systems</p>
+  <p style="margin-top: 8px; font-size: 13px; opacity: 0.7;">Engineered for Enterprise Demonstration &bull; 2026</p>
+</footer>
+
+<script>
+  function filterCatalog(category, btn) {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+
+    const cards = document.querySelectorAll('.product-card');
+    cards.forEach(card => {
+      const cardCat = card.getAttribute('data-category');
+      if (category === 'all' || cardCat === category) {
+        card.style.display = 'flex';
+      } else {
+        card.style.display = 'none';
+      }
+    });
+  }
+</script>
+
+</body>
+</html>
+
+
+

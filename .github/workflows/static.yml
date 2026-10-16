@@ -27,6 +27,7 @@ on:
     paths:
       - 'website/**.html'
       - 'mobile/**.html'
+      - 'productpresentation/**.html'
 
 # Lets the workflow commit the generated screenshot back to the repo.
 permissions:
@@ -47,10 +48,10 @@ jobs:
       - name: Install Puppeteer (headless Chrome)
         run: npm install puppeteer@22
 
-      - name: Find changed html files in website/ or mobile/
+      - name: Find changed html files in website/, mobile/, or productpresentation/
         id: changed
         run: |
-          FILES=$(git diff --name-only HEAD~1 HEAD -- 'website/*.html' 'mobile/*.html' | tr '\n' ' ')
+          FILES=$(git diff --name-only HEAD~1 HEAD -- 'website/*.html' 'mobile/*.html' 'productpresentation/*.html' | tr '\n' ' ')
           echo "files=$FILES" >> "$GITHUB_OUTPUT"
 
       - name: Screenshot each changed page
@@ -70,7 +71,9 @@ jobs:
             await page.setViewport({ width: 1200, height: 1200 });
 
             for (const file of files) {
-              const category = file.startsWith('website/') ? 'website' : 'mobile';
+              let category = 'website';
+              if (file.startsWith('mobile/')) category = 'mobile';
+              else if (file.startsWith('productpresentation/')) category = 'productpresentation';
               const name = path.basename(file, path.extname(file));
               const outDir = path.join('screenshots', category);
               fs.mkdirSync(outDir, { recursive: true });

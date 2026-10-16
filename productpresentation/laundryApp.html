@@ -1,0 +1,1089 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FreshLine — On-Demand Laundry & Dry-Cleaning Marketplace | Product Presentation</title>
+  <meta name="description" content="FreshLine is an enterprise on-demand laundry and dry-cleaning marketplace featuring customer apps, vendor laundromat hubs, delivery partner dispatch, atomic digital wallet, and recurring subscriptions.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #070e1b;
+      --bg-surface: #0e1a30;
+      --bg-card: rgba(16, 29, 54, 0.75);
+      --bg-card-hover: rgba(23, 40, 74, 0.9);
+      --cyan: #06b6d4;
+      --sky: #38bdf8;
+      --blue: #2563eb;
+      --mint: #10b981;
+      --amber: #f59e0b;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+      --border: rgba(56, 189, 248, 0.16);
+      --border-light: rgba(255, 255, 255, 0.08);
+      --font-h: 'Outfit', sans-serif;
+      --font-b: 'Plus Jakarta Sans', sans-serif;
+      --font-code: 'JetBrains Mono', monospace;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-b);
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    /* Ambient Glow */
+    .ambient-glow {
+      position: fixed;
+      top: 0; left: 50%;
+      transform: translateX(-50%);
+      width: 1000px; height: 600px;
+      background: radial-gradient(circle, rgba(6, 182, 212, 0.15) 0%, rgba(37, 99, 235, 0.08) 45%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Nav */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(7, 14, 27, 0.85);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border-light);
+      padding: 0 36px;
+      height: 70px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .brand {
+      display: flex; align-items: center; gap: 12px;
+      font-family: var(--font-h); font-size: 22px; font-weight: 800;
+      text-decoration: none; color: #fff;
+    }
+    .brand-icon {
+      width: 38px; height: 38px; border-radius: 10px;
+      background: linear-gradient(135deg, var(--cyan), var(--blue));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px; box-shadow: 0 0 20px rgba(6, 182, 212, 0.5);
+    }
+    .nav-pill {
+      font-size: 11px; font-weight: 700; letter-spacing: 0.5px;
+      background: rgba(16, 185, 129, 0.15); color: var(--mint);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      padding: 4px 10px; border-radius: 999px;
+    }
+    .nav-links { display: flex; gap: 28px; list-style: none; }
+    .nav-links a {
+      color: var(--text-muted); text-decoration: none; font-size: 14px; font-weight: 500;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--sky); }
+    .nav-cta {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: linear-gradient(135deg, var(--cyan), var(--blue));
+      color: #fff; font-size: 13px; font-weight: 700;
+      padding: 9px 20px; border-radius: 999px; text-decoration: none;
+      box-shadow: 0 4px 15px rgba(6, 182, 212, 0.3);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .nav-actions { display: flex; align-items: center; gap: 10px; }
+    .nav-toggle-btn {
+      display: none;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid var(--border);
+      color: #fff;
+      width: 38px; height: 38px;
+      border-radius: 9px;
+      font-size: 20px;
+      cursor: pointer;
+      align-items: center; justify-content: center;
+      transition: all 0.2s;
+    }
+    .mobile-menu-drawer {
+      display: none;
+      position: fixed; top: 70px; left: 0; right: 0;
+      background: rgba(7, 14, 27, 0.98);
+      backdrop-filter: blur(25px);
+      border-bottom: 1px solid var(--border);
+      padding: 1.25rem 1.5rem;
+      z-index: 999;
+      flex-direction: column; gap: 10px;
+    }
+    .mobile-menu-drawer.open { display: flex; }
+    .mobile-menu-drawer a {
+      color: #f1f5f9; text-decoration: none; font-size: 14px; font-weight: 600;
+      padding: 10px 14px; border-radius: 8px;
+      background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border-light);
+    }
+    .mobile-menu-drawer a:hover { background: rgba(6, 182, 212, 0.15); color: var(--sky); }
+
+    @media (max-width: 1100px) {
+      .nav-links { display: none; }
+      .nav-toggle-btn { display: inline-flex; }
+    }
+    @media (max-width: 640px) {
+      nav { padding: 0 16px; height: 62px; }
+      .brand { font-size: 18px; gap: 8px; }
+      .brand-icon { width: 32px; height: 32px; font-size: 17px; }
+      .nav-pill { display: none; }
+      .nav-cta { padding: 7px 12px; font-size: 12px; }
+      .mobile-menu-drawer { top: 62px; }
+    }
+
+    .container { max-width: 1220px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+
+    /* Hero */
+    .hero {
+      padding: 85px 0 60px;
+      text-align: center;
+      position: relative;
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(6, 182, 212, 0.12);
+      border: 1px solid var(--border);
+      padding: 6px 16px; border-radius: 999px;
+      font-size: 12px; font-weight: 700; color: var(--sky);
+      margin-bottom: 24px;
+    }
+    .hero-title {
+      font-family: var(--font-h);
+      font-size: clamp(36px, 5.5vw, 64px);
+      font-weight: 900;
+      line-height: 1.1;
+      letter-spacing: -1.5px;
+      margin-bottom: 22px;
+    }
+    .hero-title span {
+      background: linear-gradient(135deg, #38bdf8 0%, #06b6d4 50%, #10b981 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .hero-sub {
+      font-size: clamp(16px, 2vw, 19px);
+      color: var(--text-muted);
+      max-width: 840px;
+      margin: 0 auto 40px;
+      line-height: 1.6;
+    }
+    .hero-actions { display: flex; justify-content: center; gap: 16px; flex-wrap: wrap; margin-bottom: 50px; }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--cyan), var(--blue));
+      color: #fff; font-size: 15px; font-weight: 700;
+      padding: 14px 32px; border-radius: 12px; text-decoration: none;
+      display: inline-flex; align-items: center; gap: 10px;
+      box-shadow: 0 10px 25px rgba(6, 182, 212, 0.35);
+      transition: all 0.2s;
+    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 14px 30px rgba(6, 182, 212, 0.5); }
+    .btn-outline {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-light);
+      color: var(--text); font-size: 15px; font-weight: 600;
+      padding: 14px 28px; border-radius: 12px; text-decoration: none;
+      display: inline-flex; align-items: center; gap: 8px;
+      transition: all 0.2s;
+    }
+    .btn-outline:hover { background: rgba(255, 255, 255, 0.1); border-color: var(--border); }
+
+    /* Key Specs Pills */
+    .specs-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-top: 20px;
+    }
+    @media (max-width: 900px) { .specs-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 500px) { .specs-grid { grid-template-columns: 1fr; } }
+    .spec-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-light);
+      backdrop-filter: blur(12px);
+      padding: 20px;
+      border-radius: 16px;
+      text-align: left;
+      transition: border-color 0.2s;
+    }
+    .spec-card:hover { border-color: var(--border); }
+    .spec-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); margin-bottom: 6px; }
+    .spec-value { font-family: var(--font-h); font-size: 20px; font-weight: 800; color: #fff; }
+    .spec-note { font-size: 12px; color: var(--sky); margin-top: 4px; }
+
+    /* Section Headers */
+    .section { padding: 90px 0; }
+    .section-head { text-align: center; max-width: 780px; margin: 0 auto 50px; }
+    .eyebrow {
+      font-size: 12px; font-weight: 800; letter-spacing: 2px;
+      text-transform: uppercase; color: var(--sky);
+      display: inline-block; margin-bottom: 10px;
+    }
+    .section-title {
+      font-family: var(--font-h);
+      font-size: clamp(28px, 4vw, 42px);
+      font-weight: 800; line-height: 1.2;
+      color: #fff; margin-bottom: 14px;
+    }
+    .section-desc { font-size: 16px; color: var(--text-muted); }
+
+    /* 4-Actor Ecosystem */
+    .actors-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+    }
+    @media (max-width: 850px) { .actors-grid { grid-template-columns: 1fr; } }
+    .actor-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-light);
+      border-radius: 20px;
+      padding: 34px;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s ease;
+      display: flex; flex-direction: column;
+    }
+    .actor-card:hover {
+      border-color: var(--border);
+      background: var(--bg-card-hover);
+      transform: translateY(-4px);
+    }
+    .actor-top { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 20px; }
+    .actor-icon {
+      width: 56px; height: 56px; border-radius: 14px;
+      background: rgba(6, 182, 212, 0.12);
+      border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 28px;
+    }
+    .actor-role-badge {
+      font-size: 11px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 1px; padding: 4px 12px; border-radius: 999px;
+      background: rgba(255, 255, 255, 0.08); color: var(--text-muted);
+    }
+    .actor-name { font-family: var(--font-h); font-size: 24px; font-weight: 800; color: #fff; margin-bottom: 8px; }
+    .actor-summary { font-size: 14px; color: var(--text-muted); margin-bottom: 20px; }
+    .actor-features { list-style: none; margin-bottom: 24px; flex-grow: 1; }
+    .actor-features li {
+      display: flex; align-items: center; gap: 10px;
+      font-size: 13.5px; color: #e2e8f0; margin-bottom: 10px;
+    }
+    .actor-features li span.chk { color: var(--mint); font-weight: 800; font-size: 15px; }
+    .actor-footer {
+      padding-top: 18px; border-top: 1px solid rgba(255, 255, 255, 0.06);
+      display: flex; justify-content: space-between; align-items: center;
+      font-size: 12px; font-family: var(--font-code); color: var(--sky);
+    }
+
+    /* Core Architecture & Fintech Pillars */
+    .pillar-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+    @media (max-width: 950px) { .pillar-grid { grid-template-columns: 1fr; } }
+    .pillar-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-light);
+      border-radius: 18px;
+      padding: 30px;
+      transition: all 0.2s;
+    }
+    .pillar-card:hover { border-color: var(--border); transform: translateY(-3px); }
+    .pillar-tag {
+      font-size: 11px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase;
+      color: var(--cyan); margin-bottom: 12px; display: block;
+    }
+    .pillar-title { font-family: var(--font-h); font-size: 20px; font-weight: 700; margin-bottom: 12px; color: #fff; }
+    .pillar-desc { font-size: 14px; color: var(--text-muted); margin-bottom: 18px; line-height: 1.6; }
+    .pill-stack { display: flex; flex-wrap: wrap; gap: 6px; }
+    .pill-stack span {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      padding: 3px 10px; border-radius: 6px; font-size: 11px; color: #cbd5e1;
+    }
+
+    /* Interactive Live Simulation / Process Tracker */
+    .simulation-box {
+      background: radial-gradient(circle at 50% 30%, #11213f 0%, #091222 100%);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 44px;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6);
+      margin-top: 40px;
+    }
+    .sim-header {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 34px; flex-wrap: wrap; gap: 16px;
+    }
+    .sim-title { font-family: var(--font-h); font-size: 24px; font-weight: 800; color: #fff; }
+    .sim-live-badge {
+      display: flex; align-items: center; gap: 8px;
+      background: rgba(16, 185, 129, 0.15); color: var(--mint);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      padding: 6px 14px; border-radius: 999px; font-size: 12px; font-weight: 700;
+    }
+    .sim-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--mint); animation: pulse 1.5s infinite; }
+    @keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.4; transform: scale(0.85); } }
+
+    /* Order Stages Stepper */
+    .stepper {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 12px;
+      position: relative;
+      margin-bottom: 40px;
+    }
+    @media (max-width: 850px) { .stepper { grid-template-columns: repeat(2, 1fr); } }
+    .step-item {
+      background: rgba(14, 26, 48, 0.8);
+      border: 1px solid var(--border-light);
+      border-radius: 14px;
+      padding: 16px 12px;
+      text-align: center;
+      transition: all 0.2s;
+    }
+    .step-item.active {
+      border-color: var(--cyan);
+      background: rgba(6, 182, 212, 0.12);
+      box-shadow: 0 0 15px rgba(6, 182, 212, 0.2);
+    }
+    .step-icon { font-size: 22px; margin-bottom: 8px; }
+    .step-name { font-size: 13px; font-weight: 700; color: #fff; margin-bottom: 4px; }
+    .step-role { font-size: 10px; color: var(--sky); text-transform: uppercase; font-weight: 700; }
+
+    /* Mock Screen Showcase */
+    .showcase-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 32px;
+      align-items: center;
+    }
+    @media (max-width: 900px) { .showcase-grid { grid-template-columns: 1fr; } }
+    .app-preview-card {
+      background: #091224;
+      border: 1px solid var(--border-light);
+      border-radius: 18px;
+      padding: 24px;
+    }
+    .app-screen-bar {
+      display: flex; align-items: center; justify-content: space-between;
+      padding-bottom: 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      margin-bottom: 18px;
+    }
+    .screen-dots { display: flex; gap: 6px; }
+    .screen-dot { width: 10px; height: 10px; border-radius: 50%; background: #334155; }
+    .screen-title { font-size: 12px; font-family: var(--font-code); color: var(--text-muted); }
+    .mock-receipt {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px dashed rgba(255, 255, 255, 0.15);
+      border-radius: 12px;
+      padding: 18px;
+      font-size: 13px;
+    }
+    .mock-row { display: flex; justify-content: space-between; margin-bottom: 8px; color: var(--text-muted); }
+    .mock-row.bold { font-weight: 700; color: #fff; font-size: 14px; border-top: 1px solid rgba(255, 255, 255, 0.1); padding-top: 10px; margin-top: 10px; }
+    .mock-discount { color: var(--mint); }
+
+    /* Comparison Table */
+    .table-container {
+      background: var(--bg-card);
+      border: 1px solid var(--border-light);
+      border-radius: 20px;
+      overflow-x: auto;
+    }
+    table { width: 100%; border-collapse: collapse; text-align: left; font-size: 14px; }
+    th {
+      background: rgba(14, 26, 48, 0.95);
+      padding: 18px 22px; color: #fff; font-weight: 700;
+      border-bottom: 1px solid var(--border-light);
+    }
+    td { padding: 18px 22px; border-bottom: 1px solid rgba(255, 255, 255, 0.05); color: var(--text-muted); }
+    td.highlight { color: #fff; font-weight: 600; background: rgba(6, 182, 212, 0.04); }
+    .check { color: var(--mint); font-weight: 800; }
+    .cross { color: #ef4444; font-weight: 800; }
+
+    /* Demo Logins */
+    .creds-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+    @media (max-width: 950px) { .creds-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 550px) { .creds-grid { grid-template-columns: 1fr; } }
+    .cred-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-light);
+      border-radius: 16px;
+      padding: 22px;
+      transition: all 0.2s;
+    }
+    .cred-card:hover { border-color: var(--border); }
+    .cred-role { font-size: 11px; font-weight: 800; text-transform: uppercase; color: var(--sky); letter-spacing: 1px; margin-bottom: 6px; }
+    .cred-title { font-family: var(--font-h); font-size: 17px; font-weight: 700; color: #fff; margin-bottom: 12px; }
+    .cred-box {
+      background: #091224;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 10px;
+      padding: 12px;
+      font-family: var(--font-code);
+      font-size: 11.5px;
+      margin-bottom: 10px;
+    }
+    .cred-line { display: flex; justify-content: space-between; margin-bottom: 4px; color: var(--text-muted); }
+    .cred-line span.val { color: #fff; font-weight: 600; }
+    .cred-desc { font-size: 11.5px; color: var(--text-muted); line-height: 1.4; }
+
+    /* Gateways Grid */
+    .gateways-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 16px;
+    }
+    @media (max-width: 900px) { .gateways-grid { grid-template-columns: repeat(3, 1fr); } }
+    @media (max-width: 600px) { .gateways-grid { grid-template-columns: repeat(2, 1fr); } }
+    .gateway-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-light);
+      border-radius: 14px;
+      padding: 20px;
+      text-align: center;
+      transition: border-color 0.2s;
+    }
+    .gateway-card:hover { border-color: var(--border); }
+    .gw-icon { font-size: 26px; margin-bottom: 8px; }
+    .gw-name { font-weight: 700; color: #fff; font-size: 14px; margin-bottom: 4px; }
+    .gw-type { font-size: 11px; color: var(--sky); }
+
+    /* Footer CTA */
+    .cta-banner {
+      background: linear-gradient(135deg, rgba(6, 182, 212, 0.15) 0%, rgba(37, 99, 235, 0.15) 100%);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 60px 40px;
+      text-align: center;
+      margin: 80px 0 40px;
+      position: relative;
+      overflow: hidden;
+    }
+    .cta-title { font-family: var(--font-h); font-size: 34px; font-weight: 800; color: #fff; margin-bottom: 14px; }
+    .cta-text { font-size: 16px; color: var(--text-muted); max-width: 640px; margin: 0 auto 30px; }
+
+    footer {
+      border-top: 1px solid var(--border-light);
+      padding: 30px 0;
+      text-align: center;
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="ambient-glow"></div>
+
+  <!-- Sticky Nav -->
+  <nav>
+    <a href="https://laundryapp-web.onrender.com/" target="_blank" class="brand">
+      <div class="brand-icon">🧺</div>
+      <span>FreshLine</span>
+      <span class="nav-pill" style="color:var(--mint); border-color:rgba(16,185,129,0.3); background:rgba(16,185,129,0.15);">● Live on Render</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#ecosystem">4-App Ecosystem</a></li>
+      <li><a href="#fintech">Wallet & Subscriptions</a></li>
+      <li><a href="#stepper">Live Order Flow</a></li>
+      <li><a href="#comparison">Benchmark</a></li>
+      <li><a href="#demo">Demo Credentials</a></li>
+      <li><a href="#architecture">Architecture</a></li>
+    </ul>
+    <div class="nav-actions">
+      <a href="https://laundryapp-web.onrender.com/" target="_blank" class="nav-cta">
+        <span>Open Live FreshLine</span> ➔
+      </a>
+      <button class="nav-toggle-btn" id="laundryToggle" aria-label="Toggle Navigation">☰</button>
+    </div>
+  </nav>
+
+  <div class="mobile-menu-drawer" id="laundryMobileNav">
+    <a href="#ecosystem">👥 4-App Ecosystem</a>
+    <a href="#fintech">💳 Wallet & Subscriptions</a>
+    <a href="#stepper">📦 Live Order Flow</a>
+    <a href="#comparison">⚖️ Benchmark</a>
+    <a href="#demo">🔑 Demo Credentials</a>
+    <a href="#architecture">🏗️ Architecture</a>
+    <a href="https://laundryapp-web.onrender.com/" target="_blank" style="background: rgba(6,182,212,0.15); color: var(--sky); border-color: rgba(6,182,212,0.4);">
+      🌐 Open Live FreshLine App ➔
+    </a>
+  </div>
+
+  <!-- Hero Section -->
+  <header class="hero">
+    <div class="container">
+      <div class="hero-badge">
+        <span>🧺 VADODARA MULTI-VENDOR MARKETPLACE • LIVE PRODUCTION ACTIVE</span>
+      </div>
+      <h1 class="hero-title">
+        The Future of <span>On-Demand Laundry</span><br>& Dry-Cleaning Operations
+      </h1>
+      <p class="hero-sub">
+        FreshLine is an enterprise multi-tenant laundry marketplace engine uniting customers, laundromat vendors, delivery fleets, and super-admins with 14 verified laundry partners, atomic digital wallets, loyalty rewards, and FreshLine Prime subscriptions.
+      </p>
+
+      <!-- Live Deployment Banner -->
+      <div style="background: rgba(6, 182, 212, 0.12); border: 1px solid var(--border); border-radius: 18px; padding: 20px 28px; display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; margin-bottom: 36px; max-width: 840px; margin-left: auto; margin-right: auto; text-align: left;">
+        <div>
+          <div style="font-family: var(--font-h); font-size: 18px; font-weight: 800; color: #fff; margin-bottom: 4px;">⚡ Live Application Active on Render</div>
+          <a href="https://laundryapp-web.onrender.com/" target="_blank" style="font-family: var(--font-code); font-size: 13px; color: var(--sky); text-decoration: none;">
+            https://laundryapp-web.onrender.com/ ➔
+          </a>
+        </div>
+        <a href="https://laundryapp-web.onrender.com/" target="_blank" class="btn-primary" style="padding: 10px 24px; font-size: 13px;">
+          Launch FreshLine App ➔
+        </a>
+      </div>
+
+      <div class="hero-actions">
+        <a href="https://laundryapp-web.onrender.com/customer/browse" target="_blank" class="btn-primary">
+          <span>Browse Cleaners Live</span> ➔
+        </a>
+        <a href="#demo" class="btn-outline">
+          <span>View Demo Logins</span> 🔑
+        </a>
+      </div>
+
+      <!-- Specs Grid -->
+      <div class="specs-grid">
+        <div class="spec-card">
+          <div class="spec-label">Actor Ecosystem</div>
+          <div class="spec-value">4 Dedicated Apps</div>
+          <div class="spec-note">Customer • Vendor • Rider • Admin</div>
+        </div>
+        <div class="spec-card">
+          <div class="spec-label">Security & Auth</div>
+          <div class="spec-value">Angular + Node JWT</div>
+          <div class="spec-note">Role Guards & Interceptors</div>
+        </div>
+        <div class="spec-card">
+          <div class="spec-label">Fintech Engine</div>
+          <div class="spec-value">Atomic Wallet & Subscriptions</div>
+          <div class="spec-note">Non-blocking Ledger Updates</div>
+        </div>
+        <div class="spec-card">
+          <div class="spec-label">Payment Rail</div>
+          <div class="spec-value">5 Active Gateways</div>
+          <div class="spec-note">Razorpay • Cashfree • PhonePe • PayU • Stripe</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <!-- 4-App Ecosystem -->
+    <section class="section" id="ecosystem">
+      <div class="section-head">
+        <span class="eyebrow">UNIFIED PLATFORM ARCHITECTURE</span>
+        <h2 class="section-title">4 Specialized Applications Built for Scale</h2>
+        <p class="section-desc">Every stakeholder operates on dedicated interfaces engineered for optimal operational speed and zero friction.</p>
+      </div>
+
+      <div class="actors-grid">
+        <!-- 1. Customer -->
+        <div class="actor-card">
+          <div class="actor-top">
+            <div class="actor-icon">📱</div>
+            <span class="actor-role-badge">Customer App (Web / Mobile)</span>
+          </div>
+          <h3 class="actor-name">Customer Mobile & Web Hub</h3>
+          <p class="actor-summary">Effortless booking, garment categorization, express turnaround options, and seamless digital checkouts.</p>
+          <ul class="actor-features">
+            <li><span class="chk">✓</span> Interactive Garment Itemizer (Shirts, Suits, Curtains, Shoes, Delicates)</li>
+            <li><span class="chk">✓</span> Service Selection: Wash & Fold, Wash & Iron, Steam Press, Premium Dry Clean</li>
+            <li><span class="chk">✓</span> Automated Subscriptions: Tiered monthly laundry plans with zero coupon friction</li>
+            <li><span class="chk">✓</span> Integrated In-App Wallet top-ups & Loyalty Points balance auto-redemption</li>
+            <li><span class="chk">✓</span> Live Geotagged Order Tracking from pickup to doorstep delivery</li>
+          </ul>
+          <div class="actor-footer">
+            <span>Stack: Angular 18 + Ionic PWA</span>
+            <span>Customer Role Guard</span>
+          </div>
+        </div>
+
+        <!-- 2. Vendor -->
+        <div class="actor-card">
+          <div class="actor-top">
+            <div class="actor-icon">🏬</div>
+            <span class="actor-role-badge">Vendor Laundromat Portal</span>
+          </div>
+          <h3 class="actor-name">Laundromat Vendor Command Center</h3>
+          <p class="actor-summary">Operational cockpit for laundry store operators to inspect incoming batches, adjust garment weights, and track revenue.</p>
+          <ul class="actor-features">
+            <li><span class="chk">✓</span> Intake Garment Audit: Adjust piece count & weighed bag kilograms upon arrival</li>
+            <li><span class="chk">✓</span> 5-Stage Processing Kanban: Received $\to$ Washing $\to$ Ironing $\to$ Ready for Delivery</li>
+            <li><span class="chk">✓</span> Custom Catalog & Pricing: Set per-kg and per-piece rates across garment categories</li>
+            <li><span class="chk">✓</span> Automated Payout Ledger: Real-time calculation of gross revenue minus platform commission</li>
+            <li><span class="chk">✓</span> Store Capacity Scheduling: Throttle booking slots during peak wash days</li>
+          </ul>
+          <div class="actor-footer">
+            <span>Stack: Angular Responsive Dashboard</span>
+            <span>Vendor Role Guard</span>
+          </div>
+        </div>
+
+        <!-- 3. Delivery Agent -->
+        <div class="actor-card">
+          <div class="actor-top">
+            <div class="actor-icon">🛵</div>
+            <span class="actor-role-badge">Delivery Agent App</span>
+          </div>
+          <h3 class="actor-name">Delivery Rider Field Cockpit</h3>
+          <p class="actor-summary">High-contrast, mobile-first logistics interface designed for couriers on two-wheelers with offline resilience.</p>
+          <ul class="actor-features">
+            <li><span class="chk">✓</span> Dual Mission Routing: Morning pickup batches & evening clean delivery drop-offs</li>
+            <li><span class="chk">✓</span> 1-Tap Customer Contact & Turn-by-Turn GPS navigation to pickup addresses</li>
+            <li><span class="chk">✓</span> Digital Bag Tagging & Barcode verification at store handover</li>
+            <li><span class="chk">✓</span> Secure Delivery Handover with OTP validation to prevent lost orders</li>
+            <li><span class="chk">✓</span> Daily Trip Earning breakdown with automated payout settlement</li>
+          </ul>
+          <div class="actor-footer">
+            <span>Stack: Ionic Mobile (Android & iOS)</span>
+            <span>Delivery Role Guard</span>
+          </div>
+        </div>
+
+        <!-- 4. Super Admin -->
+        <div class="actor-card">
+          <div class="actor-top">
+            <div class="actor-icon">🛡️</div>
+            <span class="actor-role-badge">Super Admin Center</span>
+          </div>
+          <h3 class="actor-name">Platform Governance & Revenue Engine</h3>
+          <p class="actor-summary">Complete business oversight for platform owners to tune monetization levers and monitor operations in real-time.</p>
+          <ul class="actor-features">
+            <li><span class="chk">✓</span> Dual Revenue Levers: Dynamic % commission on vendor subtotal + flat customer platform fee</li>
+            <li><span class="chk">✓</span> Subscription Plan Builder: Configure monthly allowances, free pickups & discount tiers</li>
+            <li><span class="chk">✓</span> Vendor & Courier Onboarding Queue: KYC identity verification & operational audit</li>
+            <li><span class="chk">✓</span> System-Wide Health & Financial Analytics: Live GMV, net platform take, dispute resolution</li>
+            <li><span class="chk">✓</span> Dynamic City/Zone Configuration with distance-based delivery tariffs</li>
+          </ul>
+          <div class="actor-footer">
+            <span>Stack: Node.js MVC + Admin Angular</span>
+            <span>Admin Role Guard</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Core Fintech & Retention Architecture -->
+    <section class="section" id="fintech">
+      <div class="section-head">
+        <span class="eyebrow">RETENTION & MONETIZATION ENGINE</span>
+        <h2 class="section-title">Built-in Financial & Loyalty Infrastructure</h2>
+        <p class="section-desc">Unlike basic booking clones, FreshLine incorporates real accounting-grade ledgers and high-retention mechanics.</p>
+      </div>
+
+      <div class="pillar-grid">
+        <!-- Pillar 1: Wallet -->
+        <div class="pillar-card">
+          <span class="pillar-tag">Fintech Ledger</span>
+          <h3 class="pillar-title">Atomic Digital Wallet Engine</h3>
+          <p class="pillar-desc">
+            Implemented with a true double-entry audit trail (<code style="color:var(--sky)">WalletTransaction</code>). Atomic conditional MongoDB operations prevent overdraws even during high concurrent request bursts.
+          </p>
+          <div class="pill-stack">
+            <span>Atomic findOneAndUpdate</span>
+            <span>Instant Refunds</span>
+            <span>Zero Balance Overdraw</span>
+          </div>
+        </div>
+
+        <!-- Pillar 2: Loyalty -->
+        <div class="pillar-card">
+          <span class="pillar-tag">Customer Retention</span>
+          <h3 class="pillar-title">Automated Loyalty Points</h3>
+          <p class="pillar-desc">
+            Customers earn points on every completed delivery (₹10 spent = 1 pt). Points automatically accrue into ledger and can be converted into spendable wallet currency with one tap.
+          </p>
+          <div class="pill-stack">
+            <span>Auto-Accrual on Delivery</span>
+            <span>500 pts = ₹100</span>
+            <span>Gamified Milestone Rewards</span>
+          </div>
+        </div>
+
+        <!-- Pillar 3: Subscriptions -->
+        <div class="pillar-card">
+          <span class="pillar-tag">Predictable Cashflow</span>
+          <h3 class="pillar-title">VIP Laundry Memberships</h3>
+          <p class="pillar-desc">
+            Admin-managed subscription plans (Silver, Gold, Platinum). Subscribers receive automatic % discounts applied right at order calculation without needing to remember coupon codes.
+          </p>
+          <div class="pill-stack">
+            <span>Zero-Coupon Checkout</span>
+            <span>Free Delivery Quota</span>
+            <span>Automated Cycle Renewal</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6-Stage Process Simulation -->
+    <section class="section" id="stepper">
+      <div class="simulation-box">
+        <div class="sim-header">
+          <div>
+            <div class="eyebrow" style="margin-bottom: 4px;">OPERATIONAL LIFECYCLE</div>
+            <h3 class="sim-title">End-to-End 6-Stage Order Execution</h3>
+          </div>
+          <div class="sim-live-badge">
+            <span class="sim-dot"></span>
+            <span>LIVE STATE MACHINE VALIDATED</span>
+          </div>
+        </div>
+
+        <!-- Stepper -->
+        <div class="stepper">
+          <div class="step-item active">
+            <div class="step-icon">📲</div>
+            <div class="step-name">1. Schedule</div>
+            <div class="step-role">Customer</div>
+          </div>
+          <div class="step-item active">
+            <div class="step-icon">🛵</div>
+            <div class="step-name">2. Pickup</div>
+            <div class="step-role">Delivery Rider</div>
+          </div>
+          <div class="step-item active">
+            <div class="step-icon">⚖️</div>
+            <div class="step-name">3. Inspection</div>
+            <div class="step-role">Vendor Hub</div>
+          </div>
+          <div class="step-item active">
+            <div class="step-icon">🫧</div>
+            <div class="step-name">4. Treatment</div>
+            <div class="step-role">Wash / Press</div>
+          </div>
+          <div class="step-item active">
+            <div class="step-icon">📦</div>
+            <div class="step-name">5. Dispatched</div>
+            <div class="step-role">Delivery Rider</div>
+          </div>
+          <div class="step-item active">
+            <div class="step-icon">✨</div>
+            <div class="step-name">6. Delivered</div>
+            <div class="step-role">Points Credited</div>
+          </div>
+        </div>
+
+        <!-- Showcase grid -->
+        <div class="showcase-grid">
+          <div>
+            <h4 style="font-family: var(--font-h); font-size: 22px; color: #fff; margin-bottom: 12px;">
+              Smart Pricing & Automatic Subscription Rebates
+            </h4>
+            <p style="color: var(--text-muted); font-size: 14.5px; margin-bottom: 20px; line-height: 1.6;">
+              When an order is created, the backend verifies the user's active membership tier. Discounts and free delivery perks are applied natively at the calculation layer — providing full financial transparency.
+            </p>
+            <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+              <span class="spec-note" style="background: rgba(6,182,212,0.1); padding: 6px 14px; border-radius: 8px;">✓ GST Invoices Generated</span>
+              <span class="spec-note" style="background: rgba(16,185,129,0.1); color: var(--mint); padding: 6px 14px; border-radius: 8px;">✓ OTP Handover Verified</span>
+              <span class="spec-note" style="background: rgba(245,158,11,0.1); color: var(--amber); padding: 6px 14px; border-radius: 8px;">✓ Atomic Ledger Reconciled</span>
+            </div>
+          </div>
+
+          <div class="app-preview-card">
+            <div class="app-screen-bar">
+              <div class="screen-dots">
+                <div class="screen-dot" style="background: #ef4444;"></div>
+                <div class="screen-dot" style="background: #f59e0b;"></div>
+                <div class="screen-dot" style="background: #10b981;"></div>
+              </div>
+              <div class="screen-title">ORDER #FL-8821 • LIVE CHECKOUT BREAKDOWN</div>
+            </div>
+
+            <div class="mock-receipt">
+              <div class="mock-row">
+                <span>Wash & Iron (5.2 kg)</span>
+                <span style="color:#fff;">₹364.00</span>
+              </div>
+              <div class="mock-row">
+                <span>Dry Cleaning (2 Suits)</span>
+                <span style="color:#fff;">₹450.00</span>
+              </div>
+              <div class="mock-row">
+                <span>Subtotal</span>
+                <span style="color:#fff;">₹814.00</span>
+              </div>
+              <div class="mock-row mock-discount">
+                <span>Gold VIP Subscription (15% Off)</span>
+                <span>- ₹122.10</span>
+              </div>
+              <div class="mock-row mock-discount">
+                <span>Gold Member Free Delivery</span>
+                <span>₹0.00 (Saved ₹50)</span>
+              </div>
+              <div class="mock-row">
+                <span>Platform Convenience Fee</span>
+                <span style="color:#fff;">₹15.00</span>
+              </div>
+              <div class="mock-row bold">
+                <span>Net Payable (Paid via Wallet)</span>
+                <span style="color:var(--sky);">₹706.90</span>
+              </div>
+              <div style="margin-top: 10px; font-size: 11px; color: var(--mint); text-align: right;">
+                +70 FreshLine Loyalty Points Earned Upon Delivery
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Turnkey Payment Integrations -->
+    <section class="section">
+      <div class="section-head">
+        <span class="eyebrow">ENTERPRISE PAYMENTS</span>
+        <h2 class="section-title">5 Production-Ready Payment Gateways</h2>
+        <p class="section-desc">Fully coded payment provider abstractions with secure webhooks and HMAC signatures. Swap gateways via simple environment variables.</p>
+      </div>
+
+      <div class="gateways-grid">
+        <div class="gateway-card">
+          <div class="gw-icon">🇮🇳</div>
+          <div class="gw-name">Razorpay</div>
+          <div class="gw-type">UPI • Cards • NetBanking</div>
+        </div>
+        <div class="gateway-card">
+          <div class="gw-icon">⚡</div>
+          <div class="gw-name">Cashfree</div>
+          <div class="gw-type">Direct Vendor Payouts</div>
+        </div>
+        <div class="gateway-card">
+          <div class="gw-icon">📱</div>
+          <div class="gw-name">PhonePe</div>
+          <div class="gw-type">UPI-Native Checkout</div>
+        </div>
+        <div class="gateway-card">
+          <div class="gw-icon">🛡️</div>
+          <div class="gw-name">PayU</div>
+          <div class="gw-type">COD & Credit Cards</div>
+        </div>
+        <div class="gateway-card">
+          <div class="gw-icon">🌍</div>
+          <div class="gw-name">Stripe</div>
+          <div class="gw-type">Global Cross-Border FX</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Competitive Feature Comparison -->
+    <section class="section" id="comparison">
+      <div class="section-head">
+        <span class="eyebrow">BENCHMARK MATRIX</span>
+        <h2 class="section-title">FreshLine vs. Market Alternatives</h2>
+        <p class="section-desc">Engineered specifically for the nuances of fabric care logistics rather than generic item parcel couriers.</p>
+      </div>
+
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Feature Capability</th>
+              <th>Generic Delivery Apps (Dunzo / Zepto)</th>
+              <th>Traditional Offline Dry Cleaners</th>
+              <th style="color:var(--sky);">FreshLine Laundry Platform</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="font-weight: 600; color: #fff;">Garment Itemization & Weight Audits</td>
+              <td><span class="cross">✕</span> Only generic package delivery</td>
+              <td><span class="cross">✕</span> Manual handwritten paper slips</td>
+              <td class="highlight"><span class="check">✓</span> Digital itemizer + bag weight verification</td>
+            </tr>
+            <tr>
+              <td style="font-weight: 600; color: #fff;">Fintech Wallet & Atomic Ledger</td>
+              <td><span class="cross">✕</span> Third-party wallets only</td>
+              <td><span class="cross">✕</span> Cash / offline registers</td>
+              <td class="highlight"><span class="check">✓</span> Dedicated double-entry wallet balance</td>
+            </tr>
+            <tr>
+              <td style="font-weight: 600; color: #fff;">Recurring VIP Subscriptions</td>
+              <td><span class="cross">✕</span> Platform-wide delivery passes only</td>
+              <td><span class="cross">✕</span> No subscription automation</td>
+              <td class="highlight"><span class="check">✓</span> Multi-tier monthly wash plans with % perks</td>
+            </tr>
+            <tr>
+              <td style="font-weight: 600; color: #fff;">4-Actor Role Architecture</td>
+              <td><span class="cross">✕</span> 2-sided (User + Rider)</td>
+              <td><span class="cross">✕</span> Single store only</td>
+              <td class="highlight"><span class="check">✓</span> Customer, Vendor Hub, Rider & Super Admin</td>
+            </tr>
+            <tr>
+              <td style="font-weight: 600; color: #fff;">Dynamic Platform Monetization</td>
+              <td><span class="cross">✕</span> Fixed merchant commissions</td>
+              <td><span class="cross">✕</span> None</td>
+              <td class="highlight"><span class="check">✓</span> Dual revenue: % commission + flat order fee</td>
+            </tr>
+            <tr>
+              <td style="font-weight: 600; color: #fff;">End-to-End Security Scaffold</td>
+              <td><span class="cross">✕</span> Proprietary closed systems</td>
+              <td><span class="cross">✕</span> Zero security boundary</td>
+              <td class="highlight"><span class="check">✓</span> Angular Guards + Express JWT Middleware</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Seeded Demo Accounts -->
+    <section class="section" id="demo">
+      <div class="section-head">
+        <span class="eyebrow">READY FOR CLIENT DEMONSTRATION</span>
+        <h2 class="section-title">Seeded Demonstration Accounts</h2>
+        <p class="section-desc">Pre-populated with 10 customers, 10 vendors (approved + pending queues), 10 couriers, and 24 live realistic orders.</p>
+      </div>
+
+      <div class="creds-grid">
+        <!-- Admin -->
+        <div class="cred-card">
+          <div class="cred-role">Super Admin</div>
+          <div class="cred-title">Governance Center</div>
+          <div class="cred-box">
+            <div class="cred-line"><span>User:</span> <span class="val">admin@freshline.app</span></div>
+            <div class="cred-line"><span>Pass:</span> <span class="val">Admin@123</span></div>
+          </div>
+          <p class="cred-desc">Access financial GMV metrics, adjust platform commission %, approve vendor registrations, manage subscriptions.</p>
+        </div>
+
+        <!-- Customer -->
+        <div class="cred-card">
+          <div class="cred-role">Customer</div>
+          <div class="cred-title">Member Account</div>
+          <div class="cred-box">
+            <div class="cred-line"><span>User:</span> <span class="val">aarav.shah@example.com</span></div>
+            <div class="cred-line"><span>Pass:</span> <span class="val">Customer@123</span></div>
+          </div>
+          <p class="cred-desc">Pre-funded wallet balance, Gold subscription tier active, loyalty points accumulated from previous delivered orders.</p>
+        </div>
+
+        <!-- Vendor -->
+        <div class="cred-card">
+          <div class="cred-role">Vendor Partner</div>
+          <div class="cred-title">Laundromat Hub</div>
+          <div class="cred-box">
+            <div class="cred-line"><span>User:</span> <span class="val">suresh.bhatt@vendor.freshline.app</span></div>
+            <div class="cred-line"><span>Pass:</span> <span class="val">Vendor@123</span></div>
+          </div>
+          <p class="cred-desc">Active store profile with custom garment catalog, live processing orders, and verified bank payout ledger.</p>
+        </div>
+
+        <!-- Delivery -->
+        <div class="cred-card">
+          <div class="cred-role">Delivery Courier</div>
+          <div class="cred-title">Rider Cockpit</div>
+          <div class="cred-box">
+            <div class="cred-line"><span>User:</span> <span class="val">manoj.kumar@delivery.freshline.app</span></div>
+            <div class="cred-line"><span>Pass:</span> <span class="val">Delivery@123</span></div>
+          </div>
+          <p class="cred-desc">Assigned active pickup and delivery tasks, OTP verification workflow, and daily trip earnings dashboard.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Technical Architecture -->
+    <section class="section" id="architecture">
+      <div class="section-head">
+        <span class="eyebrow">CODEBASE SPECIFICATIONS</span>
+        <h2 class="section-title">Production Full-Stack Architecture</h2>
+        <p class="section-desc">Designed with separation of concerns, high maintainability, and enterprise-grade resilience.</p>
+      </div>
+
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Architecture Layer</th>
+              <th>Technology</th>
+              <th>Key Implementation Highlights</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="font-weight: 700; color: #fff;">Backend Core</td>
+              <td style="color:var(--sky);">Node.js (v20+) • Express.js • MVC</td>
+              <td>Clean Controller-Service-Model architecture with centralized error handler and standardized <code style="color:var(--mint)">apiResponse</code> wrappers.</td>
+            </tr>
+            <tr>
+              <td style="font-weight: 700; color: #fff;">Database Engine</td>
+              <td style="color:var(--sky);">MongoDB 8.0 • Mongoose ODM</td>
+              <td>Atomic balance operations via conditional filters, optimized indexing on user, vendor, order, and transaction collections.</td>
+            </tr>
+            <tr>
+              <td style="font-weight: 700; color: #fff;">Frontend Client</td>
+              <td style="color:var(--sky);">Angular 18+ • Standalone Components</td>
+              <td>Signals, BehaviorSubject user streams, reactive forms for garment itemization, and responsive CSS tokens.</td>
+            </tr>
+            <tr>
+              <td style="font-weight: 700; color: #fff;">Mobile App Scaffold</td>
+              <td style="color:var(--sky);">Ionic Framework (Capacitor)</td>
+              <td>Native mobile compilation for Android & iOS from the unified Angular codebase with push notifications & camera integrations.</td>
+            </tr>
+            <tr>
+              <td style="font-weight: 700; color: #fff;">Security Scaffold</td>
+              <td style="color:var(--sky);">Drop-in Angular Security Layer</td>
+              <td>Shared HTTP Interceptor attaching JWT tokens, auto-logout on 401, combined <code style="color:var(--mint)">authGuard</code> and <code style="color:var(--mint)">roleGuard</code> matching backend protection.</td>
+            </tr>
+            <tr>
+              <td style="font-weight: 700; color: #fff;">DevOps & Deployment</td>
+              <td style="color:var(--sky);">Docker • Render Blueprint • PM2</td>
+              <td>Includes <code style="color:var(--text)">render.yaml</code> for zero-configuration cloud hosting, health check endpoints, and production environment checklists.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- CTA Handover Banner -->
+    <div class="cta-banner">
+      <h2 class="cta-title">Ready for Client Demonstration & Pilot Launch</h2>
+      <p class="cta-text">
+        FreshLine is completely engineered with production schemas, functional business logic, and realistic test datasets. Ready for executive presentation and technical due diligence.
+      </p>
+      <div style="display: flex; justify-content: center; gap: 16px; flex-wrap: wrap;">
+        <a href="#ecosystem" class="btn-primary"><span>Review 4 Applications</span> ➔</a>
+        <a href="#demo" class="btn-outline"><span>Test Demo Accounts</span> 🔑</a>
+      </div>
+    </div>
+
+  </main>
+
+  <footer>
+    <div class="container">
+      FreshLine™ Laundry & Dry-Cleaning Marketplace • Enterprise Product Presentation • Confidential Client Review (2026 Edition)
+    </div>
+  </footer>
+
+  <script>
+    const laundryToggle = document.getElementById('laundryToggle');
+    const laundryMobileNav = document.getElementById('laundryMobileNav');
+    if (laundryToggle && laundryMobileNav) {
+      laundryToggle.addEventListener('click', () => {
+        laundryMobileNav.classList.toggle('open');
+        laundryToggle.textContent = laundryMobileNav.classList.contains('open') ? '✕' : '☰';
+      });
+      laundryMobileNav.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => {
+          laundryMobileNav.classList.remove('open');
+          laundryToggle.textContent = '☰';
+        });
+      });
+    }
+  </script>
+</body>
+</html>

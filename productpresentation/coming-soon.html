@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Coming Soon — Live Demo Launching Shortly | Enterprise Suite</title>
+  <meta name="description" content="This product's live cloud deployment is launching shortly. Stay tuned for the full interactive demo.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Syne:wght@700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    /* ─── CSS Custom Properties (overridden by JS per product) ─── */
+    :root {
+      --c1: #38bdf8;         /* primary accent */
+      --c2: #6366f1;         /* secondary accent */
+      --c3: #a855f7;         /* tertiary / glow */
+      --c1-rgb: 56,189,248;
+      --c2-rgb: 99,102,241;
+      --c3-rgb: 168,85,247;
+      --bg:  #07090f;
+      --bg-card: rgba(12, 18, 34, 0.78);
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+      --border-card: rgba(56,189,248,0.2);
+      --font-display: 'Syne', sans-serif;
+      --font-body: 'Plus Jakarta Sans', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      -webkit-font-smoothing: antialiased;
+      transition: background 0.6s ease;
+    }
+
+    /* ── Dynamic background gradient ── */
+    .bg-gradient {
+      position: fixed; inset: 0; z-index: 0;
+      pointer-events: none;
+      background:
+        radial-gradient(ellipse 80% 60% at 50% -10%,  rgba(var(--c1-rgb),0.18) 0%, transparent 60%),
+        radial-gradient(ellipse 55% 45% at 88% 70%,   rgba(var(--c2-rgb),0.15) 0%, transparent 55%),
+        radial-gradient(circle at 12% 80%,             rgba(var(--c3-rgb),0.10) 0%, transparent 50%);
+      transition: background 0.8s ease;
+    }
+
+    /* ── Star field ── */
+    .stars-layer { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+    .star {
+      position: absolute; border-radius: 50%; background: #fff;
+      animation: twinkle var(--dur,3s) ease-in-out infinite var(--delay,0s);
+      opacity: 0;
+    }
+    @keyframes twinkle {
+      0%,100%{ opacity:0; transform:scale(0.8); }
+      50%    { opacity:var(--max-op,0.5); transform:scale(1.3); }
+    }
+
+    /* ── Orbiting rings ── */
+    .orbit-ring {
+      position: fixed;
+      border-radius: 50%;
+      top: 50%; left: 50%;
+      transform: translate(-50%,-50%);
+      pointer-events: none; z-index: 0;
+      animation: orbitSpin 32s linear infinite;
+      border: 1px solid rgba(var(--c1-rgb),0.09);
+      transition: border-color 0.8s;
+    }
+    .orbit-ring.r1 { width: 580px; height: 580px; }
+    .orbit-ring.r2 { width: 800px; height: 800px; border-color: rgba(var(--c2-rgb),0.07); animation-duration: 52s; animation-direction: reverse; }
+    .orbit-dot {
+      position: absolute; width: 9px; height: 9px; border-radius: 50%;
+      top: -4.5px; left: 50%; transform: translateX(-50%);
+      background: var(--c1); box-shadow: 0 0 14px var(--c1);
+      transition: background 0.6s, box-shadow 0.6s;
+    }
+    .orbit-ring.r2 .orbit-dot { background: var(--c2); box-shadow: 0 0 14px var(--c2); }
+    @keyframes orbitSpin {
+      from { transform: translate(-50%,-50%) rotate(0deg); }
+      to   { transform: translate(-50%,-50%) rotate(360deg); }
+    }
+
+    /* ── Pulse glow blob ── */
+    .glow-blob {
+      position: fixed; width: 520px; height: 520px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(var(--c1-rgb),0.14) 0%, transparent 70%);
+      top: 50%; left: 50%; transform: translate(-50%,-50%);
+      animation: blobPulse 5s ease-in-out infinite;
+      pointer-events: none; z-index: 0;
+      transition: background 0.8s;
+    }
+    @keyframes blobPulse {
+      0%,100%{ transform:translate(-50%,-50%) scale(1);    opacity:0.7; }
+      50%    { transform:translate(-50%,-50%) scale(1.28); opacity:1;   }
+    }
+
+    /* ── Floating code deco ── */
+    .deco-code {
+      position: fixed; font-family: var(--font-mono); font-size: 11px;
+      opacity: 0.055; white-space: nowrap; pointer-events: none;
+      animation: codeFloat 14s ease-in-out infinite; z-index: 0; color: var(--c1);
+      transition: color 0.8s;
+    }
+    @keyframes codeFloat {
+      0%,100%{ transform:translateY(0);    opacity:0.055; }
+      50%    { transform:translateY(-18px); opacity:0.10; }
+    }
+
+    /* ── Main card ── */
+    .cs-card {
+      position: relative; z-index: 10;
+      background: var(--bg-card);
+      border: 1px solid var(--border-card);
+      border-radius: 30px;
+      padding: 52px 56px 48px;
+      max-width: 700px; width: 92%;
+      text-align: center;
+      backdrop-filter: blur(26px) saturate(1.4);
+      box-shadow:
+        0 30px 80px rgba(0,0,0,0.55),
+        0 0 0 1px rgba(var(--c1-rgb),0.06),
+        inset 0 1px 0 rgba(255,255,255,0.055);
+      animation: cardFloat 6.5s ease-in-out infinite;
+      transition: border-color 0.7s, box-shadow 0.7s;
+    }
+    @keyframes cardFloat {
+      0%,100%{ transform:translateY(0); }
+      50%    { transform:translateY(-12px); }
+    }
+
+    /* ── Product badge ── */
+    .prod-badge {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: rgba(var(--c1-rgb),0.1);
+      border: 1px solid rgba(var(--c1-rgb),0.32);
+      color: var(--c1);
+      padding: 8px 22px; border-radius: 999px;
+      font-size: 12px; font-weight: 800; letter-spacing: 2px;
+      text-transform: uppercase; margin-bottom: 28px;
+      transition: background 0.6s, border-color 0.6s, color 0.6s;
+    }
+
+    /* ── Product name ── */
+    .prod-name {
+      font-family: var(--font-display);
+      font-size: clamp(34px, 6.5vw, 68px);
+      font-weight: 900; letter-spacing: -0.025em; line-height: 1.05;
+      margin-bottom: 14px;
+      background: linear-gradient(135deg, var(--c1) 0%, var(--text) 55%, var(--c2) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      transition: background 0.7s;
+    }
+
+    /* ── "Coming Soon" label ── */
+    .coming-label {
+      font-family: var(--font-display);
+      font-size: clamp(15px, 2.8vw, 21px);
+      font-weight: 700; letter-spacing: 5px;
+      color: var(--c1); text-transform: uppercase;
+      margin-bottom: 20px;
+      display: flex; align-items: center; justify-content: center; gap: 14px;
+      transition: color 0.6s;
+    }
+    .coming-label::before,
+    .coming-label::after {
+      content:''; flex:1; height:1px; max-width:70px;
+      background: linear-gradient(to right, transparent, rgba(var(--c1-rgb),0.45));
+    }
+    .coming-label::after { background: linear-gradient(to left, transparent, rgba(var(--c1-rgb),0.45)); }
+
+    /* ── Description ── */
+    .cs-desc {
+      font-size: 15.5px; line-height: 1.75;
+      color: var(--text-muted); margin-bottom: 34px;
+      max-width: 520px; margin-left: auto; margin-right: auto;
+    }
+
+    /* ── Status pills ── */
+    .status-row {
+      display: flex; gap: 10px; justify-content: center;
+      flex-wrap: wrap; margin-bottom: 34px;
+    }
+    .status-pill {
+      display: inline-flex; align-items: center; gap: 7px;
+      font-size: 12px; font-weight: 700; padding: 7px 16px; border-radius: 999px;
+    }
+    .sp-build   { background:rgba(245,158,11,0.12); border:1px solid rgba(245,158,11,0.3);  color:#fbbf24; }
+    .sp-infra   { background:rgba(16,185,129,0.10); border:1px solid rgba(16,185,129,0.3);   color:#34d399; }
+    .sp-deploy  { background:rgba(var(--c2-rgb),0.12); border:1px solid rgba(var(--c2-rgb),0.3); color:var(--c2); transition:background .6s,border-color .6s,color .6s; }
+
+    .sdot { width:6px; height:6px; border-radius:50%; animation:pulseAnim 1.6s infinite; }
+    .sdot-amber  { background:#f59e0b; }
+    .sdot-green  { background:#10b981; animation-delay:0.3s; }
+    .sdot-accent { background:var(--c2); animation-delay:0.6s; transition:background .6s; }
+    @keyframes pulseAnim {
+      0%,100%{ opacity:1; transform:scale(1); }
+      50%    { opacity:0.3; transform:scale(0.65); }
+    }
+
+    /* ── Progress bar ── */
+    .progress-wrap { margin-bottom: 38px; }
+    .progress-label {
+      display:flex; justify-content:space-between;
+      font-size:12px; font-weight:700; color:var(--text-muted); margin-bottom:10px;
+    }
+    .progress-track {
+      height:6px; border-radius:999px;
+      background:rgba(255,255,255,0.06); overflow:hidden;
+    }
+    .progress-fill {
+      height:100%; border-radius:999px; width:0%;
+      background: linear-gradient(90deg, var(--c1), var(--c2));
+      box-shadow: 0 0 14px rgba(var(--c1-rgb),0.55);
+      transition: width 2s cubic-bezier(0.22,1,0.36,1), background 0.7s, box-shadow 0.7s;
+    }
+
+    /* ── Action buttons ── */
+    .cs-actions { display:flex; gap:14px; justify-content:center; flex-wrap:wrap; }
+    .btn-back {
+      background: linear-gradient(135deg, var(--c1), var(--c2));
+      color:#fff; text-decoration:none; padding:13px 30px; border-radius:999px;
+      font-size:14px; font-weight:800; display:inline-flex; align-items:center; gap:8px;
+      box-shadow: 0 4px 22px rgba(var(--c1-rgb),0.38);
+      transition: all 0.25s;
+    }
+    .btn-back:hover { transform:translateY(-2px); box-shadow:0 8px 30px rgba(var(--c1-rgb),0.55); }
+    .btn-pres {
+      background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.14);
+      color:#e2e8f0; text-decoration:none; padding:13px 28px; border-radius:999px;
+      font-size:14px; font-weight:700; display:inline-flex; align-items:center; gap:8px;
+      transition:all 0.25s;
+    }
+    .btn-pres:hover { background:rgba(var(--c1-rgb),0.12); border-color:rgba(var(--c1-rgb),0.4); transform:translateY(-2px); }
+
+    /* ── Footer ── */
+    .cs-footer {
+      position:fixed; bottom:22px; left:0; right:0;
+      text-align:center; z-index:10;
+      font-size:12px; color:rgba(148,163,184,0.45); font-family:var(--font-mono);
+    }
+
+    /* ── Separator dot ── */
+    .sep { color:rgba(255,255,255,0.15); font-size:22px; line-height:46px; }
+
+    /* ── Product icon big ── */
+    .prod-icon-big {
+      font-size: 52px; display: block; margin-bottom: 18px;
+      filter: drop-shadow(0 0 20px rgba(var(--c1-rgb),0.5));
+      animation: iconBob 4s ease-in-out infinite;
+      transition: filter 0.6s;
+    }
+    @keyframes iconBob {
+      0%,100%{ transform:translateY(0) rotate(-3deg); }
+      50%    { transform:translateY(-8px) rotate(3deg); }
+    }
+
+    @media(max-width:600px){
+      .cs-card { padding:36px 22px 30px; }
+      .orbit-ring { display:none; }
+      .deco-code { display:none; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="bg-gradient"></div>
+<div class="stars-layer" id="starsLayer"></div>
+<div class="orbit-ring r1"><div class="orbit-dot"></div></div>
+<div class="orbit-ring r2"><div class="orbit-dot"></div></div>
+<div class="glow-blob"></div>
+
+<!-- Floating code lines -->
+<div class="deco-code" style="top:10%;left:2%;animation-delay:0s;">// initializing cloud deployment pipeline...</div>
+<div class="deco-code" style="top:19%;right:3%;animation-delay:2.5s;">docker build --platform linux/amd64 .</div>
+<div class="deco-code" style="bottom:23%;left:2%;animation-delay:5s;">render deploy --service web --env production</div>
+<div class="deco-code" style="bottom:13%;right:3%;animation-delay:7.5s;">✓ Health check passed — 200 OK</div>
+
+<!-- Main card -->
+<div class="cs-card">
+  <span class="prod-icon-big" id="prodIcon">🚀</span>
+
+  <div class="prod-badge">
+    <span id="prodCategory">LIVE DEPLOYMENT</span>
+  </div>
+
+  <div class="prod-name" id="prodName">Loading…</div>
+
+  <div class="coming-label">Coming Soon</div>
+
+  <p class="cs-desc" id="prodDesc">
+    The live cloud instance for this product is being deployed.
+    The full interactive demo will be available shortly.
+  </p>
+
+  <div class="status-row">
+    <span class="status-pill sp-build">
+      <span class="sdot sdot-amber"></span>Build Complete
+    </span>
+    <span class="status-pill sp-infra">
+      <span class="sdot sdot-green"></span>Infrastructure Ready
+    </span>
+    <span class="status-pill sp-deploy">
+      <span class="sdot sdot-accent"></span>Deployment Pending
+    </span>
+  </div>
+
+  <div class="progress-wrap">
+    <div class="progress-label">
+      <span>Deployment Progress</span>
+      <span id="progressPct">–%</span>
+    </div>
+    <div class="progress-track">
+      <div class="progress-fill" id="progressFill"></div>
+    </div>
+  </div>
+
+  <div class="cs-actions">
+    <a href="index.html" class="btn-back">← All Products</a>
+    <span class="sep">|</span>
+    <a href="" id="presLink" class="btn-pres">View Presentation ➔</a>
+  </div>
+</div>
+
+<div class="cs-footer">Enterprise Client Showcase · 2026 Production Catalog</div>
+
+<script>
+  /* ─── Per-product theme definitions ─────────────────────────────────── */
+  const PRODUCTS = {
+
+    jainmart: {
+      name: 'JaiNMart',
+      icon: '🛒',
+      category: 'Retail & eCommerce OS',
+      desc: 'Full-stack multi-vendor grocery & retail marketplace with Web Storefront, Vendor Admin Panel, and Ionic Mobile App — digital wallet and payment gateways being configured on cloud.',
+      pres: 'JaiNMart.html',
+      progress: 75,
+      theme: {
+        c1: '#f97316',        // orange-500
+        c2: '#ea580c',        // orange-600
+        c3: '#fbbf24',        // amber-400
+        c1rgb: '249,115,22',
+        c2rgb: '234,88,12',
+        c3rgb: '251,191,36',
+        bg: '#090704',
+        bgCard: 'rgba(26,18,9,0.78)',
+        borderCard: 'rgba(249,115,22,0.22)',
+        bgGrad: `
+          radial-gradient(ellipse 90% 60% at 50% -10%, rgba(249,115,22,0.20) 0%, transparent 60%),
+          radial-gradient(ellipse 55% 45% at 88% 70%,  rgba(234,88,12,0.14) 0%, transparent 55%),
+          radial-gradient(circle at 12% 80%,            rgba(251,191,36,0.08) 0%, transparent 50%)`
+      }
+    },
+
+    connecttoride: {
+      name: 'ConnecttoRide',
+      icon: '🛵',
+      category: '4-in-1 Mobility Platform',
+      desc: 'Unified ride-hailing and parcel logistics platform with real-time driver dispatch, Socket.io order tracking, and 3 signed Android APKs undergoing final deployment checks.',
+      pres: 'ConnecttoRide.html',
+      progress: 68,
+      theme: {
+        c1: '#facc15',        // yellow-400
+        c2: '#f59e0b',        // amber-500
+        c3: '#fb923c',        // orange-400
+        c1rgb: '250,204,21',
+        c2rgb: '245,158,11',
+        c3rgb: '251,146,60',
+        bg: '#080700',
+        bgCard: 'rgba(24,20,4,0.78)',
+        borderCard: 'rgba(250,204,21,0.22)',
+        bgGrad: `
+          radial-gradient(ellipse 90% 60% at 50% -10%, rgba(250,204,21,0.18) 0%, transparent 60%),
+          radial-gradient(ellipse 55% 45% at 88% 70%,  rgba(245,158,11,0.14) 0%, transparent 55%),
+          radial-gradient(circle at 12% 80%,            rgba(251,146,60,0.08) 0%, transparent 50%)`
+      }
+    },
+
+    b2bconnect: {
+      name: 'B2BConnect',
+      icon: '🏢',
+      category: 'Enterprise SFA Platform',
+      desc: 'Multi-tier B2B distribution engine connecting Brands, Distributors, Field Sales Reps, and Retailers with offline-first sync and credit financing being provisioned on Render.',
+      pres: 'B2BConnect.html',
+      progress: 71,
+      theme: {
+        c1: '#3b82f6',        // blue-500
+        c2: '#6366f1',        // indigo-500
+        c3: '#8b5cf6',        // violet-500
+        c1rgb: '59,130,246',
+        c2rgb: '99,102,241',
+        c3rgb: '139,92,246',
+        bg: '#060912',
+        bgCard: 'rgba(12,16,34,0.80)',
+        borderCard: 'rgba(59,130,246,0.22)',
+        bgGrad: `
+          radial-gradient(ellipse 90% 60% at 50% -10%, rgba(59,130,246,0.20) 0%, transparent 60%),
+          radial-gradient(ellipse 55% 45% at 88% 70%,  rgba(99,102,241,0.15) 0%, transparent 55%),
+          radial-gradient(circle at 12% 80%,            rgba(139,92,246,0.09) 0%, transparent 50%)`
+      }
+    },
+
+    artplatt: {
+      name: 'Artplatt',
+      icon: '🎨',
+      category: 'Digital Art OS',
+      desc: 'Next-gen digital art marketplace with AI-guided recommendations, 3D spatial virtual galleries, smart creator royalty splits (85/10/5), and live WebSocket auction engine being deployed.',
+      pres: 'artplatt.html',
+      progress: 82,
+      theme: {
+        c1: '#a855f7',        // purple-500
+        c2: '#ec4899',        // pink-500
+        c3: '#06b6d4',        // cyan-500
+        c1rgb: '168,85,247',
+        c2rgb: '236,72,153',
+        c3rgb: '6,182,212',
+        bg: '#07050c',
+        bgCard: 'rgba(18,12,28,0.80)',
+        borderCard: 'rgba(168,85,247,0.22)',
+        bgGrad: `
+          radial-gradient(ellipse 90% 60% at 50% -10%, rgba(168,85,247,0.20) 0%, transparent 60%),
+          radial-gradient(ellipse 55% 45% at 88% 70%,  rgba(236,72,153,0.14) 0%, transparent 55%),
+          radial-gradient(circle at 12% 80%,            rgba(6,182,212,0.09) 0%, transparent 50%)`
+      }
+    }
+  };
+
+  /* ─── Detect product ─────────────────────────────────────────────────── */
+  const params  = new URLSearchParams(window.location.search);
+  const key     = (params.get('p') || '').toLowerCase();
+  const product = PRODUCTS[key] || {
+    name:'Live Demo', icon:'🚀', category:'Live Deployment',
+    desc:"This product's live cloud instance is currently being deployed. Check back shortly for the full interactive demonstration.",
+    pres:'index.html', progress:70,
+    theme:{
+      c1:'#38bdf8', c2:'#6366f1', c3:'#a855f7',
+      c1rgb:'56,189,248', c2rgb:'99,102,241', c3rgb:'168,85,247',
+      bg:'#07090f', bgCard:'rgba(12,18,34,0.78)',
+      borderCard:'rgba(56,189,248,0.2)',
+      bgGrad:`
+        radial-gradient(ellipse 80% 60% at 50% -10%, rgba(56,189,248,0.18) 0%, transparent 60%),
+        radial-gradient(ellipse 55% 45% at 88% 70%, rgba(99,102,241,0.15) 0%, transparent 55%),
+        radial-gradient(circle at 12% 80%, rgba(168,85,247,0.10) 0%, transparent 50%)`
+    }
+  };
+
+  /* ─── Apply theme via CSS custom properties ─────────────────────────── */
+  const t = product.theme;
+  const root = document.documentElement;
+  root.style.setProperty('--c1',        t.c1);
+  root.style.setProperty('--c2',        t.c2);
+  root.style.setProperty('--c3',        t.c3);
+  root.style.setProperty('--c1-rgb',    t.c1rgb);
+  root.style.setProperty('--c2-rgb',    t.c2rgb);
+  root.style.setProperty('--c3-rgb',    t.c3rgb);
+  root.style.setProperty('--bg',        t.bg);
+  root.style.setProperty('--bg-card',   t.bgCard);
+  root.style.setProperty('--border-card', t.borderCard);
+
+  // Apply dynamic background gradient
+  document.querySelector('.bg-gradient').style.background = t.bgGrad;
+
+  /* ─── Populate content ───────────────────────────────────────────────── */
+  document.getElementById('prodIcon').textContent     = product.icon;
+  document.getElementById('prodCategory').textContent = product.category;
+  document.getElementById('prodName').textContent     = product.name;
+  document.getElementById('prodDesc').textContent     = product.desc;
+  document.getElementById('presLink').href            = product.pres;
+  document.getElementById('progressPct').textContent  = product.progress + '%';
+  document.title = product.name + ' — Coming Soon | Enterprise Suite';
+
+  // Animate progress bar
+  requestAnimationFrame(() => {
+    setTimeout(() => {
+      document.getElementById('progressFill').style.width = product.progress + '%';
+    }, 500);
+  });
+
+  /* ─── Star field ─────────────────────────────────────────────────────── */
+  const starsLayer = document.getElementById('starsLayer');
+  for (let i = 0; i < 100; i++) {
+    const s = document.createElement('div');
+    s.className = 'star';
+    const size = Math.random() * 2.4 + 0.5;
+    s.style.cssText = `
+      width:${size}px; height:${size}px;
+      top:${Math.random()*100}%; left:${Math.random()*100}%;
+      --dur:${(Math.random()*4+2).toFixed(1)}s;
+      --delay:${(Math.random()*6).toFixed(1)}s;
+      --max-op:${(Math.random()*0.5+0.15).toFixed(2)};
+    `;
+    starsLayer.appendChild(s);
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RideSocial (ConnecttoRide) — 4-in-1 Unified Mobility & Logistics Platform | Product Presentation</title>
+  <meta name="description" content="RideSocial (ConnecttoRide) is a production-grade 4-app mobility & logistics ecosystem: Passenger Rides, Parcel Logistics, Captain Cockpit, and Operations Hub. Live on Render.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Syne:wght@600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #07090f;
+      --bg-surface: #0e1320;
+      --bg-card: rgba(16, 22, 38, 0.75);
+      --bg-card-hover: rgba(26, 35, 60, 0.9);
+      --yellow: #ffd600;
+      --yellow-dim: rgba(255, 214, 0, 0.15);
+      --blue: #2563eb;
+      --cyan: #06b6d4;
+      --emerald: #10b981;
+      --pink: #f43f5e;
+      --text: #f8fafc;
+      --text-muted: #8899ac;
+      --border: rgba(255, 214, 0, 0.22);
+      --border-bright: rgba(255, 214, 0, 0.55);
+      --border-dim: rgba(255, 255, 255, 0.08);
+      --glow-yellow: rgba(255, 214, 0, 0.2);
+      --font-display: 'Syne', sans-serif;
+      --font-body: 'Plus Jakarta Sans', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+      background-image: 
+        radial-gradient(ellipse 90% 60% at 50% -5%, rgba(255,214,0,0.14) 0%, transparent 65%),
+        radial-gradient(ellipse 70% 50% at 85% 35%, rgba(16,185,129,0.1) 0%, transparent 55%),
+        radial-gradient(circle at 10% 70%, rgba(37,99,235,0.08) 0%, transparent 50%);
+    }
+
+    /* Sticky Navigation */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(7, 9, 15, 0.88);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 28px;
+      display: flex; align-items: center; justify-content: space-between;
+      height: 68px;
+      gap: 16px;
+    }
+    .nav-brand {
+      font-family: var(--font-display); font-size: 21px; font-weight: 800;
+      display: flex; align-items: center; gap: 10px; flex-shrink: 0;
+      text-decoration: none; color: #fff;
+    }
+    .brand-icon {
+      width: 38px; height: 38px; border-radius: 10px;
+      background: linear-gradient(135deg, var(--yellow), #eab308);
+      color: #000; font-size: 19px; display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 0 16px rgba(255,214,0,0.4);
+    }
+    .nav-pill {
+      font-family: var(--font-body);
+      background: var(--yellow);
+      color: #000; padding: 2px 8px; border-radius: 6px;
+      font-size: 11px; font-weight: 800;
+    }
+    .nav-links { display: flex; gap: 24px; align-items: center; }
+    .nav-links a {
+      color: var(--text-muted); font-size: 13.5px; font-weight: 600;
+      text-decoration: none; transition: color 0.2s; white-space: nowrap;
+    }
+    .nav-links a:hover { color: var(--yellow); }
+
+    .nav-actions { display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
+    .live-beacon-pill {
+      display: inline-flex; align-items: center; gap: 7px;
+      background: rgba(16, 185, 129, 0.12);
+      border: 1px solid rgba(16, 185, 129, 0.35);
+      color: #34d399; font-size: 11.5px; font-weight: 700;
+      padding: 5px 12px; border-radius: 999px; text-decoration: none;
+      transition: all 0.25s;
+    }
+    .live-beacon-pill:hover {
+      background: rgba(16, 185, 129, 0.22);
+      border-color: #34d399;
+      transform: translateY(-1px);
+    }
+    .pulse-dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: #10b981; box-shadow: 0 0 8px #10b981;
+      animation: pulseAnim 1.8s infinite;
+    }
+    @keyframes pulseAnim {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.85); }
+    }
+
+    .nav-cta-btn {
+      background: linear-gradient(135deg, var(--yellow), #f59e0b);
+      color: #000; text-decoration: none; padding: 8px 18px; border-radius: 999px;
+      font-size: 13px; font-weight: 800; display: inline-flex; align-items: center; gap: 7px;
+      box-shadow: 0 4px 18px rgba(255,214,0,0.35);
+      transition: all 0.2s;
+    }
+    .nav-cta-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 24px rgba(255,214,0,0.55);
+    }
+
+    .nav-toggle-btn {
+      display: none;
+      background: rgba(255,255,255,0.06); border: 1px solid var(--border);
+      color: #fff; width: 38px; height: 38px; border-radius: 9px;
+      font-size: 19px; cursor: pointer; align-items: center; justify-content: center;
+    }
+    .mobile-menu-drawer {
+      display: none;
+      position: fixed; top: 68px; left: 0; right: 0;
+      background: rgba(7,9,15,0.98); backdrop-filter: blur(25px);
+      border-bottom: 1px solid var(--border);
+      padding: 1.5rem; z-index: 999;
+      flex-direction: column; gap: 10px;
+    }
+    .mobile-menu-drawer.open { display: flex; }
+    .mobile-menu-drawer a {
+      color: #f8fafc; text-decoration: none; font-size: 14.5px; font-weight: 600;
+      padding: 11px 16px; border-radius: 9px;
+      background: rgba(255,255,255,0.03); border: 1px solid var(--border-dim);
+    }
+    .mobile-menu-drawer a:hover { background: rgba(255,214,0,0.15); color: var(--yellow); }
+
+    @media(max-width: 960px) {
+      .nav-links { display: none; }
+      .nav-toggle-btn { display: inline-flex; }
+    }
+    @media(max-width: 640px) {
+      nav { padding: 0 16px; height: 62px; }
+      .nav-brand { font-size: 18px; }
+      .mobile-menu-drawer { top: 62px; }
+      .live-beacon-pill span.live-text { display: none; }
+      .suite-links { display: none; }
+    }
+
+    /* HERO */
+    .hero {
+      min-height: 90vh;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      text-align: center; padding: 75px 24px 50px;
+      position: relative;
+    }
+    .hero-eyebrow {
+      display: inline-flex; align-items: center; gap: 9px;
+      background: rgba(255,214,0,0.12); border: 1px solid rgba(255,214,0,0.4);
+      color: var(--yellow); padding: 7px 22px; border-radius: 999px;
+      font-size: 12px; font-weight: 800; letter-spacing: 2px;
+      margin-bottom: 24px; text-transform: uppercase;
+      box-shadow: 0 0 25px rgba(255,214,0,0.2);
+    }
+    h1 {
+      font-family: var(--font-display);
+      font-size: clamp(38px, 6.5vw, 76px);
+      font-weight: 800; letter-spacing: -0.015em; line-height: 1.05;
+      margin-bottom: 22px; max-width: 960px;
+    }
+    h1 em {
+      font-style: normal;
+      background: linear-gradient(135deg, #ffd600 0%, #10b981 60%, #38bdf8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .hero-sub {
+      font-size: clamp(16px, 2.2vw, 20px);
+      color: var(--text-muted); max-width: 740px; margin: 0 auto 36px;
+      font-weight: 400; line-height: 1.6;
+    }
+
+    .live-host-banner {
+      background: linear-gradient(135deg, rgba(16,185,129,0.12) 0%, rgba(255,214,0,0.08) 100%);
+      border: 1px solid rgba(16,185,129,0.35);
+      border-radius: 16px; padding: 14px 24px;
+      display: inline-flex; align-items: center; gap: 16px;
+      margin-bottom: 32px; flex-wrap: wrap; justify-content: center;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.4);
+    }
+    .live-host-banner code {
+      font-family: var(--font-mono); font-size: 13px; color: #6ee7b7;
+      background: rgba(0,0,0,0.45); padding: 4px 10px; border-radius: 6px;
+    }
+
+    /* 1-Click Role Logins Bar */
+    .demo-roles-bar {
+      display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-bottom: 40px;
+    }
+    .role-pill {
+      background: rgba(255,255,255,0.04); border: 1px solid var(--border-dim);
+      padding: 6px 14px; border-radius: 999px; font-size: 12px; font-weight: 700;
+      color: #e2e8f0; display: inline-flex; align-items: center; gap: 6px;
+    }
+    .role-pill strong { color: var(--yellow); }
+
+    .hero-actions {
+      display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;
+      margin-bottom: 48px;
+    }
+    .hero-btn-primary {
+      background: linear-gradient(135deg, var(--yellow), #f59e0b);
+      color: #000; padding: 14px 34px; border-radius: 999px;
+      font-size: 15px; font-weight: 800; text-decoration: none;
+      display: inline-flex; align-items: center; gap: 9px;
+      box-shadow: 0 10px 30px rgba(255,214,0,0.4);
+      transition: all 0.25s;
+    }
+    .hero-btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 14px 40px rgba(255,214,0,0.6);
+    }
+    .hero-btn-secondary {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--border);
+      color: #fff; padding: 14px 28px; border-radius: 999px;
+      font-size: 15px; font-weight: 700; text-decoration: none;
+      display: inline-flex; align-items: center; gap: 9px;
+      backdrop-filter: blur(10px);
+      transition: all 0.25s;
+    }
+    .hero-btn-secondary:hover {
+      background: rgba(255,214,0,0.12);
+      border-color: var(--yellow);
+      transform: translateY(-2px);
+    }
+
+    .hero-stats-grid {
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      gap: 16px; max-width: 980px; width: 100%; margin: 0 auto;
+    }
+    @media(max-width: 768px) {
+      .hero-stats-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    .stat-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px; padding: 22px 18px;
+      text-align: center;
+      transition: all 0.25s;
+      backdrop-filter: blur(12px);
+    }
+    .stat-card:hover {
+      transform: translateY(-3px);
+      border-color: var(--border-bright);
+      box-shadow: 0 10px 30px var(--glow-yellow);
+    }
+    .stat-num {
+      font-family: var(--font-display); font-size: 32px; font-weight: 800;
+      color: var(--yellow); display: block; line-height: 1.1; margin-bottom: 4px;
+    }
+    .stat-label { font-size: 12px; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+
+    /* LAYOUT & SECTIONS */
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+    section { padding: 90px 0; position: relative; }
+    .sec-eyebrow {
+      font-size: 12px; font-weight: 800; letter-spacing: 2.5px;
+      color: var(--yellow); text-transform: uppercase; display: block; margin-bottom: 12px;
+    }
+    .sec-h2 {
+      font-family: var(--font-display); font-size: clamp(28px, 4.5vw, 46px);
+      font-weight: 800; letter-spacing: -0.01em; margin-bottom: 14px; line-height: 1.15;
+    }
+    .sec-p { font-size: 16px; color: var(--text-muted); max-width: 620px; line-height: 1.6; }
+
+    /* INTERACTIVE FARE & DISPATCH SIMULATOR */
+    .sim-box {
+      margin-top: 50px;
+      background: linear-gradient(180deg, rgba(20,28,48,0.92) 0%, rgba(8,12,20,0.96) 100%);
+      border: 1px solid var(--border-bright); border-radius: 24px;
+      padding: 40px; box-shadow: 0 20px 60px rgba(0,0,0,0.6), 0 0 40px var(--glow-yellow);
+    }
+    .sim-grid {
+      display: grid; grid-template-columns: 1.25fr 1fr; gap: 36px; align-items: center;
+    }
+    @media(max-width: 880px) { .sim-grid { grid-template-columns: 1fr; } }
+
+    .vehicle-pills-row {
+      display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 24px;
+    }
+    .veh-btn {
+      background: rgba(255,255,255,0.04); border: 1px solid var(--border-dim);
+      color: var(--text-muted); padding: 9px 14px; border-radius: 10px;
+      font-size: 13px; font-weight: 700; cursor: pointer; transition: all 0.2s;
+      display: flex; align-items: center; gap: 6px;
+    }
+    .veh-btn.active, .veh-btn:hover {
+      background: rgba(255,214,0,0.18); border-color: var(--yellow); color: #fff;
+    }
+
+    .slider-item { display: flex; flex-direction: column; gap: 8px; margin-bottom: 20px; }
+    .slider-top-row { display: flex; justify-content: space-between; font-size: 14px; font-weight: 700; }
+    .slider-display-val { font-family: var(--font-mono); color: var(--yellow); font-size: 16px; }
+
+    input[type=range] {
+      width: 100%; height: 8px; border-radius: 4px;
+      background: rgba(255,255,255,0.1); outline: none; accent-color: var(--yellow);
+    }
+
+    .surge-toggle-row {
+      display: flex; gap: 10px; align-items: center;
+    }
+    .surge-btn {
+      background: rgba(255,255,255,0.04); border: 1px solid var(--border-dim);
+      color: var(--text-muted); padding: 6px 14px; border-radius: 8px;
+      font-size: 12px; font-weight: 700; cursor: pointer; transition: all 0.2s;
+    }
+    .surge-btn.active {
+      background: rgba(239,68,68,0.2); border-color: #ef4444; color: #fca5a5;
+    }
+
+    .fare-result-panel {
+      background: rgba(0,0,0,0.45); border: 1px solid var(--border);
+      border-radius: 20px; padding: 28px; text-align: center;
+      display: flex; flex-direction: column; gap: 16px;
+    }
+    .fare-big-num {
+      font-family: var(--font-display); font-size: 44px; font-weight: 800;
+      color: var(--yellow); line-height: 1;
+    }
+    .fare-breakdown-row {
+      display: flex; justify-content: space-between; border-top: 1px solid var(--border-dim);
+      padding-top: 12px; font-size: 13.5px;
+    }
+    .fare-breakdown-row span:last-child {
+      font-family: var(--font-mono); font-weight: 700; color: #fff;
+    }
+
+    /* THE FOUR APPS CARDS */
+    .apps-quad-grid {
+      display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; margin-top: 48px;
+    }
+    @media(max-width: 768px) { .apps-quad-grid { grid-template-columns: 1fr; } }
+    .quad-card {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: 22px; padding: 32px; transition: all 0.3s;
+      position: relative; overflow: hidden;
+    }
+    .quad-card:hover {
+      transform: translateY(-4px); border-color: var(--border-bright);
+      box-shadow: 0 16px 45px var(--glow-yellow);
+    }
+    .quad-icon {
+      width: 52px; height: 52px; border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 24px; margin-bottom: 20px;
+    }
+    .qi-yellow { background: rgba(255,214,0,0.15); border: 1px solid rgba(255,214,0,0.4); color: var(--yellow); }
+    .qi-blue { background: rgba(37,99,235,0.15); border: 1px solid rgba(37,99,235,0.4); color: #60a5fa; }
+    .qi-emerald { background: rgba(16,185,129,0.15); border: 1px solid rgba(16,185,129,0.4); color: #34d399; }
+    .qi-cyan { background: rgba(6,182,212,0.15); border: 1px solid rgba(6,182,212,0.4); color: #67e8f9; }
+
+    .quad-card h3 { font-family: var(--font-display); font-size: 22px; font-weight: 700; margin-bottom: 8px; }
+    .quad-role { font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 14px; }
+    .quad-card p { font-size: 14.5px; color: var(--text-muted); line-height: 1.6; margin-bottom: 20px; }
+
+    .tag-cluster { display: flex; flex-wrap: wrap; gap: 8px; }
+    .apk-tag {
+      background: rgba(255,255,255,0.04); border: 1px solid var(--border-dim);
+      font-size: 11.5px; font-family: var(--font-mono); padding: 4px 10px; border-radius: 6px; color: #cbd5e1;
+    }
+
+    /* CTA */
+    .cta-banner {
+      background: linear-gradient(135deg, rgba(28,34,54,0.92) 0%, rgba(7,9,15,0.98) 100%);
+      border: 1px solid var(--border-bright); border-radius: 28px;
+      padding: 64px 32px; text-align: center; margin: 80px 0 50px;
+      position: relative; overflow: hidden;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.6), 0 0 50px var(--glow-yellow);
+    }
+    .cta-banner h2 {
+      font-family: var(--font-display); font-size: clamp(30px, 4.5vw, 52px);
+      font-weight: 800; margin-bottom: 14px;
+    }
+    .cta-banner p {
+      font-size: 16px; color: var(--text-muted); max-width: 600px; margin: 0 auto 36px;
+    }
+
+    footer {
+      border-top: 1px solid var(--border-dim); padding: 36px 24px;
+      text-align: center; font-size: 13.5px; color: var(--text-muted);
+      background: rgba(0,0,0,0.6);
+    }
+    footer a { color: var(--yellow); text-decoration: none; font-weight: 600; }
+  </style>
+</head>
+<body>
+
+<!-- NAVIGATION -->
+<nav>
+  <a href="coming-soon.html?p=connecttoride" class="nav-brand">
+    <div class="brand-icon">🛵</div>
+    <span>RideSocial</span>
+    <div class="nav-pill">ConnecttoRide</div>
+  </a>
+
+  <div class="nav-links">
+    <a href="#simulator">Fare & Dispatch Simulator</a>
+    <a href="#apps">Four Apps Suite</a>
+    <a href="#features">Core Engine</a>
+    <a href="#apks">APK Packages</a>
+  </div>
+
+  <div class="nav-actions">
+    <a href="coming-soon.html?p=connecttoride" class="live-beacon-pill" title="Deployment Coming Soon">
+      <div class="pulse-dot" style="background: #facc15; box-shadow: 0 0 8px #facc15;"></div>
+      <span class="live-text" style="color: #facc15;">Coming Soon</span>
+      <span style="color: #facc15;">↗</span>
+    </a>
+    <a href="coming-soon.html?p=connecttoride" class="nav-cta-btn">Live Demo ➔</a>
+    <button class="nav-toggle-btn" id="rideToggle" aria-label="Toggle Navigation">☰</button>
+  </div>
+</nav>
+
+<!-- MOBILE DRAWER -->
+<div class="mobile-menu-drawer" id="rideMobileNav">
+  <a href="coming-soon.html?p=connecttoride" style="background: rgba(250,204,21,0.18); color: #fde047; border-color: rgba(250,204,21,0.4);">
+    ⏳ Launch Live Demo (Deployment Coming Soon) ➔
+  </a>
+  <a href="#simulator">⚡ Fare & Dispatch Simulator</a>
+  <a href="#apps">🟡 The 4 Purpose-Built Apps</a>
+  <a href="#features">🛡️ Production Capabilities</a>
+  <a href="#apks">📱 Android APK Manifests</a>
+  <a href="index.html">🌐 View All 8 Client Products</a>
+</div>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-eyebrow">🛵 UNIFIED PASSENGER MOBILITY & PARCEL LOGISTICS</div>
+  <h1>The City Is Yours.<br><em>Move with Meaning.</em></h1>
+  <p class="hero-sub">RideSocial (ConnecttoRide) is a production-grade 4-app mobility platform: Bike Taxis, Autos, Cabs, Porter Express Deliveries, Captain Cockpit, and Operations Hub. Deployment coming soon.</p>
+
+  <div class="live-host-banner" style="border-color: rgba(250,204,21,0.4); background: linear-gradient(135deg, rgba(250,204,21,0.12) 0%, rgba(245,158,11,0.08) 100%);">
+    <div class="pulse-dot" style="background: #facc15; box-shadow: 0 0 8px #facc15;"></div>
+    <span style="font-weight: 700; color: #fff;">Platform Status:</span>
+    <code style="color: #fde047;">Deployment In Progress · Cloud Sandbox</code>
+    <a href="coming-soon.html?p=connecttoride" class="live-beacon-pill" style="border-color: rgba(250,204,21,0.4); color: #fde047;">View Launch Status ↗</a>
+  </div>
+
+  <!-- Quick Demo Roles -->
+  <div class="demo-roles-bar">
+    <div class="role-pill"><span>👤 Rider:</span> <strong>Arya</strong></div>
+    <div class="role-pill"><span>🚖 Captain:</span> <strong>Vikram</strong></div>
+    <div class="role-pill"><span>📦 Porter:</span> <strong>Priya</strong></div>
+    <div class="role-pill"><span>🛡️ SuperAdmin:</span> <strong>Root</strong></div>
+  </div>
+
+  <div class="hero-actions">
+    <a href="coming-soon.html?p=connecttoride" class="hero-btn-primary">
+      <span>🚀 Launch Live Demo</span>
+      <span>➔</span>
+    </a>
+    <a href="#simulator" class="hero-btn-secondary">
+      <span>⚡ Test Live Fare Estimator</span>
+      <span>↓</span>
+    </a>
+  </div>
+
+  <div class="hero-stats-grid">
+    <div class="stat-card">
+      <span class="stat-num">4 Apps</span>
+      <span class="stat-label">1 Unified Architecture</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-num">3 APKs</span>
+      <span class="stat-label">Signed Android Binaries</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-num">Dual Pool</span>
+      <span class="stat-label">Ride & Cargo Separation</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-num">&lt; 15ms</span>
+      <span class="stat-label">Live Dispatch WebSockets</span>
+    </div>
+  </div>
+</header>
+
+<main>
+  <!-- INTERACTIVE FARE & DISPATCH SIMULATOR -->
+  <section id="simulator">
+    <div class="container">
+      <span class="sec-eyebrow">DYNAMIC ALGORITHM</span>
+      <h2 class="sec-h2">Interactive Trip Fare & Payout Estimator</h2>
+      <p class="sec-p">Test live distance pricing, dynamic surge multiplier factors, and the automated 82% Captain / 18% Platform split.</p>
+
+      <div class="sim-box">
+        <div class="sim-grid">
+          <div>
+            <div class="vehicle-pills-row">
+              <button class="veh-btn active" onclick="setVeh('bike', 15, 8, this)">🛵 Bike Taxi</button>
+              <button class="veh-btn" onclick="setVeh('auto', 30, 14, this)">🛺 Auto Rickshaw</button>
+              <button class="veh-btn" onclick="setVeh('sedan', 60, 20, this)">🚗 Prime Sedan</button>
+              <button class="veh-btn" onclick="setVeh('porter', 40, 12, this)">📦 2W Express</button>
+              <button class="veh-btn" onclick="setVeh('truck', 150, 35, this)">🚚 Tata Ace 8ft</button>
+            </div>
+
+            <div class="slider-item">
+              <div class="slider-top-row">
+                <span>Trip Distance:</span>
+                <span class="slider-display-val" id="distDisplay">8.5 km</span>
+              </div>
+              <input type="range" id="distSlider" min="1" max="45" step="0.5" value="8.5" oninput="updateFare()">
+            </div>
+
+            <div style="margin-top: 14px;">
+              <div style="font-size: 13.5px; font-weight: 700; margin-bottom: 8px;">Surge Multiplier (Demand & Weather):</div>
+              <div class="surge-toggle-row">
+                <button class="surge-btn" id="s1" onclick="setSurge(1.0, this)" style="border-color: var(--yellow); color:#fff;">1.0x Normal</button>
+                <button class="surge-btn" id="s2" onclick="setSurge(1.3, this)">1.3x Peak</button>
+                <button class="surge-btn" id="s3" onclick="setSurge(1.7, this)">1.7x Rain / High Demand</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="fare-result-panel">
+            <div>
+              <div style="font-size: 13px; color: var(--text-muted);">Estimated Customer Fare</div>
+              <div class="fare-big-num" id="totalFareDisplay">₹83</div>
+            </div>
+
+            <div class="fare-breakdown-row">
+              <span>Captain Payout (82%):</span>
+              <span id="captainPayDisplay" style="color: #34d399;">₹68</span>
+            </div>
+            <div class="fare-breakdown-row">
+              <span>Platform Protocol Commission (18%):</span>
+              <span id="platformPayDisplay" style="color: var(--yellow);">₹15</span>
+            </div>
+            <div class="fare-breakdown-row">
+              <span>Estimated Pickup ETA:</span>
+              <span id="etaDisplay">4 mins</span>
+            </div>
+            <a href="coming-soon.html?p=connecttoride" class="hero-btn-primary" style="justify-content: center; width: 100%; padding: 12px; margin-top: 6px;">
+              Launch Live Booking ➔
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOUR PURPOSE BUILT APPS -->
+  <section id="apps" style="background: rgba(14,19,32,0.6);">
+    <div class="container">
+      <span class="sec-eyebrow">THE FOUR APPS</span>
+      <h2 class="sec-h2">Purpose-Built for Every Mobility Role</h2>
+      <p class="sec-p">Each application is independently deployable as a signed Android APK while communicating over a shared real-time event bus.</p>
+
+      <div class="apps-quad-grid">
+        <div class="quad-card">
+          <div class="quad-icon qi-yellow">🟡</div>
+          <h3>Rider Application</h3>
+          <div class="quad-role" style="color: var(--yellow);">Passenger Mobility &bull; Rapido Experience</div>
+          <p>Passenger booking for Bike Taxis, Autos, and Cabs. Features real-time GPS tracking, ride-start OTP verification, in-app messaging, and SOS emergency beacon.</p>
+          <div class="tag-cluster">
+            <span class="apk-tag">Live GPS Map</span>
+            <span class="apk-tag">Ride-Start OTP</span>
+            <span class="apk-tag">APK: com.connecttoride.rider</span>
+          </div>
+        </div>
+
+        <div class="quad-card">
+          <div class="quad-icon qi-blue">📦</div>
+          <h3>Delivery Porter App</h3>
+          <div class="quad-role" style="color: #60a5fa;">Express Logistics &bull; Porter Experience</div>
+          <p>On-demand logistics supporting 2-wheeler express parcels, 3-wheeler cargo, and Tata Ace mini-trucks. Handover OTP verification and recipient signatures.</p>
+          <div class="tag-cluster">
+            <span class="apk-tag">2W/3W/Trucks</span>
+            <span class="apk-tag">Handover OTP</span>
+            <span class="apk-tag">APK: com.connecttoride.porter</span>
+          </div>
+        </div>
+
+        <div class="quad-card">
+          <div class="quad-icon qi-emerald">🟢</div>
+          <h3>Captain Driver Cockpit</h3>
+          <div class="quad-role" style="color: #34d399;">Partner Dashboard &bull; Dual Job Queue</div>
+          <p>Unified driver cockpit accepting both passenger rides and parcel deliveries based on vehicle classification. Real-time earnings ledger and document KYC.</p>
+          <div class="tag-cluster">
+            <span class="apk-tag">Dual Job Streams</span>
+            <span class="apk-tag">Wallet Payouts</span>
+            <span class="apk-tag">APK: com.connecttoride.driver</span>
+          </div>
+        </div>
+
+        <div class="quad-card">
+          <div class="quad-icon qi-cyan">🌐</div>
+          <h3>Operations SuperAdmin</h3>
+          <div class="quad-role" style="color: #67e8f9;">Command Center &bull; Web & PWA</div>
+          <p>Centralized fleet operations, driver onboarding approval, live heatmaps, surge zone toggling, dispute resolution, and signed APK distribution.</p>
+          <div class="tag-cluster">
+            <span class="apk-tag">Fleet Oversight</span>
+            <span class="apk-tag">Heatmaps</span>
+            <span class="apk-tag">SuperAdmin Portal</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <div class="container">
+    <div class="cta-banner">
+      <h2>Deploy Your City's Mobility Network Today</h2>
+      <p>Verified WebSocket architecture, native Android APK packages, and cloud deployment in progress.</p>
+      <div style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;">
+        <a href="coming-soon.html?p=connecttoride" class="hero-btn-primary">
+          <span>🚀 Launch Live Demo</span>
+          <span>➔</span>
+        </a>
+        <a href="index.html" class="hero-btn-secondary">
+          <span>🌐 View Entire 8-App Client Suite</span>
+          <span>➔</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <p>RideSocial (ConnecttoRide) &bull; Unified Mobility & Logistics Ecosystem &bull; <a href="coming-soon.html?p=connecttoride">Deployment Coming Soon</a></p>
+  <p style="margin-top: 8px; font-size: 12px; opacity: 0.7;">Part of the 8-Product Client Presentation Portfolio &bull; 2026</p>
+</footer>
+
+<script>
+  // Mobile drawer toggle
+  const rideToggle = document.getElementById('rideToggle');
+  const rideMobileNav = document.getElementById('rideMobileNav');
+  if (rideToggle && rideMobileNav) {
+    rideToggle.addEventListener('click', () => {
+      rideMobileNav.classList.toggle('open');
+      rideToggle.textContent = rideMobileNav.classList.contains('open') ? '✕' : '☰';
+    });
+    rideMobileNav.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        rideMobileNav.classList.remove('open');
+        rideToggle.textContent = '☰';
+      });
+    });
+  }
+
+  // Fare Estimator logic
+  let basePrice = 15;
+  let perKm = 8;
+  let surgeFactor = 1.0;
+
+  function setVeh(type, base, km, btn) {
+    document.querySelectorAll('.veh-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    basePrice = base;
+    perKm = km;
+    updateFare();
+  }
+
+  function setSurge(factor, btn) {
+    document.querySelectorAll('.surge-btn').forEach(b => {
+      b.style.borderColor = 'var(--border-dim)';
+      b.style.color = 'var(--text-muted)';
+    });
+    btn.style.borderColor = 'var(--yellow)';
+    btn.style.color = '#fff';
+    surgeFactor = factor;
+    updateFare();
+  }
+
+  function updateFare() {
+    const dist = parseFloat(document.getElementById('distSlider').value);
+    document.getElementById('distDisplay').textContent = dist + ' km';
+
+    const rawFare = basePrice + (dist * perKm);
+    const totalFare = Math.round(rawFare * surgeFactor);
+    const captainPay = Math.round(totalFare * 0.82);
+    const platformPay = totalFare - captainPay;
+
+    const etaMins = Math.max(3, Math.round(dist * 0.6));
+
+    document.getElementById('totalFareDisplay').textContent = '₹' + totalFare;
+    document.getElementById('captainPayDisplay').textContent = '₹' + captainPay;
+    document.getElementById('platformPayDisplay').textContent = '₹' + platformPay;
+    document.getElementById('etaDisplay').textContent = etaMins + ' mins';
+  }
+
+  updateFare();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GHAR.io — Enterprise Full-Stack Real Estate Super-App | Product Presentation</title>
+  <meta name="description" content="GHAR.io is an enterprise real estate super-app platform (Housing.com/99acres caliber) — Node.js + MongoDB backend, Angular 18 + Ionic PWA single-codebase frontend. Live on Render.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,700;0,9..144,800;1,9..144,500&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #050811;
+      --bg-surface: #0a101d;
+      --bg-card: rgba(14, 22, 38, 0.75);
+      --bg-card-hover: rgba(22, 34, 58, 0.9);
+      --sky: #0ea5e9;
+      --blue: #3b82f6;
+      --indigo: #6366f1;
+      --emerald: #10b981;
+      --sand: #f59e0b;
+      --text: #f0f4f8;
+      --text-muted: #7e91a9;
+      --border: rgba(14, 165, 233, 0.22);
+      --border-bright: rgba(14, 165, 233, 0.55);
+      --border-dim: rgba(255, 255, 255, 0.08);
+      --glow-sky: rgba(14, 165, 233, 0.22);
+      --font-display: 'Fraunces', serif;
+      --font-body: 'Plus Jakarta Sans', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+      background-image: 
+        radial-gradient(ellipse 90% 60% at 50% -5%, rgba(14,165,233,0.18) 0%, transparent 65%),
+        radial-gradient(ellipse 70% 50% at 90% 40%, rgba(59,130,246,0.1) 0%, transparent 55%),
+        radial-gradient(circle at 10% 75%, rgba(16,185,129,0.08) 0%, transparent 50%);
+    }
+
+    /* Sticky Navigation */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(5, 8, 17, 0.88);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 28px;
+      display: flex; align-items: center; justify-content: space-between;
+      height: 68px;
+      gap: 16px;
+    }
+    .nav-brand {
+      font-family: var(--font-display); font-size: 21px; font-weight: 700;
+      display: flex; align-items: center; gap: 10px; flex-shrink: 0;
+      text-decoration: none; color: #fff;
+    }
+    .brand-house {
+      width: 38px; height: 38px; border-radius: 10px;
+      background: linear-gradient(135deg, var(--sky), var(--blue));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 19px; box-shadow: 0 0 16px rgba(14,165,233,0.4);
+    }
+    .nav-pill {
+      font-family: var(--font-body);
+      background: linear-gradient(135deg, var(--sky), var(--blue));
+      color: #fff; padding: 3px 10px; border-radius: 6px;
+      font-size: 11px; font-weight: 800; letter-spacing: 1px;
+    }
+    .nav-links { display: flex; gap: 24px; align-items: center; }
+    .nav-links a {
+      color: var(--text-muted); font-size: 13.5px; font-weight: 600;
+      text-decoration: none; transition: color 0.2s; white-space: nowrap;
+    }
+    .nav-links a:hover { color: var(--sky); }
+
+    .nav-actions { display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
+    .live-beacon-pill {
+      display: inline-flex; align-items: center; gap: 7px;
+      background: rgba(16, 185, 129, 0.12);
+      border: 1px solid rgba(16, 185, 129, 0.35);
+      color: #34d399; font-size: 11.5px; font-weight: 700;
+      padding: 5px 12px; border-radius: 999px; text-decoration: none;
+      transition: all 0.25s;
+    }
+    .live-beacon-pill:hover {
+      background: rgba(16, 185, 129, 0.22);
+      border-color: #34d399;
+      transform: translateY(-1px);
+    }
+    .pulse-dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: #10b981; box-shadow: 0 0 8px #10b981;
+      animation: pulseAnim 1.8s infinite;
+    }
+    @keyframes pulseAnim {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.85); }
+    }
+
+    .nav-cta-btn {
+      background: linear-gradient(135deg, var(--sky), var(--blue));
+      color: #fff; text-decoration: none; padding: 8px 18px; border-radius: 999px;
+      font-size: 13px; font-weight: 700; display: inline-flex; align-items: center; gap: 7px;
+      box-shadow: 0 4px 18px rgba(14,165,233,0.35);
+      transition: all 0.2s;
+    }
+    .nav-cta-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 24px rgba(14,165,233,0.55);
+    }
+
+    .ghar-toggle-btn {
+      display: none;
+      background: rgba(255,255,255,0.06); border: 1px solid var(--border);
+      color: #fff; width: 38px; height: 38px; border-radius: 9px;
+      font-size: 19px; cursor: pointer; align-items: center; justify-content: center;
+    }
+    .ghar-mobile-drawer {
+      display: none;
+      position: fixed; top: 68px; left: 0; right: 0;
+      background: rgba(6,9,18,0.98); backdrop-filter: blur(25px);
+      border-bottom: 1px solid var(--border);
+      padding: 1.5rem; z-index: 999;
+      flex-direction: column; gap: 10px;
+    }
+    .ghar-mobile-drawer.open { display: flex; }
+    .ghar-mobile-drawer a {
+      color: #f0f4f8; text-decoration: none; font-size: 14.5px; font-weight: 600;
+      padding: 11px 16px; border-radius: 9px;
+      background: rgba(255,255,255,0.03); border: 1px solid var(--border-dim);
+    }
+    .ghar-mobile-drawer a:hover { background: rgba(14,165,233,0.15); color: var(--sky); }
+
+    @media(max-width: 960px) {
+      .nav-links { display: none; }
+      .ghar-toggle-btn { display: inline-flex; }
+    }
+    @media(max-width: 640px) {
+      nav { padding: 0 16px; height: 62px; }
+      .nav-brand { font-size: 18px; }
+      .ghar-mobile-drawer { top: 62px; }
+      .live-beacon-pill span.live-text { display: none; }
+      .suite-links { display: none; }
+    }
+
+    /* HERO */
+    .hero {
+      min-height: 90vh;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      text-align: center; padding: 75px 24px 50px;
+      position: relative;
+    }
+    .hero-eyebrow {
+      display: inline-flex; align-items: center; gap: 9px;
+      background: rgba(14,165,233,0.12); border: 1px solid rgba(14,165,233,0.4);
+      color: var(--sky); padding: 7px 22px; border-radius: 999px;
+      font-size: 12px; font-weight: 800; letter-spacing: 2px;
+      margin-bottom: 24px; text-transform: uppercase;
+      box-shadow: 0 0 25px rgba(14,165,233,0.2);
+    }
+    h1 {
+      font-family: var(--font-display);
+      font-size: clamp(38px, 6.5vw, 78px);
+      font-weight: 700; letter-spacing: -0.015em; line-height: 1.05;
+      margin-bottom: 22px; max-width: 960px;
+    }
+    h1 em {
+      font-style: italic;
+      background: linear-gradient(135deg, #38bdf8 0%, #3b82f6 50%, #10b981 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .hero-sub {
+      font-size: clamp(16px, 2.2vw, 20px);
+      color: var(--text-muted); max-width: 740px; margin: 0 auto 36px;
+      font-weight: 400; line-height: 1.6;
+    }
+
+    .live-host-banner {
+      background: linear-gradient(135deg, rgba(16,185,129,0.12) 0%, rgba(14,165,233,0.1) 100%);
+      border: 1px solid rgba(16,185,129,0.35);
+      border-radius: 16px; padding: 14px 24px;
+      display: inline-flex; align-items: center; gap: 16px;
+      margin-bottom: 44px; flex-wrap: wrap; justify-content: center;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.4);
+    }
+    .live-host-banner code {
+      font-family: var(--font-mono); font-size: 13px; color: #6ee7b7;
+      background: rgba(0,0,0,0.45); padding: 4px 10px; border-radius: 6px;
+    }
+
+    .hero-actions {
+      display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;
+      margin-bottom: 48px;
+    }
+    .hero-btn-primary {
+      background: linear-gradient(135deg, var(--sky), var(--blue));
+      color: #fff; padding: 14px 34px; border-radius: 999px;
+      font-size: 15px; font-weight: 800; text-decoration: none;
+      display: inline-flex; align-items: center; gap: 9px;
+      box-shadow: 0 10px 30px rgba(14,165,233,0.4);
+      transition: all 0.25s;
+    }
+    .hero-btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 14px 40px rgba(14,165,233,0.6);
+    }
+    .hero-btn-secondary {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--border);
+      color: #fff; padding: 14px 28px; border-radius: 999px;
+      font-size: 15px; font-weight: 700; text-decoration: none;
+      display: inline-flex; align-items: center; gap: 9px;
+      backdrop-filter: blur(10px);
+      transition: all 0.25s;
+    }
+    .hero-btn-secondary:hover {
+      background: rgba(14,165,233,0.12);
+      border-color: var(--sky);
+      transform: translateY(-2px);
+    }
+
+    .hero-stats-grid {
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      gap: 16px; max-width: 980px; width: 100%; margin: 0 auto;
+    }
+    @media(max-width: 768px) {
+      .hero-stats-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    .stat-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px; padding: 22px 18px;
+      text-align: center;
+      transition: all 0.25s;
+      backdrop-filter: blur(12px);
+    }
+    .stat-card:hover {
+      transform: translateY(-3px);
+      border-color: var(--border-bright);
+      box-shadow: 0 10px 30px var(--glow-sky);
+    }
+    .stat-num {
+      font-family: var(--font-display); font-size: 32px; font-weight: 700;
+      color: var(--sky); display: block; line-height: 1.1; margin-bottom: 4px;
+    }
+    .stat-label { font-size: 12px; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+
+    /* LAYOUT & SECTIONS */
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+    section { padding: 90px 0; position: relative; }
+    .sec-eyebrow {
+      font-size: 12px; font-weight: 800; letter-spacing: 2.5px;
+      color: var(--sky); text-transform: uppercase; display: block; margin-bottom: 12px;
+    }
+    .sec-h2 {
+      font-family: var(--font-display); font-size: clamp(28px, 4.5vw, 46px);
+      font-weight: 700; letter-spacing: -0.01em; margin-bottom: 14px; line-height: 1.15;
+    }
+    .sec-p { font-size: 16px; color: var(--text-muted); max-width: 620px; line-height: 1.6; }
+
+    /* INTERACTIVE EMI CALCULATOR */
+    .emi-calc-box {
+      margin-top: 50px;
+      background: linear-gradient(180deg, rgba(14,24,42,0.92) 0%, rgba(6,11,20,0.96) 100%);
+      border: 1px solid var(--border-bright); border-radius: 24px;
+      padding: 40px; box-shadow: 0 20px 60px rgba(0,0,0,0.6), 0 0 40px var(--glow-sky);
+    }
+    .emi-grid {
+      display: grid; grid-template-columns: 1.2fr 1fr; gap: 36px; align-items: center;
+    }
+    @media(max-width: 860px) { .emi-grid { grid-template-columns: 1fr; } }
+
+    .calc-sliders-col { display: flex; flex-direction: column; gap: 24px; }
+    .slider-item { display: flex; flex-direction: column; gap: 8px; }
+    .slider-top-row { display: flex; justify-content: space-between; font-size: 14px; font-weight: 700; }
+    .slider-display-val { font-family: var(--font-mono); color: var(--sky); font-size: 16px; }
+
+    input[type=range] {
+      width: 100%; height: 8px; border-radius: 4px;
+      background: rgba(255,255,255,0.1); outline: none; accent-color: var(--sky);
+    }
+
+    .emi-result-panel {
+      background: rgba(0,0,0,0.45); border: 1px solid var(--border);
+      border-radius: 20px; padding: 28px; text-align: center;
+      display: flex; flex-direction: column; gap: 18px;
+    }
+    .emi-primary-val {
+      font-family: var(--font-display); font-size: 44px; font-weight: 800;
+      color: #38bdf8; line-height: 1;
+    }
+    .emi-meta-sub { font-size: 13px; color: var(--text-muted); }
+
+    .emi-breakdown-row {
+      display: flex; justify-content: space-between; border-top: 1px solid var(--border-dim);
+      padding-top: 12px; font-size: 13.5px;
+    }
+    .emi-breakdown-row span:last-child {
+      font-family: var(--font-mono); font-weight: 700; color: #fff;
+    }
+
+    /* INTERACTIVE PROPERTY MATCHER */
+    .search-filter-wrap {
+      margin-top: 48px;
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: 20px; padding: 24px; display: flex; flex-wrap: wrap; gap: 16px;
+      align-items: center; justify-content: space-between;
+    }
+    .filter-select {
+      background: rgba(0,0,0,0.5); border: 1px solid var(--border-dim);
+      color: #fff; padding: 10px 16px; border-radius: 10px; font-family: var(--font-body);
+      font-size: 14px; outline: none; cursor: pointer;
+    }
+    .bhk-toggle-group { display: flex; gap: 6px; }
+    .bhk-btn {
+      background: rgba(255,255,255,0.04); border: 1px solid var(--border-dim);
+      color: var(--text-muted); padding: 8px 14px; border-radius: 8px;
+      font-size: 13px; font-weight: 700; cursor: pointer; transition: all 0.2s;
+    }
+    .bhk-btn.active, .bhk-btn:hover {
+      background: rgba(14,165,233,0.18); border-color: var(--sky); color: #fff;
+    }
+
+    .properties-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 32px;
+    }
+    @media(max-width: 960px) { .properties-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media(max-width: 580px) { .properties-grid { grid-template-columns: 1fr; } }
+
+    .property-card {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: 20px; overflow: hidden; transition: all 0.3s;
+      display: flex; flex-direction: column;
+    }
+    .property-card:hover {
+      transform: translateY(-6px); border-color: var(--border-bright);
+      box-shadow: 0 16px 45px var(--glow-sky);
+    }
+    .prop-image {
+      height: 190px; position: relative; display: flex; align-items: flex-end; padding: 16px;
+    }
+    .pi-1 { background: linear-gradient(135deg, #0369a1, #0f172a); }
+    .pi-2 { background: linear-gradient(135deg, #065f46, #022c22); }
+    .pi-3 { background: linear-gradient(135deg, #4338ca, #1e1b4b); }
+
+    .prop-rera-badge {
+      position: absolute; top: 12px; left: 12px;
+      background: rgba(16,185,129,0.2); border: 1px solid #10b981;
+      color: #34d399; font-size: 11px; font-weight: 800;
+      padding: 3px 8px; border-radius: 6px;
+    }
+    .prop-price-tag {
+      font-family: var(--font-display); font-size: 22px; font-weight: 800;
+      color: #fff; text-shadow: 0 2px 10px rgba(0,0,0,0.8);
+    }
+
+    .prop-body { padding: 20px; flex: 1; display: flex; flex-direction: column; justify-content: space-between; }
+    .prop-title { font-size: 17px; font-weight: 700; color: #fff; margin-bottom: 4px; }
+    .prop-loc { font-size: 13px; color: var(--text-muted); margin-bottom: 14px; }
+    .prop-specs {
+      display: flex; gap: 12px; font-size: 12.5px; color: #cbd5e1;
+      border-top: 1px solid var(--border-dim); padding-top: 12px;
+    }
+
+    /* 14 MONGODB COLLECTIONS ARCHITECTURE */
+    .collections-grid {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-top: 36px;
+    }
+    @media(max-width: 900px) { .collections-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media(max-width: 500px) { .collections-grid { grid-template-columns: 1fr; } }
+    .col-item {
+      background: rgba(255,255,255,0.03); border: 1px solid var(--border-dim);
+      border-radius: 12px; padding: 14px 16px; transition: all 0.2s;
+    }
+    .col-item:hover { border-color: var(--sky); background: rgba(14,165,233,0.06); }
+    .col-name { font-family: var(--font-mono); font-size: 13.5px; font-weight: 700; color: var(--sky); }
+    .col-desc { font-size: 11.5px; color: var(--text-muted); margin-top: 4px; }
+
+    /* STATUS TABLE */
+    .status-table-wrap {
+      margin-top: 40px; overflow-x: auto;
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: 20px;
+    }
+    table { width: 100%; border-collapse: collapse; font-size: 14px; text-align: left; }
+    th {
+      background: rgba(0,0,0,0.5); color: var(--sky); font-family: var(--font-display);
+      font-weight: 700; padding: 16px 20px; border-bottom: 1px solid var(--border);
+    }
+    td { padding: 14px 20px; border-bottom: 1px solid var(--border-dim); color: var(--text-muted); }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: rgba(14,165,233,0.03); }
+    td.feat-name { color: #fff; font-weight: 600; }
+    td.status-live { color: #34d399; font-weight: 700; }
+
+    /* CTA */
+    .cta-banner {
+      background: linear-gradient(135deg, rgba(14,26,48,0.92) 0%, rgba(5,8,17,0.98) 100%);
+      border: 1px solid var(--border-bright); border-radius: 28px;
+      padding: 64px 32px; text-align: center; margin: 80px 0 50px;
+      position: relative; overflow: hidden;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.6), 0 0 50px var(--glow-sky);
+    }
+    .cta-banner h2 {
+      font-family: var(--font-display); font-size: clamp(30px, 4.5vw, 52px);
+      font-weight: 700; margin-bottom: 14px;
+    }
+    .cta-banner p {
+      font-size: 16px; color: var(--text-muted); max-width: 600px; margin: 0 auto 36px;
+    }
+
+    footer {
+      border-top: 1px solid var(--border-dim); padding: 36px 24px;
+      text-align: center; font-size: 13.5px; color: var(--text-muted);
+      background: rgba(0,0,0,0.6);
+    }
+    footer a { color: var(--sky); text-decoration: none; font-weight: 600; }
+  </style>
+</head>
+<body>
+
+<!-- NAVIGATION -->
+<nav>
+  <a href="https://ghar-io-web.onrender.com/" target="_blank" rel="noopener" class="nav-brand">
+    <div class="brand-house">🏠</div>
+    <span>GHAR.io</span>
+    <div class="nav-pill">SUPERAPP</div>
+  </a>
+
+  <div class="nav-links">
+    <a href="#calculator">Mortgage & EMI</a>
+    <a href="#matcher">Property Engine</a>
+    <a href="#architecture">14 Mongo Collections</a>
+    <a href="#status">Build Audit</a>
+  </div>
+
+  <div class="nav-actions">
+    <a href="https://ghar-io-web.onrender.com/" target="_blank" rel="noopener" class="live-beacon-pill" title="Live Hosted on Render">
+      <div class="pulse-dot"></div>
+      <span class="live-text">Live on Render</span>
+      <span>↗</span>
+    </a>
+    <a href="https://ghar-io-web.onrender.com/" target="_blank" rel="noopener" class="nav-cta-btn">Open Super-App ➔</a>
+    <button class="ghar-toggle-btn" id="gharToggle" aria-label="Toggle Navigation">☰</button>
+  </div>
+</nav>
+
+<!-- MOBILE DRAWER -->
+<div class="ghar-mobile-drawer" id="gharMobileNav">
+  <a href="https://ghar-io-web.onrender.com/" target="_blank" rel="noopener" style="background: rgba(16,185,129,0.18); color: #34d399; border-color: rgba(16,185,129,0.4);">
+    🟢 Launch Live Super-App (ghar-io-web.onrender.com) ➔
+  </a>
+  <a href="#calculator">📊 Mortgage & EMI Calculator</a>
+  <a href="#matcher">🔍 Property Search Engine</a>
+  <a href="#architecture">🗄️ 14 Database Collections</a>
+  <a href="#status">✅ Build Audit</a>
+</div>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-eyebrow">🏠 VERIFIED MULTI-ROLE REAL ESTATE PLATFORM</div>
+  <h1>Find Homes, Projects &<br><em>Everything Real Estate.</em></h1>
+  <p class="hero-sub">GHAR.io is an enterprise real estate super-app built with Node.js + MongoDB API and single-codebase Angular 18 + Ionic PWA across desktop, tablet, and mobile. Housing.com & 99acres caliber.</p>
+
+  <div class="live-host-banner">
+    <div class="pulse-dot"></div>
+    <span style="font-weight: 700; color: #fff;">Production Instance Active:</span>
+    <code>https://ghar-io-web.onrender.com/</code>
+    <a href="https://ghar-io-web.onrender.com/" target="_blank" rel="noopener" class="live-beacon-pill">Launch GHAR.io Live ↗</a>
+  </div>
+
+  <div class="hero-actions">
+    <a href="https://ghar-io-web.onrender.com/" target="_blank" rel="noopener" class="hero-btn-primary">
+      <span>🚀 Open Live Super-App</span>
+      <span>➔</span>
+    </a>
+    <a href="#calculator" class="hero-btn-secondary">
+      <span>📊 Try Live EMI Calculator</span>
+      <span>↓</span>
+    </a>
+  </div>
+
+  <div class="hero-stats-grid">
+    <div class="stat-card">
+      <span class="stat-num">14</span>
+      <span class="stat-label">MongoDB Collections</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-num">Single Codebase</span>
+      <span class="stat-label">Web + Tablet + Mobile</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-num">195 Countries</span>
+      <span class="stat-label">Cascading Location API</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-num">4 Roles</span>
+      <span class="stat-label">Buyer, Owner, Agent, Admin</span>
+    </div>
+  </div>
+</header>
+
+<main>
+  <!-- INTERACTIVE EMI CALCULATOR -->
+  <section id="calculator">
+    <div class="container">
+      <span class="sec-eyebrow">FINANCIAL ENGINE</span>
+      <h2 class="sec-h2">Interactive Home Loan & EMI Simulator</h2>
+      <p class="sec-p">Prospective buyers calculate live monthly payments, loan tenure interest, and bank affordability breakdowns instantly.</p>
+
+      <div class="emi-calc-box">
+        <div class="emi-grid">
+          <div class="calc-sliders-col">
+            <div class="slider-item">
+              <div class="slider-top-row">
+                <span>Property Price (Loan Amount):</span>
+                <span class="slider-display-val" id="loanAmtDisplay">₹85,00,000</span>
+              </div>
+              <input type="range" id="loanSlider" min="1000000" max="30000000" step="500000" value="8500000" oninput="updateEmi()">
+            </div>
+
+            <div class="slider-item">
+              <div class="slider-top-row">
+                <span>Loan Tenure:</span>
+                <span class="slider-display-val" id="tenureDisplay">20 Years</span>
+              </div>
+              <input type="range" id="tenureSlider" min="5" max="30" step="1" value="20" oninput="updateEmi()">
+            </div>
+
+            <div class="slider-item">
+              <div class="slider-top-row">
+                <span>Interest Rate (% per annum):</span>
+                <span class="slider-display-val" id="rateDisplay">8.5%</span>
+              </div>
+              <input type="range" id="rateSlider" min="6.5" max="14" step="0.1" value="8.5" oninput="updateEmi()">
+            </div>
+          </div>
+
+          <div class="emi-result-panel">
+            <div>
+              <div class="emi-meta-sub">Estimated Monthly EMI</div>
+              <div class="emi-primary-val" id="monthlyEmiDisplay">₹73,782</div>
+            </div>
+
+            <div class="emi-breakdown-row">
+              <span>Principal Amount:</span>
+              <span id="principalDisplay">₹85,00,000</span>
+            </div>
+            <div class="emi-breakdown-row">
+              <span>Total Interest Payable:</span>
+              <span id="interestDisplay">₹92,07,680</span>
+            </div>
+            <div class="emi-breakdown-row" style="color: var(--sky); font-weight: 700;">
+              <span>Total Payment (Loan + Interest):</span>
+              <span id="totalPaymentDisplay">₹1,77,07,680</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- INTERACTIVE PROPERTY SEARCH MATCHER -->
+  <section id="matcher" style="background: rgba(10,16,29,0.6);">
+    <div class="container">
+      <span class="sec-eyebrow">SEARCH ARCHITECTURE</span>
+      <h2 class="sec-h2">Verified Property Discovery Engine</h2>
+      <p class="sec-p">Test cascading search filters connecting verified RERA developers with prospective buyers.</p>
+
+      <div class="search-filter-wrap">
+        <select class="filter-select" id="citySelect" onchange="filterProperties()">
+          <option value="all">All Metros (India)</option>
+          <option value="mumbai">Mumbai MMR</option>
+          <option value="bangalore">Bangalore</option>
+          <option value="delhi">Delhi NCR</option>
+        </select>
+
+        <div class="bhk-toggle-group">
+          <button class="bhk-btn active" onclick="setBhkFilter('all', this)">All BHK</button>
+          <button class="bhk-btn" onclick="setBhkFilter('2', this)">2 BHK</button>
+          <button class="bhk-btn" onclick="setBhkFilter('3', this)">3 BHK</button>
+          <button class="bhk-btn" onclick="setBhkFilter('4', this)">4 BHK Luxury</button>
+        </div>
+      </div>
+
+      <div class="properties-grid" id="propsGrid">
+        <div class="property-card" data-city="mumbai" data-bhk="3">
+          <div class="prop-image pi-1">
+            <span class="prop-rera-badge">✔ RERA Approved</span>
+            <div class="prop-price-tag">₹2.45 Cr</div>
+          </div>
+          <div class="prop-body">
+            <div>
+              <div class="prop-title">Oberoi Elysian Heights</div>
+              <div class="prop-loc">📍 Goregaon East, Western Express, Mumbai</div>
+            </div>
+            <div class="prop-specs">
+              <span>🛏️ 3 BHK</span>
+              <span>📐 1,480 sq.ft</span>
+              <span>🏊 Pool & Club</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="property-card" data-city="bangalore" data-bhk="2">
+          <div class="prop-image pi-2">
+            <span class="prop-rera-badge">✔ Ready to Move</span>
+            <div class="prop-price-tag">₹1.15 Cr</div>
+          </div>
+          <div class="prop-body">
+            <div>
+              <div class="prop-title">Prestige Green Gables</div>
+              <div class="prop-loc">📍 Kadubeesanahalli, Outer Ring Rd, Bangalore</div>
+            </div>
+            <div class="prop-specs">
+              <span>🛏️ 2 BHK</span>
+              <span>📐 1,020 sq.ft</span>
+              <span>🌳 Park Facing</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="property-card" data-city="delhi" data-bhk="4">
+          <div class="prop-image pi-3">
+            <span class="prop-rera-badge">✔ Luxury Penthouse</span>
+            <div class="prop-price-tag">₹4.80 Cr</div>
+          </div>
+          <div class="prop-body">
+            <div>
+              <div class="prop-title">DLF The Camellias View</div>
+              <div class="prop-loc">📍 Golf Course Road, Sector 42, Gurugram NCR</div>
+            </div>
+            <div class="prop-specs">
+              <span>🛏️ 4 BHK</span>
+              <span>📐 3,200 sq.ft</span>
+              <span>⛳ Golf View</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 14 MONGODB COLLECTIONS ARCHITECTURE -->
+  <section id="architecture">
+    <div class="container">
+      <span class="sec-eyebrow">DATA ENGINE</span>
+      <h2 class="sec-h2">14 Production MongoDB Collections</h2>
+      <p class="sec-p">Every entity is strictly indexed for sub-millisecond query performance across complex geospatial and attribute queries.</p>
+
+      <div class="collections-grid">
+        <div class="col-item"><div class="col-name">users</div><div class="col-desc">Buyers, owners, verified agents, admins with RBAC</div></div>
+        <div class="col-item"><div class="col-name">properties</div><div class="col-desc">Full listing documents with geo-coordinates & tags</div></div>
+        <div class="col-item"><div class="col-name">projects</div><div class="col-desc">New builder launches with RERA certificates</div></div>
+        <div class="col-item"><div class="col-name">builders</div><div class="col-desc">Developer portfolio, track records & ratings</div></div>
+        <div class="col-item"><div class="col-name">enquiries</div><div class="col-desc">Lead CRM inbox, response SLAs & notes</div></div>
+        <div class="col-item"><div class="col-name">savedsearches</div><div class="col-desc">Automated matching criteria for buyer alerts</div></div>
+        <div class="col-item"><div class="col-name">favorites</div><div class="col-desc">Bookmarked units with price drop tracking</div></div>
+        <div class="col-item"><div class="col-name">reviews</div><div class="col-desc">Verified resident reviews on societies & areas</div></div>
+        <div class="col-item"><div class="col-name">amenities</div><div class="col-desc">Master list of lifestyle & security features</div></div>
+        <div class="col-item"><div class="col-name">cities</div><div class="col-desc">Metropolitan hubs with micro-market bounds</div></div>
+        <div class="col-item"><div class="col-name">localities</div><div class="col-desc">Neighborhood profiles with price per sq.ft</div></div>
+        <div class="col-item"><div class="col-name">transactions</div><div class="col-desc">Agent subscription & premium listing receipts</div></div>
+        <div class="col-item"><div class="col-name">analytics_events</div><div class="col-desc">Clickstream, search queries & conversion log</div></div>
+        <div class="col-item"><div class="col-name">notifications</div><div class="col-desc">SMS OTPs, email alerts & push triggers</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BUILD AUDIT TABLE -->
+  <section id="status" style="background: rgba(10,16,29,0.6);">
+    <div class="container">
+      <span class="sec-eyebrow">VERIFIED STATUS</span>
+      <h2 class="sec-h2">Production Readiness Audit</h2>
+      <p class="sec-p">All core services tested and verified on live cloud infrastructure.</p>
+
+      <div class="status-table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Architecture Component</th>
+              <th>Status</th>
+              <th>Verification Details</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="feat-name">Backend API (14 Collections)</td>
+              <td class="status-live">✔ Production Live</td>
+              <td>Node.js Express + MongoDB Atlas on Render</td>
+            </tr>
+            <tr>
+              <td class="feat-name">Angular 18 Frontend Super-App</td>
+              <td class="status-live">✔ Production Live</td>
+              <td>Hosted at https://ghar-io-web.onrender.com/</td>
+            </tr>
+            <tr>
+              <td class="feat-name">Cascading Location Hierarchy</td>
+              <td class="status-live">✔ Production Live</td>
+              <td>Country → City → Area live dropdown filtering</td>
+            </tr>
+            <tr>
+              <td class="feat-name">Multi-Role User Authentication</td>
+              <td class="status-live">✔ Production Live</td>
+              <td>JWT token cookies with OTP auth flow</td>
+            </tr>
+            <tr>
+              <td class="feat-name">Mobile PWA & ion-split-pane</td>
+              <td class="status-live">✔ Production Live</td>
+              <td>Responsive desktop sidebar to mobile drawer transition</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <div class="container">
+    <div class="cta-banner">
+      <h2>Transform Your Real Estate Venture with GHAR.io</h2>
+      <p>Tested, live on cloud, and ready for commercial scale. Experience the live super-app today.</p>
+      <div style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;">
+        <a href="https://ghar-io-web.onrender.com/" target="_blank" rel="noopener" class="hero-btn-primary">
+          <span>🚀 Launch GHAR.io Live Instance</span>
+          <span>➔</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <p>GHAR.io &bull; Enterprise Full-Stack Real Estate Super-App &bull; <a href="https://ghar-io-web.onrender.com/" target="_blank" rel="noopener">ghar-io-web.onrender.com</a></p>
+  <p style="margin-top: 8px; font-size: 12px; opacity: 0.7;">Part of the 8-Product Client Presentation Portfolio &bull; 2026</p>
+</footer>
+
+<script>
+  // Mobile drawer toggle
+  const gharToggle = document.getElementById('gharToggle');
+  const gharMobileNav = document.getElementById('gharMobileNav');
+  if (gharToggle && gharMobileNav) {
+    gharToggle.addEventListener('click', () => {
+      gharMobileNav.classList.toggle('open');
+      gharToggle.textContent = gharMobileNav.classList.contains('open') ? '✕' : '☰';
+    });
+    gharMobileNav.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        gharMobileNav.classList.remove('open');
+        gharToggle.textContent = '☰';
+      });
+    });
+  }
+
+  // EMI Calculator logic
+  function updateEmi() {
+    const P = parseFloat(document.getElementById('loanSlider').value);
+    const years = parseFloat(document.getElementById('tenureSlider').value);
+    const annualRate = parseFloat(document.getElementById('rateSlider').value);
+
+    document.getElementById('loanAmtDisplay').textContent = '₹' + P.toLocaleString();
+    document.getElementById('tenureDisplay').textContent = years + ' Years';
+    document.getElementById('rateDisplay').textContent = annualRate + '%';
+
+    const r = (annualRate / 12) / 100;
+    const n = years * 12;
+
+    const emi = Math.round((P * r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1));
+    const totalPayment = emi * n;
+    const totalInterest = totalPayment - P;
+
+    document.getElementById('monthlyEmiDisplay').textContent = '₹' + emi.toLocaleString();
+    document.getElementById('principalDisplay').textContent = '₹' + P.toLocaleString();
+    document.getElementById('interestDisplay').textContent = '₹' + totalInterest.toLocaleString();
+    document.getElementById('totalPaymentDisplay').textContent = '₹' + totalPayment.toLocaleString();
+  }
+
+  // Property filtering
+  let activeBhk = 'all';
+
+  function setBhkFilter(bhk, btn) {
+    document.querySelectorAll('.bhk-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    activeBhk = bhk;
+    filterProperties();
+  }
+
+  function filterProperties() {
+    const city = document.getElementById('citySelect').value;
+    const cards = document.querySelectorAll('.property-card');
+
+    cards.forEach(card => {
+      const cardCity = card.getAttribute('data-city');
+      const cardBhk = card.getAttribute('data-bhk');
+
+      const matchCity = (city === 'all' || cardCity === city);
+      const matchBhk = (activeBhk === 'all' || cardBhk === activeBhk);
+
+      if (matchCity && matchBhk) {
+        card.style.display = 'flex';
+      } else {
+        card.style.display = 'none';
+      }
+    });
+  }
+
+  // Initialize EMI
+  updateEmi();
+</script>
+
+</body>
+</html>
